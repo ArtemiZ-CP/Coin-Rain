@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dae8f6ffd3d9e4555975704ea1d008fe, type: 3}
+  m_Name: GameConstants
+  m_EditorClassIdentifier: 
+  _pinConstants:
+    Line1Prefab: {fileID: 6548801551667090007, guid: 4f8714f6f003542b19cf1b16a4988b6a, type: 3}
+    Line2Prefab: {fileID: 3828911687128273927, guid: ca68318bfe02140269bf87189fe702ef, type: 3}
+    PinPrefab: {fileID: 4077924101818120048, guid: dd08ba2606ecf4c0e9dd3691e7574861, type: 3}
+    WinAreaPrefab: {fileID: 5264582952020958834, guid: 4c82d77054658487297550331ca1be5a, type: 3}
+    OffsetBetweenPinsInLine: 2
+    OffsetBetweenLines: 1.5
+    MultiplyingBallImpulse: 5
