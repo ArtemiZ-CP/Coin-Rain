@@ -10,7 +10,7 @@ public class GameplayMap : MonoBehaviour
 
     private void Start()
     {
-        _pinsMap.UpdatePins();
+        PlayerData.Reset();
     }
 
     private void OnEnable()

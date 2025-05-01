@@ -1,0 +1,32 @@
+using UnityEngine;
+
+public class PlayerQuestsDisplayer : MonoBehaviour
+{
+    [SerializeField] private PlayerQuestDisplayer _questDisplayerPrefab;
+    [SerializeField] private PlayerQuests _playerQuests;
+
+    private void OnEnable()
+    {
+        UpdateQuestDisplayer();
+        _playerQuests.OnQuestsUpdated += UpdateQuestDisplayer;
+    }
+
+    private void OnDisable()
+    {
+        _playerQuests.OnQuestsUpdated -= UpdateQuestDisplayer;
+    }
+
+    private void UpdateQuestDisplayer()
+    {
+        foreach (Transform child in transform)
+        {
+            Destroy(child.gameObject);
+        }
+
+        foreach (Quest quest in _playerQuests.ActiveQuests)
+        {
+            PlayerQuestDisplayer questDisplayer = Instantiate(_questDisplayerPrefab, transform);
+            questDisplayer.SetQuest(quest);
+        }
+    }
+}

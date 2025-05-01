@@ -35,8 +35,8 @@ public class WinAreas : MonoBehaviour
             }
         }
 
-        int areasCount = (PlayerData.WidthUpgrade.Value + 1) * 2;
-        int finishLevel = PlayerData.WinAreasUpgrade.Value + 1;
+        int areasCount = (PlayerData.WidthUpgrade + 1) * 2;
+        int finishLevel = PlayerData.WinAreasUpgrade + 1;
 
         for (int i = 0; i < areasCount / 2; i++)
         {
@@ -44,15 +44,15 @@ public class WinAreas : MonoBehaviour
             SpawnFinish(pinConstants, finishLevel, areasCount, i, positionMultiplier: -1);
         }
 
-        transform.position = -1 * (PlayerData.HeightUpgrade.Value - 1) * pinConstants.OffsetBetweenLines * Vector3.up;
+        transform.position = -1 * (PlayerData.HeightUpgrade - 1) * pinConstants.OffsetBetweenLines * Vector3.up;
     }
 
     private void SpawnFinish(PinConstants pinConstants, int finishLevel, int areasCount, int index, int positionMultiplier)
     {
         WinArea winArea = Instantiate(pinConstants.WinAreaPrefab, transform);
-        float position = (index - (areasCount - 1) / 2.0f) * pinConstants.OffsetBetweenPinsInLine * positionMultiplier;
-        winArea.transform.localPosition = position * Vector3.right;
-        winArea.SetMultiplier(Mathf.Max(finishLevel - (areasCount / 2 - index) + 1, 1));
+        float positionX = (index - (areasCount - 1) / 2.0f) * pinConstants.OffsetBetweenPinsInLine * positionMultiplier;
+        winArea.transform.localPosition = positionX * Vector3.right;
+        winArea.SetMultiplier(Mathf.Max(finishLevel - (areasCount / 2 - index) + 1, 0));
         winAreas.Add(winArea);
     }
 }

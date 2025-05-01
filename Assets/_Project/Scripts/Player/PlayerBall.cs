@@ -10,8 +10,11 @@ public class PlayerBall : MonoBehaviour
     private PinConstants _pinConstants;
     private float _lowVelocityTimer = 0f;
     private float _temporaryCoins = 0f;
+    private bool _isMoving = false;
 
     public event System.Action<float> OnCoinsChanged;
+    public event System.Action<PlayerBall, int, float> OnBallFinished;
+    public event System.Action<PlayerBall> OnBallHitPin;
 
     private void Awake()
     {
@@ -20,7 +23,7 @@ public class PlayerBall : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (Mathf.Abs(_rigidbody.velocity.x) < MinVelocity)
+        if (_isMoving && Mathf.Abs(_rigidbody.velocity.x) < MinVelocity)
         {
             _lowVelocityTimer += Time.fixedDeltaTime;
 
@@ -45,6 +48,7 @@ public class PlayerBall : MonoBehaviour
             {
                 _temporaryCoins += coins;
                 OnCoinsChanged?.Invoke(_temporaryCoins);
+                OnBallHitPin?.Invoke(this);
             }
         }
     }
@@ -56,6 +60,7 @@ public class PlayerBall : MonoBehaviour
             _temporaryCoins *= winArea.Multiplier;
             PlayerData.AddCoins(_temporaryCoins);
             OnCoinsChanged?.Invoke(_temporaryCoins);
+            OnBallFinished?.Invoke(this, winArea.Multiplier, _temporaryCoins);
         }
     }
 
@@ -75,12 +80,14 @@ public class PlayerBall : MonoBehaviour
     {
         _rigidbody.gravityScale = 0;
         _rigidbody.velocity = Vector2.zero;
+        _isMoving = false;
         ResetCoins();
     }
 
     public void Spawn()
     {
         _rigidbody.gravityScale = 1;
+        _isMoving = true;
         ResetCoins();
     }
 

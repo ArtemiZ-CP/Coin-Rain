@@ -7,7 +7,6 @@ public class BallsController : MonoBehaviour
 
     [SerializeField] private PlayerBall _ballPrefab;
     [SerializeField] private PinsMap _pinsMap;
-    [SerializeField] private GameObject _buyingPanel;
     [SerializeField] private GameZone _gameZone;
     [SerializeField] private float _height = 1.0f;
 
@@ -16,6 +15,11 @@ public class BallsController : MonoBehaviour
     private bool _isStarting = false;
     private bool _isMooving = false;
     private float _maxX;
+
+    public event System.Action<PlayerBall> OnBallDropped;
+    public event System.Action<PlayerBall, int, float> OnBallFinished;
+    public event System.Action<PlayerBall> OnBallHitPin;
+    public event System.Action OnReset;
 
     private void Awake()
     {
@@ -29,8 +33,8 @@ public class BallsController : MonoBehaviour
 
         _pool = new ObjectPool<PlayerBall>(
             createFunc: () => Instantiate(_ballPrefab, transform),
-            actionOnGet: ball => ball.gameObject.SetActive(true),
-            actionOnRelease: ball => ball.gameObject.SetActive(false),
+            actionOnGet: ball => ActionOnGetBall(ball),
+            actionOnRelease: ball => ActionOnRelease(ball),
             actionOnDestroy: ball => Destroy(ball.gameObject),
             collectionCheck: false,
             defaultCapacity: 10,
@@ -74,8 +78,7 @@ public class BallsController : MonoBehaviour
         }
 
         _isMooving = true;
-        _buyingPanel.SetActive(false);
-        _maxX = PlayerData.WidthUpgrade.Value * (GameConstants.Instance.PinConstants.OffsetBetweenPinsInLine + 1);
+        _maxX = PlayerData.WidthUpgrade * (GameConstants.Instance.PinConstants.OffsetBetweenPinsInLine + 1);
     }
 
     public void PointerUp()
@@ -88,6 +91,7 @@ public class BallsController : MonoBehaviour
         _isMooving = false;
         _isStarting = true;
         _target.Spawn();
+        OnBallDropped?.Invoke(_target);
     }
 
     public PlayerBall SpawnBall(Vector3 position)
@@ -100,8 +104,27 @@ public class BallsController : MonoBehaviour
 
     public float Blast(Pin pin, PlayerBall playerBall) => _pinsMap.Blast(pin, playerBall);
 
+    private void ActionOnGetBall(PlayerBall ball)
+    {
+        ball.gameObject.SetActive(true);
+        ball.OnBallFinished += OnBallFinished;
+        ball.OnBallHitPin += OnBallHitPin;
+    }
+
+    private void ActionOnRelease(PlayerBall ball)
+    {
+        ball.gameObject.SetActive(false);
+        ball.OnBallFinished -= OnBallFinished;
+        ball.OnBallHitPin -= OnBallHitPin;
+    }
+
     private void BallFinished(PlayerBall playerBall)
     {
+        if (playerBall == null || playerBall.gameObject == null)
+        {
+            return;
+        }
+
         _pool.Release(playerBall);
 
         if (_pool.CountActive == 0)
@@ -115,10 +138,10 @@ public class BallsController : MonoBehaviour
         _isStarting = false;
         _target = _pool.Get();
         _target.Stop();
-        _buyingPanel.SetActive(true);
         _pinsMap.Reset();
         Move(Vector2.zero);
-    }   
+        OnReset?.Invoke();
+    }
 
     private void Move(Vector2 position)
     {

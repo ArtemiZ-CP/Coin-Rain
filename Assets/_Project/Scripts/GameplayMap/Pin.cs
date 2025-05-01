@@ -36,8 +36,8 @@ public class Pin : MonoBehaviour
 
         coins = _pinType switch
         {
-            Type.Base => PlayerData.BaseUpgrade.Value,
-            Type.Gold => PlayerData.GoldPinsValueUpgrade.Value * PlayerData.BaseUpgrade.Value,
+            Type.Base => PlayerData.RewardFromPin,
+            Type.Gold => PlayerData.GoldPinsValueUpgrade * PlayerData.RewardFromPin,
             Type.Multiplying => TouchMultiplierPin(playerBall),
             Type.Bomb => TouchBombPin(playerBall),
             _ => throw new System.NotImplementedException(),
@@ -68,10 +68,15 @@ public class Pin : MonoBehaviour
 
     private float TouchMultiplierPin(PlayerBall playerBall)
     {
-        PlayerBall newBall = BallsController.Instance.SpawnBall(playerBall.transform.position);
-        float coins = PlayerData.BaseUpgrade.Value;
-        newBall.SetRandomImpulse();
-        newBall.AddCoins(coins);
+        float coins = PlayerData.RewardFromPin;
+
+        for (int i = 0; i < PlayerData.MultiPinsValueUpgrade; i++)
+        {
+            PlayerBall newBall = BallsController.Instance.SpawnBall(playerBall.transform.position);
+            newBall.SetRandomImpulse();
+            newBall.AddCoins(coins);
+        }
+        
         return coins;
     }
 

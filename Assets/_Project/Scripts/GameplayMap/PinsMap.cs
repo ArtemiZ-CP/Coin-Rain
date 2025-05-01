@@ -6,7 +6,7 @@ public class PinsMap : MonoBehaviour
     [SerializeField] private List<PinsLine> _pinLines = new();
 
     private PinConstants _pinConstants = default;
-
+ 
     private void Awake()
     {
         _pinConstants = GameConstants.Instance.PinConstants;
@@ -36,7 +36,7 @@ public class PinsMap : MonoBehaviour
             }
         }
 
-        for (int i = 0; i < PlayerData.HeightUpgrade.Value; i++)
+        for (int i = 0; i < PlayerData.HeightUpgrade; i++)
         {
             PinsLine pinsLine;
 
@@ -67,15 +67,15 @@ public class PinsMap : MonoBehaviour
             pins.AddRange(pinsLine.Pins);
         }
 
-        SetPins(Pin.Type.Gold, PlayerData.GoldPinsCountUpgrade.Value, pins);
-        SetPins(Pin.Type.Multiplying, PlayerData.MultiPinsCountUpgrade.Value, pins);
-        SetPins(Pin.Type.Bomb, PlayerData.BombPinsCountUpgrade.Value, pins);
+        SetPins(Pin.Type.Gold, PlayerData.GoldPinsCountUpgrade, pins);
+        SetPins(Pin.Type.Multiplying, PlayerData.MultiPinsCountUpgrade, pins);
+        SetPins(Pin.Type.Bomb, PlayerData.BombPinsCountUpgrade, pins);
     }
 
     public float Blast(Pin blastPin, PlayerBall playerBall)
     {
-        float blastRange = _pinConstants.OffsetBetweenPinsInLine * PlayerData.BombPinsValueUpgrade.Value + 0.1f;
-        float coins = PlayerData.BaseUpgrade.Value;
+        float blastRange = _pinConstants.OffsetBetweenPinsInLine * PlayerData.BombPinsValueUpgrade + 0.1f;
+        float coins = PlayerData.RewardFromPin;
 
         foreach (PinsLine pinsLine in _pinLines)
         {

@@ -12,12 +12,12 @@ public class Borders : MonoBehaviour
     {
         PinConstants pinConstants = GameConstants.Instance.PinConstants;
 
-        float positionX = (PlayerData.WidthUpgrade.Value + 1) * pinConstants.OffsetBetweenPinsInLine;
+        float positionX = (PlayerData.WidthUpgrade + 1) * pinConstants.OffsetBetweenPinsInLine;
 
         _leftBorder.transform.localPosition = -1 * positionX * Vector3.right;
         _rightBorder.transform.localPosition = positionX * Vector3.right;
 
-        float minHeight = -1 * (PlayerData.HeightUpgrade.Value - 1) * pinConstants.OffsetBetweenLines;
+        float minHeight = -1 * (PlayerData.HeightUpgrade - 1) * pinConstants.OffsetBetweenLines;
 
         _leftBorder.transform.localScale = new Vector3(_boardWidth, _boardMaxHeight - minHeight, 1);
         _rightBorder.transform.localScale = new Vector3(_boardWidth, _boardMaxHeight - minHeight, 1);

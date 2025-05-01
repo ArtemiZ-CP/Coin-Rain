@@ -7,23 +7,23 @@ public abstract class UpgradeButton<T> : MonoBehaviour
     [SerializeField] private Button _button;
     [SerializeField] private TMP_Text _rewardText;
     [SerializeField] private TMP_Text _costText;
-    [SerializeField] private GameObject _nextUpgrade;
     [SerializeField, ReadOnly] private UpgradeDatas _upgrades;
 
+    private int _level;
     private float _cost;
 
     private void Awake()
     {
-        _upgrades.Datas = GetUpgrades(out int level);
-        UpdateButton(level);
+        _upgrades.Datas = GetUpgrades(out _level);
+        UpdateButton();
     }
 
-    private void OnEnable()
+    protected virtual void OnEnable()
     {
         _button.onClick.AddListener(OnClick);
     }
 
-    private void OnDisable()
+    protected virtual void OnDisable()
     {
         _button.onClick.RemoveListener(OnClick);
     }
@@ -32,7 +32,6 @@ public abstract class UpgradeButton<T> : MonoBehaviour
     protected abstract void UpdateValue(T value);
     protected abstract void SetRewardText();
     protected abstract UpgradeData[] GetUpgrades(out int level);
-    protected abstract int LevelUp();
 
     protected void SetRewardText(string text)
     {
@@ -43,46 +42,37 @@ public abstract class UpgradeButton<T> : MonoBehaviour
     {
         if (PlayerData.TryToBuy(_cost))
         {
-            UpdateButton(LevelUp());
+            _level++;
+            UpdateButton();
         }
     }
 
-    private void UpdateButton(int level)
+    private void UpdateButton()
     {
-        if (level >= _upgrades.Datas.Length)
+        if (_level >= _upgrades.Datas.Length)
         {
             _cost = -1;
             UpdateButtonText();
             return;
         }
 
-        if (level < 0)
+        if (_level < 0)
         {
             UpdateValue(GetDefaultValue());
-
-            if (_nextUpgrade != null)
-            {
-                _nextUpgrade.SetActive(false);
-            }
         }
         else
         {
-            UpdateValue(_upgrades.Datas[level].Value);
-
-            if (_nextUpgrade != null)
-            {
-                _nextUpgrade.SetActive(true);
-            }
+            UpdateValue(_upgrades.Datas[_level].Value);
         }
 
-        if (level + 1 >= _upgrades.Datas.Length)
+        if (_level + 1 >= _upgrades.Datas.Length)
         {
             _cost = -1;
             UpdateButtonText();
             return;
         }
 
-        _cost = _upgrades.Datas[level + 1].Cost;
+        _cost = _upgrades.Datas[_level + 1].Cost;
         UpdateButtonText();
     }
 
