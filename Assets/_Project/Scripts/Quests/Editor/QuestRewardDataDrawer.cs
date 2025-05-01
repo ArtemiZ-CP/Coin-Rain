@@ -34,9 +34,9 @@ public class QuestRewardDataDrawer : PropertyDrawer
         }
         else if (type == QuestRewardType.UnlockUpgrade)
         {
-            var upgradeTypeProp = property.FindPropertyRelative("UpgradeType");
+            var upgradeTypeProp = property.FindPropertyRelative("PinType");
             Rect upgradeRect = new(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight);
-            EditorGUI.PropertyField(upgradeRect, upgradeTypeProp, new GUIContent("Upgrade Type"));
+            EditorGUI.PropertyField(upgradeRect, upgradeTypeProp, new GUIContent("Pin Type"));
         }
 
         EditorGUI.EndProperty();

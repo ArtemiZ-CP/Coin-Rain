@@ -1,7 +1,6 @@
 public class HitFinishObjective : QuestObjective
 {
     private readonly int _finishMultiplierToHit;
-
     public int FinishMultiplierToHit => _finishMultiplierToHit;
 
     public HitFinishObjective(int finishMultiplierToHit)
@@ -19,7 +18,7 @@ public class HitFinishObjective : QuestObjective
     {
         if (finishMultiplier == _finishMultiplierToHit)
         {
-            CompleteObjective();
+            SetCompleted();
         }
     }
 }

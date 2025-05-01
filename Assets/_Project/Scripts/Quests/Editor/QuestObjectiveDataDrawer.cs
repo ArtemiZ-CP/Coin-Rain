@@ -37,6 +37,10 @@ public class QuestObjectiveDataDrawer : PropertyDrawer
             var pinsCountProp = property.FindPropertyRelative("PinsCount");
             Rect pinsCountRect = new(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight);
             EditorGUI.PropertyField(pinsCountRect, pinsCountProp, new GUIContent("Pins Count"));
+            position.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
+            var pinTypeProp = property.FindPropertyRelative("PinType");
+            Rect pinTypeRect = new(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight);
+            EditorGUI.PropertyField(pinTypeRect, pinTypeProp, new GUIContent("Pins Type"));
         }
         else if (type == QuestObjectiveType.EarnCoins)
         {
@@ -61,7 +65,7 @@ public class QuestObjectiveDataDrawer : PropertyDrawer
         }
         else if (type == QuestObjectiveType.HitPins)
         {
-            lines++;
+            lines += 2;
         }
         else if (type == QuestObjectiveType.EarnCoins)
         {

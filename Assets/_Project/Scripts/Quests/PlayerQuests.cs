@@ -9,6 +9,7 @@ public class PlayerQuests : MonoBehaviour
     private readonly List<Quest> _disactiveQuests = new();
 
     [SerializeField] private int _maxActiveQuests = 3;
+    [SerializeField] private int _completeQuestsAtStartCount = 0;
     [SerializeField] private List<QuestData> _playerQuests = new();
 
     public IReadOnlyList<Quest> ActiveQuests => _activeQuests;
@@ -38,6 +39,15 @@ public class PlayerQuests : MonoBehaviour
 
         UpdateActiveQuests();
         OnQuestsUpdated?.Invoke();
+    }
+
+    private void Start()
+    {
+        for (int i = 0; i < _completeQuestsAtStartCount; i++)
+        {
+            Quest quest = _activeQuests[0];
+            quest.CompleteQuest();
+        }
     }
 
     public void AddActiveQuest(Quest quest)
@@ -83,7 +93,7 @@ public class PlayerQuests : MonoBehaviour
         {
             QuestObjectiveType.DropBall => new DropBallObjective(),
             QuestObjectiveType.HitFinish => new HitFinishObjective(data.FinishMultiplierToHit),
-            QuestObjectiveType.HitPins => new HitPinsObjective(data.PinsCount),
+            QuestObjectiveType.HitPins => new HitPinsObjective(data.PinsCount, data.PinType),
             QuestObjectiveType.EarnCoins => new EarnCoinsObjective(data.CoinsCount),
             _ => null,
         };
@@ -95,7 +105,7 @@ public class PlayerQuests : MonoBehaviour
         {
             DropBallObjective => new QuestObjectiveData { Type = QuestObjectiveType.DropBall },
             HitFinishObjective hitFinish => new QuestObjectiveData { Type = QuestObjectiveType.HitFinish, FinishMultiplierToHit = hitFinish.FinishMultiplierToHit },
-            HitPinsObjective hitPins => new QuestObjectiveData { Type = QuestObjectiveType.HitPins, PinsCount = hitPins.PinsCount },
+            HitPinsObjective hitPins => new QuestObjectiveData { Type = QuestObjectiveType.HitPins, PinsCount = hitPins.PinsCount, PinType = hitPins.PinType },
             EarnCoinsObjective earnCoins => new QuestObjectiveData { Type = QuestObjectiveType.EarnCoins, CoinsCount = earnCoins.CoinsCount },
             _ => new QuestObjectiveData(),
         };
@@ -106,7 +116,9 @@ public class PlayerQuests : MonoBehaviour
         return data.Type switch
         {
             QuestRewardType.Coins => new CoinsReward(data.CoinsCount),
-            QuestRewardType.UnlockUpgrade => new UnlockUpgrade(data.UpgradeType),
+            QuestRewardType.UnlockUpgrade => new UnlockUpgrade(data.PinType),
+            QuestRewardType.IncreaseHeight => new IncreaseHeightReward(),
+            QuestRewardType.IncreaseWidth => new IncreaseWidthReward(),
             _ => null,
         };
     }
@@ -116,7 +128,9 @@ public class PlayerQuests : MonoBehaviour
         return reward switch
         {
             CoinsReward coinsReward => new QuestRewardData { Type = QuestRewardType.Coins, CoinsCount = coinsReward.CoinsCount },
-            UnlockUpgrade unlockUpgrade => new QuestRewardData { Type = QuestRewardType.UnlockUpgrade, UpgradeType = unlockUpgrade.UpgradeType },
+            UnlockUpgrade unlockUpgrade => new QuestRewardData { Type = QuestRewardType.UnlockUpgrade, PinType = unlockUpgrade.PinType },
+            IncreaseHeightReward => new QuestRewardData { Type = QuestRewardType.IncreaseHeight },
+            IncreaseWidthReward => new QuestRewardData { Type = QuestRewardType.IncreaseWidth },
             _ => new QuestRewardData(),
         };
     }

@@ -19,9 +19,9 @@ public class UpgradesButton : MonoBehaviour
         PlayerData.OnUpgradeUnlock -= OnBaseBinUpgradeActive;
     }
 
-    private void OnBaseBinUpgradeActive(UpgradeType upgradeType)
+    private void OnBaseBinUpgradeActive(Pin.Type upgradeType)
     {
-        if (upgradeType == UpgradeType.Base)
+        if (upgradeType == Pin.Type.Base)
         {
             _upgradesButton.SetActive(true);
         }

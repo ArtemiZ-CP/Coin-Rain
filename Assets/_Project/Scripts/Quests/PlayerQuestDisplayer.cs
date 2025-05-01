@@ -24,7 +24,14 @@ public class PlayerQuestDisplayer : MonoBehaviour
         }
         else if (quest.Objective is HitPinsObjective hitPins)
         {
-            _questDescription.text = $"Задеть шаром штырьки за один раунд: {hitPins.PinsCount}";
+            string pinType = hitPins.PinType switch
+            {
+                Pin.Type.Base => "обычные",
+                Pin.Type.Gold => "золотые",
+                _ => "неизвестные"
+            };
+
+            _questDescription.text = $"Задеть шаром {pinType} штырьки за один раунд: {hitPins.PinsCount}";
         }
         else if (quest.Objective is EarnCoinsObjective earnCoins)
         {
@@ -44,11 +51,11 @@ public class PlayerQuestDisplayer : MonoBehaviour
         }
         else if (quest.Reward is UnlockUpgrade unlockUpgrade)
         {
-            if (unlockUpgrade.UpgradeType == UpgradeType.Base)
+            if (unlockUpgrade.PinType == Pin.Type.Base)
             {
                 _questReward.text = "Открыть улучшения";
             }
-            else if (unlockUpgrade.UpgradeType == UpgradeType.Gold)
+            else if (unlockUpgrade.PinType == Pin.Type.Gold)
             {
                 if (PlayerData.GoldPinsCountUpgrade == 0)
                 {
@@ -59,6 +66,14 @@ public class PlayerQuestDisplayer : MonoBehaviour
                     _questReward.text = "Добавить золотой штырек";
                 }
             }
+        }
+        else if (quest.Reward is IncreaseHeightReward)
+        {
+            _questReward.text = "Добавить линию штырьков";
+        }
+        else if (quest.Reward is IncreaseWidthReward)
+        {
+            _questReward.text = "Увеличить ширину линии штырьков";
         }
         else
         {

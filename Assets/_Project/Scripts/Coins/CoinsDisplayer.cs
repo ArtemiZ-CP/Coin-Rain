@@ -7,6 +7,7 @@ public class CoinsDisplayer : MonoBehaviour
 
     private void OnEnable()
     {
+        UpdateCoinsText();
         PlayerData.OnCoinsChanged += UpdateCoinsText;
     }
 

@@ -52,7 +52,7 @@ public class WinAreas : MonoBehaviour
         WinArea winArea = Instantiate(pinConstants.WinAreaPrefab, transform);
         float positionX = (index - (areasCount - 1) / 2.0f) * pinConstants.OffsetBetweenPinsInLine * positionMultiplier;
         winArea.transform.localPosition = positionX * Vector3.right;
-        winArea.SetMultiplier(Mathf.Max(finishLevel - (areasCount / 2 - index) + 1, 0));
+        winArea.SetMultiplier(index);
         winAreas.Add(winArea);
     }
 }

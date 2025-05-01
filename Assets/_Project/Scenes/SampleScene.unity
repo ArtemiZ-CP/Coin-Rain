@@ -2698,43 +2698,68 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxActiveQuests: 2
+  _completeQuestsAtStartCount: 5
   _playerQuests:
   - ObjectivesData:
       Type: 0
       FinishMultiplierToHit: 0
       PinsCount: 0
       CoinsCount: 0
+      PinType: 0
     RewardData:
       Type: 0
       CoinsCount: 50
-      UpgradeType: 0
+      PinType: 0
   - ObjectivesData:
       Type: 1
       FinishMultiplierToHit: 1
       PinsCount: 0
       CoinsCount: 0
+      PinType: 0
     RewardData:
       Type: 0
       CoinsCount: 100
-      UpgradeType: 0
+      PinType: 0
   - ObjectivesData:
       Type: 2
       FinishMultiplierToHit: 0
       PinsCount: 5
       CoinsCount: 0
+      PinType: 0
     RewardData:
       Type: 1
       CoinsCount: 0
-      UpgradeType: 0
+      PinType: 0
   - ObjectivesData:
       Type: 3
       FinishMultiplierToHit: 2
       PinsCount: 0
       CoinsCount: 5.5
+      PinType: 0
     RewardData:
       Type: 1
       CoinsCount: 0
-      UpgradeType: 1
+      PinType: 1
+  - ObjectivesData:
+      Type: 2
+      FinishMultiplierToHit: 2
+      PinsCount: 1
+      CoinsCount: 5.5
+      PinType: 1
+    RewardData:
+      Type: 3
+      CoinsCount: 0
+      PinType: 0
+  - ObjectivesData:
+      Type: 3
+      FinishMultiplierToHit: 2
+      PinsCount: 1
+      CoinsCount: 13
+      PinType: 1
+    RewardData:
+      Type: 2
+      CoinsCount: 0
+      PinType: 0
 --- !u!1 &612785110
 GameObject:
   m_ObjectHideFlags: 0

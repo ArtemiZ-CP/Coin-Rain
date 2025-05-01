@@ -19,7 +19,7 @@ public class EarnCoinsObjective : QuestObjective
     {
         if (coins >= _coinsCount)
         {
-            CompleteObjective();
+            SetCompleted();
         }
     }
 }

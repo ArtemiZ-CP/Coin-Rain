@@ -8,11 +8,6 @@ public class GameplayMap : MonoBehaviour
     [SerializeField] private Borders _borders;
     [SerializeField] private CameraSize _cameraSize;
 
-    private void Start()
-    {
-        PlayerData.Reset();
-    }
-
     private void OnEnable()
     {
         PlayerData.OnMapUpdate += UpdateMap;

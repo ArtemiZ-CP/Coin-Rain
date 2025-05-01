@@ -12,6 +12,6 @@ public class DropBallObjective : QuestObjective
 
     private void OnBallDropped(PlayerBall playerBall)
     {
-        CompleteObjective();
+        SetCompleted();
     }
 }

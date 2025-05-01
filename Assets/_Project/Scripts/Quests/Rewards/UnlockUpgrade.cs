@@ -1,16 +1,16 @@
 public class UnlockUpgrade : QuestReward
 {
-    private readonly UpgradeType _upgradeType;
+    private readonly Pin.Type _pinType;
 
-    public UpgradeType UpgradeType => _upgradeType;
+    public Pin.Type PinType => _pinType;
 
-    public UnlockUpgrade(UpgradeType upgradeType)
+    public UnlockUpgrade(Pin.Type pinType)
     {
-        _upgradeType = upgradeType;
+        _pinType = pinType;
     }
 
     public override void ApplyReward()
     {
-        PlayerData.UnlockUpgrade(_upgradeType);
+        PlayerData.UnlockUpgrade(_pinType);
     }
 }

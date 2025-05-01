@@ -51,7 +51,7 @@ public static class PlayerData
     public static event System.Action OnPinsUpdate;
     public static event System.Action OnFinishUpdate;
     public static event System.Action OnGameSpeedUpdate;
-    public static event System.Action<UpgradeType> OnUpgradeUnlock;
+    public static event System.Action<Pin.Type> OnUpgradeUnlock;
 
     static PlayerData()
     {
@@ -109,13 +109,13 @@ public static class PlayerData
         _completedQuests.Add(PlayerQuests.GetQuestData(quest));
     }
 
-    public static void UnlockUpgrade(UpgradeType upgradeType)
+    public static void UnlockUpgrade(Pin.Type upgradeType)
     {
-        if (upgradeType == UpgradeType.Base)
+        if (upgradeType == Pin.Type.Base)
         {
             _isUpgradeUnlocked = true;
         }
-        else if (upgradeType == UpgradeType.Gold)
+        else if (upgradeType == Pin.Type.Gold)
         {
             AddGoldPin();
         }
@@ -146,15 +146,15 @@ public static class PlayerData
         OnGameSpeedUpdate?.Invoke();
     }
 
-    public static void SetWidth(int value)
+    public static void IncreaseWidth()
     {
-        _widthUpgrade = value;
+        _widthUpgrade++;
         OnMapUpdate?.Invoke();
     }
 
-    public static void SetHeight(int value)
+    public static void IncreaseHeight()
     {
-        _heightUpgrade = value;
+        _heightUpgrade++;
         OnMapUpdate?.Invoke();
     }
 

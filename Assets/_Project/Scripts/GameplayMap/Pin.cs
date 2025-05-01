@@ -12,6 +12,8 @@ public class Pin : MonoBehaviour
     private bool _isTouched = false;
     private Type _pinType = Type.Base;
 
+    public Type PinType => _pinType;
+
     public void Reset()
     {
         _isTouched = false;

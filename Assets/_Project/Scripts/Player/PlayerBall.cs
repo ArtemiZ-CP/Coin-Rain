@@ -14,7 +14,7 @@ public class PlayerBall : MonoBehaviour
 
     public event System.Action<float> OnCoinsChanged;
     public event System.Action<PlayerBall, int, float> OnBallFinished;
-    public event System.Action<PlayerBall> OnBallHitPin;
+    public event System.Action<PlayerBall, Pin.Type> OnBallHitPin;
 
     private void Awake()
     {
@@ -48,7 +48,7 @@ public class PlayerBall : MonoBehaviour
             {
                 _temporaryCoins += coins;
                 OnCoinsChanged?.Invoke(_temporaryCoins);
-                OnBallHitPin?.Invoke(this);
+                OnBallHitPin?.Invoke(this, pin.PinType);
             }
         }
     }

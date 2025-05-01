@@ -18,7 +18,7 @@ public class BallsController : MonoBehaviour
 
     public event System.Action<PlayerBall> OnBallDropped;
     public event System.Action<PlayerBall, int, float> OnBallFinished;
-    public event System.Action<PlayerBall> OnBallHitPin;
+    public event System.Action<PlayerBall, Pin.Type> OnBallHitPin;
     public event System.Action OnReset;
 
     private void Awake()
