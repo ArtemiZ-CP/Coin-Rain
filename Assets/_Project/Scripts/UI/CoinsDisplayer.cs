@@ -18,6 +18,6 @@ public class CoinsDisplayer : MonoBehaviour
 
     private void UpdateCoinsText()
     {
-        _text.text = $"{PlayerData.Coins} Coins";
+        _text.text = $"{PlayerData.Coins:.#} Coins";
     }
 }

@@ -6,6 +6,7 @@ public struct QuestRewardData
     public QuestRewardType Type;
     public int CoinsCount;
     public Pin.Type PinType;
+    public float IncreaseValue;
 }
 
 public abstract class QuestReward
@@ -19,4 +20,5 @@ public enum QuestRewardType
     UnlockUpgrade,
     IncreaseHeight,
     IncreaseWidth,
+    IncreaseBallSize,
 }

@@ -18,6 +18,6 @@ public class BallsCoinsDisplayer : MonoBehaviour
 
     private void UpdateCoins(float coins)
     {
-        _coinsText.text = coins.ToString("0.##");
+        _coinsText.text = coins.ToString("0.#");
     }
 }

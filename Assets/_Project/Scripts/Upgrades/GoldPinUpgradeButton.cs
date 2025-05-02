@@ -6,6 +6,8 @@ public class GoldPinUpgradeButton : UpgradeButton<int>
     private const int StartCost = 100;
     private const int AddValuePerLevel = 1;
 
+    private int _goldPinsValueUpgrade;
+
     protected override void OnEnable()
     {
         base.OnEnable();
@@ -13,6 +15,14 @@ public class GoldPinUpgradeButton : UpgradeButton<int>
         if (PlayerData.GoldPinsCountUpgrade == 0)
         {
             gameObject.SetActive(false);
+        }
+    }
+
+    private void Update()
+    {
+        if (PlayerData.GoldPinsCountUpgrade != _goldPinsValueUpgrade)
+        {
+            SetRewardText();
         }
     }
 
@@ -41,6 +51,7 @@ public class GoldPinUpgradeButton : UpgradeButton<int>
 
     protected override void SetRewardText()
     {
+        _goldPinsValueUpgrade = PlayerData.GoldPinsValueUpgrade;
         SetRewardText($"Gold Pin Reward: x{PlayerData.GoldPinsValueUpgrade} from Base Pin ({PlayerData.RewardFromPin * PlayerData.GoldPinsValueUpgrade})");
     }
 

@@ -10,6 +10,7 @@ public static class PlayerData
     public const float DefaultGameSpeed = 1f;
     public const int DefaultWidth = 1;
     public const int DefaultHeight = 3;
+    public const float DefaultBallSize = 0.5f;
     public const int DefaultWinAreasUpgrade = 0;
     public const int DefaultGoldPinRewardMultiplier = 2;
     public const int DefaultMultiPinsValue = 1;
@@ -23,6 +24,7 @@ public static class PlayerData
     private static float _gameSpeedUpgrade;
     private static int _widthUpgrade;
     private static int _heightUpgrade;
+    private static float _playerBallSize;
     private static int _winAreasUpgrade;
     private static int _goldPinsCountUpgrade;
     private static int _goldPinsValueUpgrade;
@@ -38,6 +40,7 @@ public static class PlayerData
     public static float GameSpeedUpgrade => _gameSpeedUpgrade;
     public static int WidthUpgrade => _widthUpgrade;
     public static int HeightUpgrade => _heightUpgrade;
+    public static float PlayerBallSize => _playerBallSize;
     public static int WinAreasUpgrade => _winAreasUpgrade;
     public static int GoldPinsCountUpgrade => _goldPinsCountUpgrade;
     public static int GoldPinsValueUpgrade => _goldPinsValueUpgrade;
@@ -51,13 +54,14 @@ public static class PlayerData
     public static event System.Action OnPinsUpdate;
     public static event System.Action OnFinishUpdate;
     public static event System.Action OnGameSpeedUpdate;
+    public static event System.Action OnPlayerBallSizeUpdate;
     public static event System.Action<Pin.Type> OnUpgradeUnlock;
 
     static PlayerData()
     {
         Reset();
     }
-
+    
     public static void Reset()
     {
         _coins = DefaultCoins;
@@ -66,6 +70,7 @@ public static class PlayerData
         _gameSpeedUpgrade = DefaultGameSpeed;
         _widthUpgrade = DefaultWidth;
         _heightUpgrade = DefaultHeight;
+        _playerBallSize = DefaultBallSize;
         _winAreasUpgrade = DefaultWinAreasUpgrade;
         _goldPinsCountUpgrade = DefaultPinsCount;
         _goldPinsValueUpgrade = DefaultGoldPinRewardMultiplier;
@@ -156,6 +161,17 @@ public static class PlayerData
     {
         _heightUpgrade++;
         OnMapUpdate?.Invoke();
+    }
+
+    public static void IncreaseBallSize(float value)
+    {
+        if (value < 0)
+        {
+            return;
+        }
+
+        _playerBallSize += value;
+        OnPlayerBallSizeUpdate?.Invoke();
     }
 
     public static void SetWinAreasUpgrade(int value)

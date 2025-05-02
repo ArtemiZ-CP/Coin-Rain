@@ -17,6 +17,7 @@ public class HitPinsObjective : QuestObjective
 
     ~HitPinsObjective()
     {
+        BallsController.Instance.OnBallHitPin -= OnBallHitPin;
     }
 
     private void OnBallHitPin(PlayerBall playerBall, Pin.Type type)
@@ -32,5 +33,11 @@ public class HitPinsObjective : QuestObjective
         {
             SetCompleted();
         }
+    }
+
+    public override void OnReset()
+    {
+        _currentPinsCount = 0;
+        base.OnReset();
     }
 }

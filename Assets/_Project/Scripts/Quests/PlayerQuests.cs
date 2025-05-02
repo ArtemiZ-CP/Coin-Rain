@@ -119,6 +119,7 @@ public class PlayerQuests : MonoBehaviour
             QuestRewardType.UnlockUpgrade => new UnlockUpgrade(data.PinType),
             QuestRewardType.IncreaseHeight => new IncreaseHeightReward(),
             QuestRewardType.IncreaseWidth => new IncreaseWidthReward(),
+            QuestRewardType.IncreaseBallSize => new IncreaseBallSizeReward(data.IncreaseValue),
             _ => null,
         };
     }
@@ -131,6 +132,7 @@ public class PlayerQuests : MonoBehaviour
             UnlockUpgrade unlockUpgrade => new QuestRewardData { Type = QuestRewardType.UnlockUpgrade, PinType = unlockUpgrade.PinType },
             IncreaseHeightReward => new QuestRewardData { Type = QuestRewardType.IncreaseHeight },
             IncreaseWidthReward => new QuestRewardData { Type = QuestRewardType.IncreaseWidth },
+            IncreaseBallSizeReward => new QuestRewardData { Type = QuestRewardType.IncreaseBallSize },
             _ => new QuestRewardData(),
         };
     }

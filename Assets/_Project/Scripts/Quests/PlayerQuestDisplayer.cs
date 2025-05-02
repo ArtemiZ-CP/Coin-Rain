@@ -75,6 +75,10 @@ public class PlayerQuestDisplayer : MonoBehaviour
         {
             _questReward.text = "Увеличить ширину линии штырьков";
         }
+        else if (quest.Reward is IncreaseBallSizeReward)
+        {
+            _questReward.text = $"Увеличить размер шара";
+        }
         else
         {
             _questReward.text = "Неизвестная награда";

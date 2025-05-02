@@ -15,6 +15,7 @@ public class PlayerBall : MonoBehaviour
     public event System.Action<float> OnCoinsChanged;
     public event System.Action<PlayerBall, int, float> OnBallFinished;
     public event System.Action<PlayerBall, Pin.Type> OnBallHitPin;
+    public event System.Action OnSpawn;
 
     private void Awake()
     {
@@ -40,28 +41,27 @@ public class PlayerBall : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    public void OnPinHit(Pin pin)
     {
-        if (collision.gameObject.TryGetComponent(out Pin pin))
+        if (pin.Touch(this, out float coins))
         {
-            if (pin.Touch(this, out float coins))
-            {
-                _temporaryCoins += coins;
-                OnCoinsChanged?.Invoke(_temporaryCoins);
-                OnBallHitPin?.Invoke(this, pin.PinType);
-            }
+            _temporaryCoins += coins;
+            OnCoinsChanged?.Invoke(_temporaryCoins);
+            OnBallHitPin?.Invoke(this, pin.PinType);
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    public void OnWinAreaHit(WinArea winArea)
     {
-        if (collision.gameObject.TryGetComponent(out WinArea winArea))
-        {
-            _temporaryCoins *= winArea.Multiplier;
-            PlayerData.AddCoins(_temporaryCoins);
-            OnCoinsChanged?.Invoke(_temporaryCoins);
-            OnBallFinished?.Invoke(this, winArea.Multiplier, _temporaryCoins);
-        }
+        _temporaryCoins *= winArea.Multiplier;
+        PlayerData.AddCoins(_temporaryCoins);
+        OnCoinsChanged?.Invoke(_temporaryCoins);
+        OnBallFinished?.Invoke(this, winArea.Multiplier, _temporaryCoins);
+    }
+
+    public void SetScale(float scale)
+    {
+        _rigidbody.transform.localScale = new Vector3(scale, scale, 1);
     }
 
     public void AddCoins(float coins)
@@ -76,15 +76,16 @@ public class PlayerBall : MonoBehaviour
         _rigidbody.AddForce(direction * _pinConstants.MultiplyingBallImpulse, ForceMode2D.Impulse);
     }
 
-    public void Stop()
+    public void Spawn()
     {
         _rigidbody.gravityScale = 0;
         _rigidbody.velocity = Vector2.zero;
         _isMoving = false;
         ResetCoins();
+        OnSpawn?.Invoke();
     }
 
-    public void Spawn()
+    public void Drop()
     {
         _rigidbody.gravityScale = 1;
         _isMoving = true;

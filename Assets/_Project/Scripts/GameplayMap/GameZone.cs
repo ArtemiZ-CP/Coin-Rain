@@ -7,9 +7,9 @@ public class GameZone : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.TryGetComponent(out PlayerBall playerBall))
+        if (collision.TryGetComponent(out PlayerBallCollider playerBallCollider))
         {
-            OnBallFinished?.Invoke(playerBall);
+            OnBallFinished?.Invoke(playerBallCollider.PlayerBall);
         }
     }
 

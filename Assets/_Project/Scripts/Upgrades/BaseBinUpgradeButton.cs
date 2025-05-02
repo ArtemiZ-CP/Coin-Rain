@@ -1,10 +1,9 @@
-using UnityEngine;
-
 public class BaseBinUpgradeButton : UpgradeButton<float>
 {
     private const int MaxLevel = 10;
-    private const int StartCost = 100;
-    private const float AddValuePerLevel = 0.1f;
+    private const int StartCost = 50;
+    private const int StepCost = 25;
+    private const float StepValue = 0.1f;
 
     protected override void OnEnable()
     {
@@ -31,8 +30,8 @@ public class BaseBinUpgradeButton : UpgradeButton<float>
         {
             upgrades[i] = new UpgradeData
             {
-                Cost = Mathf.Pow(2, i) * StartCost,
-                Value = PlayerData.DefaultRewardFromPin + (i + 1) * AddValuePerLevel
+                Cost = StartCost + i * StepCost,
+                Value = PlayerData.DefaultRewardFromPin + (i + 1) * StepValue
             };
         }
 
