@@ -6,7 +6,7 @@ public class PlayerBallCanvas : MonoBehaviour
 
     private Vector3 _offset;
 
-    private void Start()
+    private void Awake()
     {
         _offset = transform.position - _playerBall.position;
     }

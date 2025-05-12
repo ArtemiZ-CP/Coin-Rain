@@ -12,12 +12,12 @@ public class HitPinsObjective : QuestObjective
     {
         _pinsCount = pinsCount;
         _pinType = pinType;
-        BallsController.Instance.OnBallHitPin += OnBallHitPin;
+        BallsController.OnBallHitPin += OnBallHitPin;
     }
 
     ~HitPinsObjective()
     {
-        BallsController.Instance.OnBallHitPin -= OnBallHitPin;
+        BallsController.OnBallHitPin -= OnBallHitPin;
     }
 
     private void OnBallHitPin(PlayerBall playerBall, Pin.Type type)
@@ -28,6 +28,8 @@ public class HitPinsObjective : QuestObjective
         }
 
         _currentPinsCount++;
+
+        ChangeObjectiveProgress((float)_currentPinsCount / _pinsCount);
 
         if (_currentPinsCount >= _pinsCount)
         {

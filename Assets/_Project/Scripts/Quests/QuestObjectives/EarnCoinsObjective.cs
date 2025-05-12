@@ -7,12 +7,20 @@ public class EarnCoinsObjective : QuestObjective
     public EarnCoinsObjective(float coinsCount)
     {
         _coinsCount = coinsCount;
-        BallsController.Instance.OnBallFinished += OnBallFinished;
+        BallsController.OnBallHitPin += OnBallHitPin;
+        BallsController.OnBallFinished += OnBallFinished;
     }
 
     ~EarnCoinsObjective()
     {
-        BallsController.Instance.OnBallFinished -= OnBallFinished;
+        BallsController.OnBallHitPin -= OnBallHitPin;
+        BallsController.OnBallFinished -= OnBallFinished;
+    }
+
+    private void OnBallHitPin(PlayerBall playerBall, Pin.Type pinType)
+    {
+        float coins = CurrencyDisplayer.TemporaryCoins[playerBall];
+        ChangeObjectiveProgress(coins / _coinsCount);
     }
 
     private void OnBallFinished(PlayerBall playerBall, int finishMultiplier, float coins)

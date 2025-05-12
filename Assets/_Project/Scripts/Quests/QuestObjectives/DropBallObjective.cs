@@ -2,12 +2,12 @@ public class DropBallObjective : QuestObjective
 {
     public DropBallObjective()
     {
-        BallsController.Instance.OnBallDropped += OnBallDropped;
+        BallsController.OnBallDropped += OnBallDropped;
     }
 
     ~DropBallObjective()
     {
-        BallsController.Instance.OnBallDropped -= OnBallDropped;
+        BallsController.OnBallDropped -= OnBallDropped;
     }
 
     private void OnBallDropped(PlayerBall playerBall)

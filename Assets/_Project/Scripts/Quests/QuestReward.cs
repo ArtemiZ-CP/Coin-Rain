@@ -21,4 +21,5 @@ public enum QuestRewardType
     IncreaseHeight,
     IncreaseWidth,
     IncreaseBallSize,
+    IncreaseWinAreaMultiplier,
 }

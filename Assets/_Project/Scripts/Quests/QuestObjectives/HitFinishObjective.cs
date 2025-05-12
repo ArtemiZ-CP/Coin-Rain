@@ -6,12 +6,12 @@ public class HitFinishObjective : QuestObjective
     public HitFinishObjective(int finishMultiplierToHit)
     {
         _finishMultiplierToHit = finishMultiplierToHit;
-        BallsController.Instance.OnBallFinished += OnBallFinished;
+        BallsController.OnBallFinished += OnBallFinished;
     }
 
     ~HitFinishObjective()
     {
-        BallsController.Instance.OnBallFinished -= OnBallFinished;
+        BallsController.OnBallFinished -= OnBallFinished;
     }
 
     private void OnBallFinished(PlayerBall playerBall, int finishMultiplier, float coint)

@@ -1,12 +1,11 @@
-using UnityEngine;
-
 public class GoldPinUpgradeButton : UpgradeButton<int>
 {
-    private const int MaxLevel = 10;
+    private const int MaxLevel = 100;
     private const int StartCost = 100;
+    private const int StepCost = 50;
     private const int AddValuePerLevel = 1;
 
-    private int _goldPinsValueUpgrade;
+    private float _rewardFromPin;
 
     protected override void OnEnable()
     {
@@ -20,7 +19,7 @@ public class GoldPinUpgradeButton : UpgradeButton<int>
 
     private void Update()
     {
-        if (PlayerData.GoldPinsCountUpgrade != _goldPinsValueUpgrade)
+        if (PlayerData.RewardFromPin != _rewardFromPin)
         {
             SetRewardText();
         }
@@ -41,7 +40,7 @@ public class GoldPinUpgradeButton : UpgradeButton<int>
         {
             upgrades[i] = new UpgradeData
             {
-                Cost = Mathf.Pow(2, i) * StartCost,
+                Cost = StartCost + i * StepCost,
                 Value = PlayerData.DefaultGoldPinRewardMultiplier + (i + 1) * AddValuePerLevel
             };
         }
@@ -51,7 +50,7 @@ public class GoldPinUpgradeButton : UpgradeButton<int>
 
     protected override void SetRewardText()
     {
-        _goldPinsValueUpgrade = PlayerData.GoldPinsValueUpgrade;
+        _rewardFromPin = PlayerData.RewardFromPin;
         SetRewardText($"Gold Pin Reward: x{PlayerData.GoldPinsValueUpgrade} from Base Pin ({PlayerData.RewardFromPin * PlayerData.GoldPinsValueUpgrade})");
     }
 

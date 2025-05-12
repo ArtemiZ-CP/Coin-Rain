@@ -2,22 +2,52 @@ using UnityEngine;
 
 public class Pin : MonoBehaviour
 {
-    [SerializeField] private SpriteRenderer _image;
+    [SerializeField] private GameObject _dotPin;
+    [SerializeField] private GameObject _linePin;
+    [SerializeField] private SpriteRenderer _dotPinImage;
+    [SerializeField] private SpriteRenderer _linePinImage;
     [SerializeField] private Color _defaultColor;
     [SerializeField] private Color _goldColor;
     [SerializeField] private Color _multiplyingColor;
     [SerializeField] private Color _bombColor;
     [SerializeField] private Color _touchedColor;
 
+    private int _position;
     private bool _isTouched = false;
     private Type _pinType = Type.Base;
 
     public Type PinType => _pinType;
 
-    public void Reset()
+    public void ResetPin()
+    {
+        ResetPin(_position);
+    }
+
+    public void ResetPin(int position)
     {
         _isTouched = false;
+        _position = position;
         SetPinType(Type.Base);
+
+        if (_position == 0)
+        {
+            _dotPin.SetActive(true);
+            _linePin.SetActive(false);
+        }
+        else
+        {
+            _dotPin.SetActive(false);
+            _linePin.SetActive(true);
+
+            if (_position == -1)
+            {
+                _linePin.transform.localScale = new Vector3(1, 1, 1);
+            }
+            else
+            {
+                _linePin.transform.localScale = new Vector3(-1, 1, 1);
+            }
+        }
     }
 
     public void SetPinType(Type pinType)
@@ -51,13 +81,15 @@ public class Pin : MonoBehaviour
 
     private void UpdateColor()
     {
+        Color color;
+
         if (_isTouched)
         {
-            _image.color = _touchedColor;
+            color = _touchedColor;
         }
         else
         {
-            _image.color = _pinType switch
+            color = _pinType switch
             {
                 Type.Base => _defaultColor,
                 Type.Gold => _goldColor,
@@ -66,6 +98,9 @@ public class Pin : MonoBehaviour
                 _ => throw new System.NotImplementedException(),
             };
         }
+
+        _dotPinImage.color = color;
+        _linePinImage.color = color;
     }
 
     private float TouchMultiplierPin(PlayerBall playerBall)
@@ -74,11 +109,11 @@ public class Pin : MonoBehaviour
 
         for (int i = 0; i < PlayerData.MultiPinsValueUpgrade; i++)
         {
-            PlayerBall newBall = BallsController.Instance.SpawnBall(playerBall.transform.position);
+            PlayerBall newBall = BallsController.Instance.SpawnBall(playerBall.Position);
             newBall.SetRandomImpulse();
-            newBall.AddCoins(coins);
+            newBall.AddCoins(playerBall.TemporaryCoins + coins);
         }
-        
+
         return coins;
     }
 

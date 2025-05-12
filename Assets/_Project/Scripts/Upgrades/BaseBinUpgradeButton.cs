@@ -1,6 +1,6 @@
 public class BaseBinUpgradeButton : UpgradeButton<float>
 {
-    private const int MaxLevel = 10;
+    private const int MaxLevel = 100;
     private const int StartCost = 50;
     private const int StepCost = 25;
     private const float StepValue = 0.1f;

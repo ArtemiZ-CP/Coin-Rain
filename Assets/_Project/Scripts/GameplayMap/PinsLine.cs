@@ -25,14 +25,36 @@ public class PinsLine : MonoBehaviour
             }
         }
 
-        int actualPinCount = _firstLine ? PlayerData.WidthUpgrade * 2 + 1 : PlayerData.WidthUpgrade * 2;
+        int pinsCount = _firstLine ? PlayerData.WidthUpgrade * 2 + 1 : PlayerData.WidthUpgrade * 2 + 2;
 
-        for (int i = 0; i < actualPinCount; i++)
+        for (int i = 0; i < pinsCount; i++)
         {
             Pin pin = Instantiate(pinConstants.PinPrefab, transform);
-            float position = (i - (actualPinCount - 1) / 2.0f) * pinConstants.OffsetBetweenPinsInLine;
+            float position = (i - (pinsCount - 1) / 2.0f) * pinConstants.OffsetBetweenPinsInLine;
             pin.transform.localPosition = new Vector3(position, 0, 0);
-            pin.Reset();
+            int pinPosition;
+
+            if (_firstLine)
+            {
+                pinPosition = 0;
+            }
+            else
+            {
+                if (i == 0)
+                {
+                    pinPosition = -1;
+                }
+                else if (i == pinsCount - 1)
+                {
+                    pinPosition = 1;
+                }
+                else
+                {
+                    pinPosition = 0;
+                }
+            }
+
+            pin.ResetPin(pinPosition);
             _pins.Add(pin);
         }
     }
@@ -41,7 +63,7 @@ public class PinsLine : MonoBehaviour
     {
         foreach (Pin pin in _pins)
         {
-            pin.Reset();
+            pin.ResetPin();
         }
     }
 }

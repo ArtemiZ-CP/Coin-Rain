@@ -3,7 +3,7 @@ using UnityEngine;
 public class PlayerBall : MonoBehaviour
 {
     private const float MinVelocity = 0.1f;
-    private const float MinVelocityTime = 5.0f;
+    private const float MinVelocityTime = 2.0f;
 
     [SerializeField] private Rigidbody2D _rigidbody;
 
@@ -12,6 +12,10 @@ public class PlayerBall : MonoBehaviour
     private float _temporaryCoins = 0f;
     private bool _isMoving = false;
 
+    public float TemporaryCoins => _temporaryCoins;
+    public Vector3 Position => _rigidbody.transform.localPosition;
+
+    public static event System.Action<PlayerBall, float> OnTemporaryCoinsChanged;
     public event System.Action<float> OnCoinsChanged;
     public event System.Action<PlayerBall, int, float> OnBallFinished;
     public event System.Action<PlayerBall, Pin.Type> OnBallHitPin;
@@ -41,12 +45,18 @@ public class PlayerBall : MonoBehaviour
         }
     }
 
+    public void SetPosition(Vector3 position)
+    {
+        _rigidbody.transform.localPosition = position;
+    }
+
     public void OnPinHit(Pin pin)
     {
         if (pin.Touch(this, out float coins))
         {
             _temporaryCoins += coins;
             OnCoinsChanged?.Invoke(_temporaryCoins);
+            OnTemporaryCoinsChanged?.Invoke(this, _temporaryCoins);
             OnBallHitPin?.Invoke(this, pin.PinType);
         }
     }
@@ -56,6 +66,7 @@ public class PlayerBall : MonoBehaviour
         _temporaryCoins *= winArea.Multiplier;
         PlayerData.AddCoins(_temporaryCoins);
         OnCoinsChanged?.Invoke(_temporaryCoins);
+        OnTemporaryCoinsChanged?.Invoke(this, _temporaryCoins);
         OnBallFinished?.Invoke(this, winArea.Multiplier, _temporaryCoins);
     }
 
@@ -68,6 +79,7 @@ public class PlayerBall : MonoBehaviour
     {
         _temporaryCoins += coins;
         OnCoinsChanged?.Invoke(_temporaryCoins);
+        OnTemporaryCoinsChanged?.Invoke(this, _temporaryCoins);
     }
 
     public void SetRandomImpulse()
@@ -78,6 +90,7 @@ public class PlayerBall : MonoBehaviour
 
     public void Spawn()
     {
+        _rigidbody.transform.localPosition = Vector3.zero;
         _rigidbody.gravityScale = 0;
         _rigidbody.velocity = Vector2.zero;
         _isMoving = false;

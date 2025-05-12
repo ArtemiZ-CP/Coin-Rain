@@ -94,7 +94,8 @@ public class PlayerQuests : MonoBehaviour
             QuestObjectiveType.DropBall => new DropBallObjective(),
             QuestObjectiveType.HitFinish => new HitFinishObjective(data.FinishMultiplierToHit),
             QuestObjectiveType.HitPins => new HitPinsObjective(data.PinsCount, data.PinType),
-            QuestObjectiveType.EarnCoins => new EarnCoinsObjective(data.CoinsCount),
+            QuestObjectiveType.EarnCoinsByOneBall => new EarnCoinsObjective(data.CoinsCount),
+            QuestObjectiveType.EarnCoinsByAllBalls => new EarnCoinsByAllBallsObjective(data.CoinsCount),
             _ => null,
         };
     }
@@ -106,7 +107,8 @@ public class PlayerQuests : MonoBehaviour
             DropBallObjective => new QuestObjectiveData { Type = QuestObjectiveType.DropBall },
             HitFinishObjective hitFinish => new QuestObjectiveData { Type = QuestObjectiveType.HitFinish, FinishMultiplierToHit = hitFinish.FinishMultiplierToHit },
             HitPinsObjective hitPins => new QuestObjectiveData { Type = QuestObjectiveType.HitPins, PinsCount = hitPins.PinsCount, PinType = hitPins.PinType },
-            EarnCoinsObjective earnCoins => new QuestObjectiveData { Type = QuestObjectiveType.EarnCoins, CoinsCount = earnCoins.CoinsCount },
+            EarnCoinsObjective earnCoins => new QuestObjectiveData { Type = QuestObjectiveType.EarnCoinsByOneBall, CoinsCount = earnCoins.CoinsCount },
+            EarnCoinsByAllBallsObjective earnCoinsByAllBalls => new QuestObjectiveData { Type = QuestObjectiveType.EarnCoinsByAllBalls, CoinsCount = earnCoinsByAllBalls.CoinsCount },
             _ => new QuestObjectiveData(),
         };
     }
@@ -120,6 +122,7 @@ public class PlayerQuests : MonoBehaviour
             QuestRewardType.IncreaseHeight => new IncreaseHeightReward(),
             QuestRewardType.IncreaseWidth => new IncreaseWidthReward(),
             QuestRewardType.IncreaseBallSize => new IncreaseBallSizeReward(data.IncreaseValue),
+            QuestRewardType.IncreaseWinAreaMultiplier => new IncreaseWinAreaMultiplierReward(),
             _ => null,
         };
     }
@@ -132,7 +135,8 @@ public class PlayerQuests : MonoBehaviour
             UnlockUpgrade unlockUpgrade => new QuestRewardData { Type = QuestRewardType.UnlockUpgrade, PinType = unlockUpgrade.PinType },
             IncreaseHeightReward => new QuestRewardData { Type = QuestRewardType.IncreaseHeight },
             IncreaseWidthReward => new QuestRewardData { Type = QuestRewardType.IncreaseWidth },
-            IncreaseBallSizeReward => new QuestRewardData { Type = QuestRewardType.IncreaseBallSize },
+            IncreaseBallSizeReward ballSize => new QuestRewardData { Type = QuestRewardType.IncreaseBallSize, IncreaseValue = ballSize.IncreaseValue },
+            IncreaseWinAreaMultiplierReward => new QuestRewardData { Type = QuestRewardType.IncreaseWinAreaMultiplier },
             _ => new QuestRewardData(),
         };
     }

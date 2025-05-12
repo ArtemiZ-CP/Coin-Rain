@@ -4,6 +4,7 @@ using UnityEngine;
 public static class PlayerData
 {
     public const float DefaultCoins = 0;
+    public const float DefaultDiamonds = 0;
     public const int DefaultLevel = -1;
     public const int DefaultPinsCount = 0;
     public const int DefaultRewardFromPin = 1;
@@ -19,7 +20,8 @@ public static class PlayerData
     private static readonly List<PlayerQuests.QuestData> _completedQuests = new();
 
     private static float _coins;
-    private static float _rewardFromBin;
+    private static float _diamonds;
+    private static float _rewardFromPin;
     private static bool _isUpgradeUnlocked;
     private static float _gameSpeedUpgrade;
     private static int _widthUpgrade;
@@ -35,7 +37,8 @@ public static class PlayerData
 
     public static IReadOnlyList<PlayerQuests.QuestData> CompletedQuests => _completedQuests.AsReadOnly();
     public static float Coins => _coins;
-    public static float RewardFromPin => _rewardFromBin;
+    public static float Diamonds => _diamonds;
+    public static float RewardFromPin => _rewardFromPin;
     public static bool IsUpgradeUnlocked => _isUpgradeUnlocked;
     public static float GameSpeedUpgrade => _gameSpeedUpgrade;
     public static int WidthUpgrade => _widthUpgrade;
@@ -65,7 +68,8 @@ public static class PlayerData
     public static void Reset()
     {
         _coins = DefaultCoins;
-        _rewardFromBin = DefaultRewardFromPin;
+        _diamonds = DefaultDiamonds;
+        _rewardFromPin = DefaultRewardFromPin;
         _isUpgradeUnlocked = false;
         _gameSpeedUpgrade = DefaultGameSpeed;
         _widthUpgrade = DefaultWidth;
@@ -124,6 +128,14 @@ public static class PlayerData
         {
             AddGoldPin();
         }
+        else if (upgradeType == Pin.Type.Multiplying)
+        {
+            AddMultiplyingPin();
+        }
+        else if (upgradeType == Pin.Type.Bomb)
+        {
+            AddBombPin();
+        }
 
         OnUpgradeUnlock?.Invoke(upgradeType);
     }
@@ -135,7 +147,7 @@ public static class PlayerData
             return;
         }
 
-        _rewardFromBin = value;
+        _rewardFromPin = value;
         OnMapUpdate?.Invoke();
     }
 
@@ -191,9 +203,9 @@ public static class PlayerData
         _goldPinsValueUpgrade = value;
     }
 
-    public static void SetMultiPinsCount(int value)
+    public static void AddMultiplyingPin()
     {
-        _multiPinsCountUpgrade = value;
+        _multiPinsCountUpgrade++;
         OnPinsUpdate?.Invoke();
     }
 
@@ -203,9 +215,9 @@ public static class PlayerData
         OnPinsUpdate?.Invoke();
     }
 
-    public static void SetBombPinsCount(int value)
+    public static void AddBombPin()
     {
-        _bombPinsCountUpgrade = value;
+        _bombPinsCountUpgrade++;
         OnPinsUpdate?.Invoke();
     }
 
@@ -213,5 +225,11 @@ public static class PlayerData
     {
         _bombPinsValueUpgrade = value;
         OnPinsUpdate?.Invoke();
+    }
+
+    public static void IncreaseWinAreaMultiplier()
+    {
+        _winAreasUpgrade++;
+        OnFinishUpdate?.Invoke();
     }
 }

@@ -1,13 +1,34 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerQuestDisplayer : MonoBehaviour
 {
     [SerializeField] private TMP_Text _questDescription;
     [SerializeField] private TMP_Text _questReward;
+    [SerializeField] private Image _progressBar;
+
+    private Quest _currentQuest;
+
+    private void OnDestroy()
+    {
+        if (_currentQuest != null)
+        {
+            _currentQuest.Objective.OnObjectiveProgressChanged -= UpdateProgressBar;
+        }
+    }
 
     public void SetQuest(Quest quest)
     {
+        if (_currentQuest != null)
+        {
+            _currentQuest.Objective.OnObjectiveProgressChanged -= UpdateProgressBar;
+        }
+
+        _currentQuest = quest;
+        _currentQuest.Objective.OnObjectiveProgressChanged += UpdateProgressBar;
+
+        UpdateProgressBar(0);
         SetDescriptionText(quest);
         SetRewardText(quest);
     }
@@ -26,16 +47,22 @@ public class PlayerQuestDisplayer : MonoBehaviour
         {
             string pinType = hitPins.PinType switch
             {
-                Pin.Type.Base => "обычные",
-                Pin.Type.Gold => "золотые",
+                Pin.Type.Base => "обычные штырьки",
+                Pin.Type.Gold => "золотые штырьки",
+                Pin.Type.Multiplying => "множители",
+                Pin.Type.Bomb => "бомбы",
                 _ => "неизвестные"
             };
 
-            _questDescription.text = $"Задеть шаром {pinType} штырьки за один раунд: {hitPins.PinsCount}";
+            _questDescription.text = $"Задеть {pinType} за один раунд: {hitPins.PinsCount}";
         }
         else if (quest.Objective is EarnCoinsObjective earnCoins)
         {
             _questDescription.text = $"Заработать монет одним шаром: {earnCoins.CoinsCount}";
+        }
+        else if (quest.Objective is EarnCoinsByAllBallsObjective earnCoinsByAllBalls)
+        {
+            _questDescription.text = $"Заработать монет за один запуск: {earnCoinsByAllBalls.CoinsCount}";
         }
         else
         {
@@ -57,14 +84,19 @@ public class PlayerQuestDisplayer : MonoBehaviour
             }
             else if (unlockUpgrade.PinType == Pin.Type.Gold)
             {
-                if (PlayerData.GoldPinsCountUpgrade == 0)
-                {
-                    _questReward.text = "Открыть золотой штырек";
-                }
-                else
-                {
-                    _questReward.text = "Добавить золотой штырек";
-                }
+                _questReward.text = "Добавить золотой штырёк";
+            }
+            else if (unlockUpgrade.PinType == Pin.Type.Multiplying)
+            {
+                _questReward.text = "Добавить множитель";
+            }
+            else if (unlockUpgrade.PinType == Pin.Type.Bomb)
+            {
+                _questReward.text = "Добавить бомбу";
+            }
+            else
+            {
+                _questReward.text = "Неизвестная награда";
             }
         }
         else if (quest.Reward is IncreaseHeightReward)
@@ -79,9 +111,23 @@ public class PlayerQuestDisplayer : MonoBehaviour
         {
             _questReward.text = $"Увеличить размер шара";
         }
+        else if (quest.Reward is IncreaseWinAreaMultiplierReward)
+        {
+            _questReward.text = $"Финальный множитель + 1";
+        }
         else
         {
             _questReward.text = "Неизвестная награда";
         }
+    }
+
+    private void UpdateProgressBar(float progress)
+    {
+        if (_currentQuest == null)
+        {
+            return;
+        }
+
+        _progressBar.fillAmount = progress;
     }
 }

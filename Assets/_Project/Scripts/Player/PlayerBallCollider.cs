@@ -18,9 +18,9 @@ public class PlayerBallCollider : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.TryGetComponent(out Pin pin))
+        if (collision.gameObject.TryGetComponent(out PinCollider pinCollider))
         {
-            _playerBall.OnPinHit(pin);
+            _playerBall.OnPinHit(pinCollider.Pin);
         }
     }
 

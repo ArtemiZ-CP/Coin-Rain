@@ -15,11 +15,13 @@ public class BallsController : MonoBehaviour
     private bool _isStarting = false;
     private bool _isMooving = false;
     private float _maxX;
+    private float _currentCoins;
 
-    public event System.Action<PlayerBall> OnBallDropped;
-    public event System.Action<PlayerBall, int, float> OnBallFinished;
-    public event System.Action<PlayerBall, Pin.Type> OnBallHitPin;
-    public event System.Action OnReset;
+    public static event System.Action<PlayerBall> OnBallDropped;
+    public static event System.Action<PlayerBall, int, float> OnBallFinished;
+    public static event System.Action<PlayerBall, Pin.Type> OnBallHitPin;
+    public static event System.Action<PlayerBall, float> OnAllBallsFinished;
+    public static event System.Action OnReset;
 
     private void Awake()
     {
@@ -32,7 +34,7 @@ public class BallsController : MonoBehaviour
         Instance = this;
 
         _pool = new ObjectPool<PlayerBall>(
-            createFunc: () => Instantiate(_ballPrefab, transform),
+            createFunc: () => Instantiate(_ballPrefab, Vector3.zero, Quaternion.identity, transform),
             actionOnGet: ball => ActionOnGetBall(ball),
             actionOnRelease: ball => ActionOnRelease(ball),
             actionOnDestroy: ball => Destroy(ball.gameObject),
@@ -49,13 +51,11 @@ public class BallsController : MonoBehaviour
 
     private void OnEnable()
     {
-        _gameZone.OnBallFinished += BallFinished;
         PlayerData.OnPlayerBallSizeUpdate += UpdateBallSize;
     }
 
     private void OnDisable()
     {
-        _gameZone.OnBallFinished -= BallFinished;
         PlayerData.OnPlayerBallSizeUpdate -= UpdateBallSize;
     }
 
@@ -99,7 +99,7 @@ public class BallsController : MonoBehaviour
     public PlayerBall SpawnBall(Vector3 position)
     {
         PlayerBall newPlayerBall = _pool.Get();
-        newPlayerBall.transform.position = position;
+        newPlayerBall.SetPosition(position);
         newPlayerBall.Drop();
         return newPlayerBall;
     }
@@ -120,34 +120,39 @@ public class BallsController : MonoBehaviour
     {
         ball.SetScale(PlayerData.PlayerBallSize);
         ball.gameObject.SetActive(true);
-        ball.OnBallFinished += OnBallFinished;
+        ball.OnBallFinished += BallFinished;
         ball.OnBallHitPin += OnBallHitPin;
     }
 
     private void ActionOnRelease(PlayerBall ball)
     {
         ball.gameObject.SetActive(false);
-        ball.OnBallFinished -= OnBallFinished;
+        ball.OnBallFinished -= BallFinished;
         ball.OnBallHitPin -= OnBallHitPin;
     }
 
-    private void BallFinished(PlayerBall playerBall)
+    private void BallFinished(PlayerBall playerBall, int multiplier, float coins)
     {
         if (playerBall == null || playerBall.gameObject == null)
         {
             return;
         }
 
+        OnBallFinished?.Invoke(playerBall, multiplier, coins);
+        _currentCoins += coins;
+
         _pool.Release(playerBall);
 
         if (_pool.CountActive == 0)
         {
+            OnAllBallsFinished?.Invoke(playerBall, _currentCoins);
             Reset();
         }
     }
 
     private void Reset()
     {
+        _currentCoins = 0;
         _isStarting = false;
         _targetBall = _pool.Get();
         _targetBall.Spawn();
@@ -159,6 +164,6 @@ public class BallsController : MonoBehaviour
     private void Move(Vector2 position)
     {
         float x = Mathf.Clamp(position.x, -_maxX, _maxX);
-        _targetBall.transform.position = new Vector3(x, _height, _targetBall.transform.position.z);
+        _targetBall.SetPosition(new Vector3(x, _height, _targetBall.transform.position.z));
     }
 }
