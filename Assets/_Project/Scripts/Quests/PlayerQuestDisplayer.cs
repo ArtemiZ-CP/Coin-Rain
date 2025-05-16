@@ -35,11 +35,7 @@ public class PlayerQuestDisplayer : MonoBehaviour
 
     private void SetDescriptionText(Quest quest)
     {
-        if (quest.Objective is DropBallObjective)
-        {
-            _questDescription.text = $"Запустить шар";
-        }
-        else if (quest.Objective is HitFinishObjective hitFinish)
+        if (quest.Objective is HitFinishObjective hitFinish)
         {
             _questDescription.text = $"Попасть шаром во множитель x{hitFinish.FinishMultiplierToHit}";
         }
@@ -106,10 +102,6 @@ public class PlayerQuestDisplayer : MonoBehaviour
         else if (quest.Reward is IncreaseWidthReward)
         {
             _questReward.text = "Увеличить ширину линии штырьков";
-        }
-        else if (quest.Reward is IncreaseBallSizeReward)
-        {
-            _questReward.text = $"Увеличить размер шара";
         }
         else if (quest.Reward is IncreaseWinAreaMultiplierReward)
         {

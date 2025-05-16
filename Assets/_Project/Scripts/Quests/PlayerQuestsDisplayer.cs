@@ -23,7 +23,9 @@ public class PlayerQuestsDisplayer : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        foreach (Quest quest in _playerQuests.ActiveQuests)
+        var activeQuests = _playerQuests.GetActiveQuests();
+
+        foreach (Quest quest in activeQuests)
         {
             PlayerQuestDisplayer questDisplayer = Instantiate(_questDisplayerPrefab, transform);
             questDisplayer.SetQuest(quest);

@@ -49,16 +49,6 @@ public class BallsController : MonoBehaviour
         Reset();
     }
 
-    private void OnEnable()
-    {
-        PlayerData.OnPlayerBallSizeUpdate += UpdateBallSize;
-    }
-
-    private void OnDisable()
-    {
-        PlayerData.OnPlayerBallSizeUpdate -= UpdateBallSize;
-    }
-
     private void Update()
     {
         if (_isStarting)
@@ -106,19 +96,8 @@ public class BallsController : MonoBehaviour
 
     public float Blast(Pin pin, PlayerBall playerBall) => _pinsMap.Blast(pin, playerBall);
 
-    private void UpdateBallSize()
-    {
-        if (_targetBall == null)
-        {
-            return;
-        }
-
-        _targetBall.SetScale(PlayerData.PlayerBallSize);
-    }
-
     private void ActionOnGetBall(PlayerBall ball)
     {
-        ball.SetScale(PlayerData.PlayerBallSize);
         ball.gameObject.SetActive(true);
         ball.OnBallFinished += BallFinished;
         ball.OnBallHitPin += OnBallHitPin;

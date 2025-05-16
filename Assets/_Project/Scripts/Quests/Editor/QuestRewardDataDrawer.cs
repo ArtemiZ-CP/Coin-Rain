@@ -38,12 +38,6 @@ public class QuestRewardDataDrawer : PropertyDrawer
             Rect upgradeRect = new(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight);
             EditorGUI.PropertyField(upgradeRect, upgradeTypeProp, new GUIContent("Pin Type"));
         }
-        else if (type == QuestRewardType.IncreaseBallSize)
-        {
-            var increaseValueProp = property.FindPropertyRelative("IncreaseValue");
-            Rect increaseRect = new(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight);
-            EditorGUI.PropertyField(increaseRect, increaseValueProp, new GUIContent("Increase Value"));
-        }
 
         EditorGUI.EndProperty();
     }
@@ -60,10 +54,6 @@ public class QuestRewardDataDrawer : PropertyDrawer
             lines++;
         }
         else if (type == QuestRewardType.UnlockUpgrade)
-        {
-            lines++;
-        }
-        else if (type == QuestRewardType.IncreaseBallSize)
         {
             lines++;
         }

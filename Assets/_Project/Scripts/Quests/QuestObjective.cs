@@ -1,13 +1,18 @@
 using System;
 
 [Serializable]
+public struct MultiQuestObjectiveData
+{
+    public QuestObjectiveData[] QuestObjectiveDatas;
+}
+
+[Serializable]
 public struct QuestObjectiveData
 {
     public QuestObjectiveType Type;
-    public int FinishMultiplierToHit;
-    public int PinsCount;
-    public float CoinsCount;
-    public Pin.Type PinType;
+    public Condition Condition;
+    public int[] IntProperties;
+    public float[] FloatProperties;
 }
 
 public abstract class QuestObjective
@@ -57,9 +62,9 @@ public abstract class QuestObjective
 
 public enum QuestObjectiveType
 {
-    DropBall,
     HitFinish,
     HitPins,
     EarnCoinsByOneBall,
     EarnCoinsByAllBalls,
+    FallTime,
 }

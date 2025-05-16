@@ -1,40 +1,24 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class PlayerQuests : MonoBehaviour
 {
-    private readonly List<Quest> _activeQuests = new();
-    private readonly List<Quest> _disactiveQuests = new();
+    private readonly List<Quest> ActiveQuests = new();
+    private readonly List<Quest> DisactiveQuests = new();
 
     [SerializeField] private int _maxActiveQuests = 3;
     [SerializeField] private int _completeQuestsAtStartCount = 0;
-    [SerializeField] private List<QuestData> _playerQuests = new();
 
-    public IReadOnlyList<Quest> ActiveQuests => _activeQuests;
+    private List<Quest.Data> _playerQuests = new();
 
     public event Action OnQuestsUpdated;
 
     private void Awake()
     {
-        foreach (QuestData objectiveData in _playerQuests)
+        foreach (Quest.Data objectiveData in _playerQuests)
         {
-            _disactiveQuests.Add(CreateQuest(objectiveData));
-        }
-
-        List<QuestData> questsToRemove = PlayerData.CompletedQuests.ToList();
-
-        for (int i = 0; i < _disactiveQuests.Count; i++)
-        {
-            QuestData questData = GetQuestData(_disactiveQuests[i]);
-
-            if (questsToRemove.Contains(questData))
-            {
-                questsToRemove.Remove(questData);
-                _disactiveQuests.RemoveAt(i);
-                i--;
-            }
+            DisactiveQuests.Add(Quest.CreateQuest(objectiveData));
         }
 
         UpdateActiveQuests();
@@ -45,111 +29,44 @@ public class PlayerQuests : MonoBehaviour
     {
         for (int i = 0; i < _completeQuestsAtStartCount; i++)
         {
-            Quest quest = _activeQuests[0];
+            Quest quest = ActiveQuests[0];
             quest.CompleteQuest();
         }
     }
 
+    public IReadOnlyList<Quest> GetActiveQuests() => ActiveQuests;
+
     public void AddActiveQuest(Quest quest)
     {
-        _activeQuests.Add(quest);
-        quest.OnQuestCompleted += OnQuestCompleted;
+        ActiveQuests.Add(quest);
+        quest.OnQuestCompleted += HandleCompletedQuest;
     }
 
     public void RemoveActiveQuest(Quest quest)
     {
-        if (_activeQuests.Contains(quest))
+        if (ActiveQuests.Contains(quest))
         {
-            _activeQuests.Remove(quest);
-            quest.OnQuestCompleted -= OnQuestCompleted;
+            ActiveQuests.Remove(quest);
+            quest.OnQuestCompleted -= HandleCompletedQuest;
         }
     }
 
-    private void OnQuestCompleted(Quest quest)
+    private void HandleCompletedQuest(Quest quest)
     {
-        PlayerData.CompleteQuest(quest);
         RemoveActiveQuest(quest);
         UpdateActiveQuests();
         OnQuestsUpdated?.Invoke();
     }
 
-    public static Quest CreateQuest(QuestData data)
-    {
-        return new Quest(CreateObjective(data.ObjectivesData), CreateReward(data.RewardData));
-    }
-
-    public static QuestData GetQuestData(Quest quest)
-    {
-        return new QuestData
-        {
-            ObjectivesData = GetObjectiveData(quest.Objective),
-            RewardData = GetRewardData(quest.Reward),
-        };
-    }
-
-    public static QuestObjective CreateObjective(QuestObjectiveData data)
-    {
-        return data.Type switch
-        {
-            QuestObjectiveType.DropBall => new DropBallObjective(),
-            QuestObjectiveType.HitFinish => new HitFinishObjective(data.FinishMultiplierToHit),
-            QuestObjectiveType.HitPins => new HitPinsObjective(data.PinsCount, data.PinType),
-            QuestObjectiveType.EarnCoinsByOneBall => new EarnCoinsObjective(data.CoinsCount),
-            QuestObjectiveType.EarnCoinsByAllBalls => new EarnCoinsByAllBallsObjective(data.CoinsCount),
-            _ => null,
-        };
-    }
-
-    public static QuestObjectiveData GetObjectiveData(QuestObjective objective)
-    {
-        return objective switch
-        {
-            DropBallObjective => new QuestObjectiveData { Type = QuestObjectiveType.DropBall },
-            HitFinishObjective hitFinish => new QuestObjectiveData { Type = QuestObjectiveType.HitFinish, FinishMultiplierToHit = hitFinish.FinishMultiplierToHit },
-            HitPinsObjective hitPins => new QuestObjectiveData { Type = QuestObjectiveType.HitPins, PinsCount = hitPins.PinsCount, PinType = hitPins.PinType },
-            EarnCoinsObjective earnCoins => new QuestObjectiveData { Type = QuestObjectiveType.EarnCoinsByOneBall, CoinsCount = earnCoins.CoinsCount },
-            EarnCoinsByAllBallsObjective earnCoinsByAllBalls => new QuestObjectiveData { Type = QuestObjectiveType.EarnCoinsByAllBalls, CoinsCount = earnCoinsByAllBalls.CoinsCount },
-            _ => new QuestObjectiveData(),
-        };
-    }
-
-    public static QuestReward CreateReward(QuestRewardData data)
-    {
-        return data.Type switch
-        {
-            QuestRewardType.Coins => new CoinsReward(data.CoinsCount),
-            QuestRewardType.UnlockUpgrade => new UnlockUpgrade(data.PinType),
-            QuestRewardType.IncreaseHeight => new IncreaseHeightReward(),
-            QuestRewardType.IncreaseWidth => new IncreaseWidthReward(),
-            QuestRewardType.IncreaseBallSize => new IncreaseBallSizeReward(data.IncreaseValue),
-            QuestRewardType.IncreaseWinAreaMultiplier => new IncreaseWinAreaMultiplierReward(),
-            _ => null,
-        };
-    }
-
-    public static QuestRewardData GetRewardData(QuestReward reward)
-    {
-        return reward switch
-        {
-            CoinsReward coinsReward => new QuestRewardData { Type = QuestRewardType.Coins, CoinsCount = coinsReward.CoinsCount },
-            UnlockUpgrade unlockUpgrade => new QuestRewardData { Type = QuestRewardType.UnlockUpgrade, PinType = unlockUpgrade.PinType },
-            IncreaseHeightReward => new QuestRewardData { Type = QuestRewardType.IncreaseHeight },
-            IncreaseWidthReward => new QuestRewardData { Type = QuestRewardType.IncreaseWidth },
-            IncreaseBallSizeReward ballSize => new QuestRewardData { Type = QuestRewardType.IncreaseBallSize, IncreaseValue = ballSize.IncreaseValue },
-            IncreaseWinAreaMultiplierReward => new QuestRewardData { Type = QuestRewardType.IncreaseWinAreaMultiplier },
-            _ => new QuestRewardData(),
-        };
-    }
-
     private void UpdateActiveQuests()
     {
-        for (int i = 0; i < _disactiveQuests.Count; i++)
+        for (int i = 0; i < DisactiveQuests.Count; i++)
         {
-            if (_activeQuests.Count < _maxActiveQuests)
+            if (ActiveQuests.Count < _maxActiveQuests)
             {
-                Quest quest = _disactiveQuests[i];
+                Quest quest = DisactiveQuests[i];
                 AddActiveQuest(quest);
-                _disactiveQuests.Remove(quest);
+                DisactiveQuests.Remove(quest);
                 i--;
             }
             else
@@ -157,12 +74,5 @@ public class PlayerQuests : MonoBehaviour
                 return;
             }
         }
-    }
-
-    [Serializable]
-    public struct QuestData
-    {
-        public QuestObjectiveData ObjectivesData;
-        public QuestRewardData RewardData;
     }
 }
