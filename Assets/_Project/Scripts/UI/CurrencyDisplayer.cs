@@ -24,6 +24,7 @@ public class CurrencyDisplayer : MonoBehaviour
         UpdateCoinsText();
         UpdateDiamondsText();
         PlayerData.OnCoinsChanged += UpdateCoinsText;
+        PlayerData.OnDiamondsChanged += UpdateDiamondsText;
         PlayerBall.OnTemporaryCoinsChanged += UpdateTemporaryCoinsText;
         BallsController.OnBallDropped += ResetTemporaryCoinsText;
     }
@@ -31,6 +32,7 @@ public class CurrencyDisplayer : MonoBehaviour
     private void OnDisable()
     {
         PlayerData.OnCoinsChanged -= UpdateCoinsText;
+        PlayerData.OnDiamondsChanged -= UpdateDiamondsText;
         PlayerBall.OnTemporaryCoinsChanged -= UpdateTemporaryCoinsText;
         BallsController.OnBallDropped -= ResetTemporaryCoinsText;
     }

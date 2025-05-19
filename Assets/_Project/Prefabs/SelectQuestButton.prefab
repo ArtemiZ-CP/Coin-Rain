@@ -148,6 +148,7 @@ GameObject:
   - component: {fileID: 4228492859041909842}
   - component: {fileID: 5349291491309730682}
   - component: {fileID: 5554948926471388146}
+  - component: {fileID: 6558433417704952709}
   m_Layer: 5
   m_Name: SelectQuestButton
   m_TagString: Untagged
@@ -256,4 +257,29 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5349291491309730682}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6558433417704952709}
+        m_TargetAssemblyTypeName: SelectQuestButton, Assembly-CSharp
+        m_MethodName: Select
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &6558433417704952709
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8875717967134015035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ef987c6e30f3401d9a2aaf6462fd945, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _questText: {fileID: 8273971968732594385}

@@ -24,40 +24,12 @@ public class QuestRewardDataDrawer : PropertyDrawer
 
         position.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
 
-        QuestRewardType type = (QuestRewardType)typeProp.enumValueIndex;
-
-        if (type == QuestRewardType.Coins)
-        {
-            var finishMultiplierProp = property.FindPropertyRelative("CoinsCount");
-            Rect finishRect = new(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight);
-            EditorGUI.PropertyField(finishRect, finishMultiplierProp, new GUIContent("Coins"));
-        }
-        else if (type == QuestRewardType.UnlockUpgrade)
-        {
-            var upgradeTypeProp = property.FindPropertyRelative("PinType");
-            Rect upgradeRect = new(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight);
-            EditorGUI.PropertyField(upgradeRect, upgradeTypeProp, new GUIContent("Pin Type"));
-        }
-
         EditorGUI.EndProperty();
     }
 
     public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
     {
-        var typeProp = property.FindPropertyRelative("Type");
-        QuestRewardType type = (QuestRewardType)typeProp.enumValueIndex;
-        int lines = 1;
-        lines++;
-
-        if (type == QuestRewardType.Coins)
-        {
-            lines++;
-        }
-        else if (type == QuestRewardType.UnlockUpgrade)
-        {
-            lines++;
-        }
-
+        int lines = 2;
         return lines * EditorGUIUtility.singleLineHeight + (lines - 1) * EditorGUIUtility.standardVerticalSpacing;
     }
 }

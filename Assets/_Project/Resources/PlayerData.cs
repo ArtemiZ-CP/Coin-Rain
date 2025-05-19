@@ -4,6 +4,7 @@ public static class PlayerData
 {
     public const float DefaultCoins = 0;
     public const float DefaultDiamonds = 0;
+    public const bool DefaultUpgradesUnlocked = true;
     public const int DefaultLevel = -1;
     public const int DefaultPinsCount = 0;
     public const int DefaultRewardFromPin = 1;
@@ -46,6 +47,7 @@ public static class PlayerData
     public static int BombPinsValueUpgrade => _bombPinsValueUpgrade;
 
     public static event System.Action OnCoinsChanged;
+    public static event System.Action OnDiamondsChanged;
     public static event System.Action OnMapUpdate;
     public static event System.Action OnPinsUpdate;
     public static event System.Action OnFinishUpdate;
@@ -62,7 +64,7 @@ public static class PlayerData
         _coins = DefaultCoins;
         _diamonds = DefaultDiamonds;
         _rewardFromPin = DefaultRewardFromPin;
-        _isUpgradeUnlocked = false;
+        _isUpgradeUnlocked = DefaultUpgradesUnlocked;
         _gameSpeedUpgrade = DefaultGameSpeed;
         _widthUpgrade = DefaultWidth;
         _heightUpgrade = DefaultHeight;
@@ -102,6 +104,12 @@ public static class PlayerData
     {
         _coins += amount;
         OnCoinsChanged?.Invoke();
+    }
+
+    public static void AddDiamonds(float amount)
+    {
+        _diamonds += amount;
+        OnDiamondsChanged?.Invoke();
     }
 
     public static void UnlockUpgrade(Pin.Type upgradeType)

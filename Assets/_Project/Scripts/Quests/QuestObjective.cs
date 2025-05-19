@@ -1,12 +1,6 @@
 using System;
 
 [Serializable]
-public struct MultiQuestObjectiveData
-{
-    public QuestObjectiveData[] QuestObjectiveDatas;
-}
-
-[Serializable]
 public struct QuestObjectiveData
 {
     public QuestObjectiveType Type;
@@ -18,6 +12,8 @@ public struct QuestObjectiveData
 public abstract class QuestObjective
 {
     private bool _isCompleted = false;
+
+    public bool IsCompleted => _isCompleted;
 
     public event Action<float> OnObjectiveProgressChanged;
     public event Action OnObjectiveCompleted;
@@ -48,6 +44,39 @@ public abstract class QuestObjective
         OnObjectiveCompleted?.Invoke();
     }
 
+    public string GetDescriptionText()
+    {
+        if (this is HitFinishObjective hitFinish)
+        {
+            return $"Попасть шаром во множитель x{hitFinish.FinishMultiplierToHit}";
+        }
+        else if (this is HitPinsObjective hitPins)
+        {
+            string pinType = hitPins.PinType switch
+            {
+                Pin.Type.Base => "обычные штырьки",
+                Pin.Type.Gold => "золотые штырьки",
+                Pin.Type.Multiplying => "множители",
+                Pin.Type.Bomb => "бомбы",
+                _ => "неизвестные"
+            };
+
+            return $"Задеть {pinType} за один раунд: {hitPins.PinsCount}";
+        }
+        else if (this is EarnCoinsObjective earnCoins)
+        {
+            return $"Заработать монет одним шаром: {earnCoins.CoinsCount}";
+        }
+        else if (this is EarnCoinsByAllBallsObjective earnCoinsByAllBalls)
+        {
+            return $"Заработать монет за один запуск: {earnCoinsByAllBalls.CoinsCount}";
+        }
+        else
+        {
+            return "Неизвестный квест";
+        }
+    }
+    
     protected void SetCompleted()
     {
         _isCompleted = true;

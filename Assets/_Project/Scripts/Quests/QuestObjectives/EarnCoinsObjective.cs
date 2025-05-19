@@ -19,8 +19,17 @@ public class EarnCoinsObjective : QuestObjective
 
     private void OnBallHitPin(PlayerBall playerBall, Pin.Type pinType)
     {
-        float coins = CurrencyDisplayer.TemporaryCoins[playerBall];
-        ChangeObjectiveProgress(coins / _coinsCount);
+        float maxCoins = 0;
+
+        foreach (var ballInfo in CurrencyDisplayer.TemporaryCoins)
+        {
+            if (ballInfo.Value > maxCoins)
+            {
+                maxCoins = ballInfo.Value;
+            }
+        }
+
+        ChangeObjectiveProgress(maxCoins / _coinsCount);
     }
 
     private void OnBallFinished(PlayerBall playerBall, int finishMultiplier, float coins)

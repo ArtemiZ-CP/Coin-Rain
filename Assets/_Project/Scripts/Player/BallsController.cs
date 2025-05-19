@@ -21,6 +21,7 @@ public class BallsController : MonoBehaviour
     public static event System.Action<PlayerBall, int, float> OnBallFinished;
     public static event System.Action<PlayerBall, Pin.Type> OnBallHitPin;
     public static event System.Action<PlayerBall, float> OnAllBallsFinished;
+    public static event System.Action OnFixedUpdate;
     public static event System.Action OnReset;
 
     private void Awake()
@@ -60,6 +61,11 @@ public class BallsController : MonoBehaviour
         {
             Move(Camera.main.ScreenToWorldPoint(Input.mousePosition));
         }
+    }
+
+    private void FixedUpdate()
+    {
+        OnFixedUpdate?.Invoke();
     }
 
     public void PointerDown()
