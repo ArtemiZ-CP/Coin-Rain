@@ -15,14 +15,14 @@ public class GameplayMap : MonoBehaviour
 
     private void OnEnable()
     {
-        PlayerData.OnMapUpdate += UpdateMap;
-        PlayerData.OnPinsUpdate += UpdatePins;
+        PlayerMapUpgradesData.OnMapUpdate += UpdateMap;
+        PlayerPinsData.OnPinsUpdate += UpdatePins;
     }
 
     private void OnDisable()
     {
-        PlayerData.OnMapUpdate -= UpdateMap;
-        PlayerData.OnPinsUpdate -= UpdatePins;
+        PlayerMapUpgradesData.OnMapUpdate -= UpdateMap;
+        PlayerPinsData.OnPinsUpdate -= UpdatePins;
     }
 
     [ContextMenu("Update Map")]

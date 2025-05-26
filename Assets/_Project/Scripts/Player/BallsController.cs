@@ -17,9 +17,10 @@ public class BallsController : MonoBehaviour
     private float _maxX;
     private float _currentCoins;
 
+    public bool IsStarting => _isStarting;
+
     public static event System.Action<PlayerBall> OnBallDropped;
     public static event System.Action<PlayerBall, int, float> OnBallFinished;
-    public static event System.Action<PlayerBall, Pin.Type> OnBallHitPin;
     public static event System.Action<PlayerBall, float> OnAllBallsFinished;
     public static event System.Action OnFixedUpdate;
     public static event System.Action OnReset;
@@ -65,6 +66,11 @@ public class BallsController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (_isStarting == false)
+        {
+            return;
+        }
+
         OnFixedUpdate?.Invoke();
     }
 
@@ -76,7 +82,7 @@ public class BallsController : MonoBehaviour
         }
 
         _isMooving = true;
-        _maxX = (PlayerData.WidthUpgrade + 0.5f) * GameConstants.Instance.PinConstants.OffsetBetweenPinsInLine;
+        _maxX = (PlayerMapUpgradesData.WidthUpgrade + 0.5f) * GameConstants.Instance.PinConstants.OffsetBetweenPinsInLine;
     }
 
     public void PointerUp()
@@ -106,14 +112,12 @@ public class BallsController : MonoBehaviour
     {
         ball.gameObject.SetActive(true);
         ball.OnBallFinished += BallFinished;
-        ball.OnBallHitPin += OnBallHitPin;
     }
 
     private void ActionOnRelease(PlayerBall ball)
     {
         ball.gameObject.SetActive(false);
         ball.OnBallFinished -= BallFinished;
-        ball.OnBallHitPin -= OnBallHitPin;
     }
 
     private void BallFinished(PlayerBall playerBall, int multiplier, float coins)

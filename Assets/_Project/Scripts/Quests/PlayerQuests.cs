@@ -26,6 +26,7 @@ public class PlayerQuests : MonoBehaviour
     {
         _activeQuest = Quest.CreateQuest(quest);
         _activeQuest.OnQuestCompleted += HandleCompletedQuest;
+        OnQuestsUpdated?.Invoke(_activeQuest);
     }
 
     private void HandleCompletedQuest(Quest quest)

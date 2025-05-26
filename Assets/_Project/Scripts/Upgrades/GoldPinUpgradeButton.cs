@@ -11,7 +11,7 @@ public class GoldPinUpgradeButton : UpgradeButton<int>
     {
         base.OnEnable();
 
-        if (PlayerData.GoldPinsCountUpgrade == 0)
+        if (PlayerPinsData.GoldPinsCountUpgrade == 0)
         {
             gameObject.SetActive(false);
         }
@@ -19,7 +19,7 @@ public class GoldPinUpgradeButton : UpgradeButton<int>
 
     private void Update()
     {
-        if (PlayerData.RewardFromPin != _rewardFromPin)
+        if (PlayerPinsData.RewardFromPin != _rewardFromPin)
         {
             SetRewardText();
         }
@@ -27,12 +27,12 @@ public class GoldPinUpgradeButton : UpgradeButton<int>
 
     protected override int GetDefaultValue()
     {
-        return PlayerData.DefaultGoldPinRewardMultiplier;
+        return PlayerPinsData.DefaultGoldPinRewardMultiplier;
     }
 
     protected override UpgradeData[] GetUpgrades(out int level)
     {
-        level = PlayerData.DefaultLevel;
+        level = PlayerMapUpgradesData.DefaultLevel;
 
         UpgradeData[] upgrades = new UpgradeData[MaxLevel];
 
@@ -41,7 +41,7 @@ public class GoldPinUpgradeButton : UpgradeButton<int>
             upgrades[i] = new UpgradeData
             {
                 Cost = StartCost + i * StepCost,
-                Value = PlayerData.DefaultGoldPinRewardMultiplier + (i + 1) * AddValuePerLevel
+                Value = PlayerPinsData.DefaultGoldPinRewardMultiplier + (i + 1) * AddValuePerLevel
             };
         }
 
@@ -50,12 +50,12 @@ public class GoldPinUpgradeButton : UpgradeButton<int>
 
     protected override void SetRewardText()
     {
-        _rewardFromPin = PlayerData.RewardFromPin;
-        SetRewardText($"Gold Pin Reward: x{PlayerData.GoldPinsValueUpgrade} from Base Pin ({PlayerData.RewardFromPin * PlayerData.GoldPinsValueUpgrade})");
+        _rewardFromPin = PlayerPinsData.RewardFromPin;
+        SetRewardText($"Gold Pin Reward: x{PlayerPinsData.GoldPinsValueUpgrade} from Base Pin ({PlayerPinsData.RewardFromPin * PlayerPinsData.GoldPinsValueUpgrade})");
     }
 
     protected override void UpdateValue(int value)
     {
-        PlayerData.SetGoldPinsValue(value);
+        PlayerPinsData.SetGoldPinsValue(value);
     }
 }

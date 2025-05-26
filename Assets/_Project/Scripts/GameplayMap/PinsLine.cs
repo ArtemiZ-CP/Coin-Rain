@@ -25,7 +25,7 @@ public class PinsLine : MonoBehaviour
             }
         }
 
-        int pinsCount = _firstLine ? PlayerData.WidthUpgrade * 2 + 1 : PlayerData.WidthUpgrade * 2 + 2;
+        int pinsCount = _firstLine ? PlayerMapUpgradesData.WidthUpgrade * 2 + 1 : PlayerMapUpgradesData.WidthUpgrade * 2 + 2;
 
         for (int i = 0; i < pinsCount; i++)
         {

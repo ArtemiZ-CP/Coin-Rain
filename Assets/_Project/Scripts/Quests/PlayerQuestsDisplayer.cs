@@ -43,6 +43,8 @@ public class PlayerQuestsDisplayer : MonoBehaviour
     {
         string rewardText = string.Empty;
 
+        rewardText += "Rewards:\n";
+
         foreach (QuestReward questReward in questRewards)
         {
             rewardText += questReward.GetDescriptionText();

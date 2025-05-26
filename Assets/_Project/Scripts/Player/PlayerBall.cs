@@ -16,9 +16,9 @@ public class PlayerBall : MonoBehaviour
     public Vector3 Position => _rigidbody.transform.localPosition;
 
     public static event System.Action<PlayerBall, float> OnTemporaryCoinsChanged;
+    public static event System.Action<PlayerBall, Pin.Type> OnBallHitPin;
     public event System.Action<float> OnCoinsChanged;
     public event System.Action<PlayerBall, int, float> OnBallFinished;
-    public event System.Action<PlayerBall, Pin.Type> OnBallHitPin;
     public event System.Action OnSpawn;
 
     private void Awake()
@@ -64,7 +64,7 @@ public class PlayerBall : MonoBehaviour
     public void OnWinAreaHit(WinArea winArea)
     {
         _temporaryCoins *= winArea.Multiplier;
-        PlayerData.AddCoins(_temporaryCoins);
+        PlayerCurrencyData.AddCoins(_temporaryCoins);
         OnCoinsChanged?.Invoke(_temporaryCoins);
         OnTemporaryCoinsChanged?.Invoke(this, _temporaryCoins);
         OnBallFinished?.Invoke(this, winArea.Multiplier, _temporaryCoins);

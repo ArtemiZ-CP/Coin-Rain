@@ -36,7 +36,7 @@ public class PinsMap : MonoBehaviour
             }
         }
 
-        for (int i = 0; i < PlayerData.HeightUpgrade; i++)
+        for (int i = 0; i < PlayerMapUpgradesData.HeightUpgrade; i++)
         {
             PinsLine pinsLine;
 
@@ -67,15 +67,15 @@ public class PinsMap : MonoBehaviour
             pins.AddRange(pinsLine.Pins);
         }
 
-        SetPins(Pin.Type.Gold, PlayerData.GoldPinsCountUpgrade, pins);
-        SetPins(Pin.Type.Multiplying, PlayerData.MultiPinsCountUpgrade, pins);
-        SetPins(Pin.Type.Bomb, PlayerData.BombPinsCountUpgrade, pins);
+        SetPins(Pin.Type.Gold, PlayerPinsData.GoldPinsCountUpgrade, pins);
+        SetPins(Pin.Type.Multiplying, PlayerPinsData.MultiPinsCountUpgrade, pins);
+        SetPins(Pin.Type.Bomb, PlayerPinsData.BombPinsCountUpgrade, pins);
     }
 
     public float Blast(Pin blastPin, PlayerBall playerBall)
     {
-        float blastRange = _pinConstants.OffsetBetweenPinsInLine * PlayerData.BombPinsValueUpgrade + 0.1f;
-        float coins = PlayerData.RewardFromPin;
+        float blastRange = _pinConstants.OffsetBetweenPinsInLine * PlayerPinsData.BombPinsValueUpgrade + 0.1f;
+        float coins = PlayerPinsData.RewardFromPin;
 
         foreach (PinsLine pinsLine in _pinLines)
         {

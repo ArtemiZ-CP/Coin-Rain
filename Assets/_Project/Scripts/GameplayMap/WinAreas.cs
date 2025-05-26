@@ -7,14 +7,14 @@ public class WinAreas : MonoBehaviour
 
     private void OnEnable()
     {
-        PlayerData.OnMapUpdate += UpdateAreas;
-        PlayerData.OnFinishUpdate += UpdateAreas;
+        PlayerMapUpgradesData.OnMapUpdate += UpdateAreas;
+        PlayerMapUpgradesData.OnFinishUpdate += UpdateAreas;
     }
 
     private void OnDisable()
     {
-        PlayerData.OnMapUpdate -= UpdateAreas;
-        PlayerData.OnFinishUpdate -= UpdateAreas;
+        PlayerMapUpgradesData.OnMapUpdate -= UpdateAreas;
+        PlayerMapUpgradesData.OnFinishUpdate -= UpdateAreas;
     }
 
     [ContextMenu("Update Areas")]
@@ -35,8 +35,8 @@ public class WinAreas : MonoBehaviour
             }
         }
 
-        int areasCount = (PlayerData.WidthUpgrade + 1) * 2;
-        int finishUpgrade = PlayerData.WinAreasUpgrade;
+        int areasCount = (PlayerMapUpgradesData.WidthUpgrade + 1) * 2;
+        int finishUpgrade = PlayerMapUpgradesData.WinAreasUpgrade;
 
         for (int i = 0; i < areasCount / 2; i++)
         {
@@ -44,7 +44,7 @@ public class WinAreas : MonoBehaviour
             SpawnFinish(pinConstants, finishUpgrade, areasCount, i, positionMultiplier: -1);
         }
 
-        transform.position = -1 * (PlayerData.HeightUpgrade - 1) * pinConstants.OffsetBetweenLines * Vector3.up;
+        transform.position = -1 * (PlayerMapUpgradesData.HeightUpgrade - 1) * pinConstants.OffsetBetweenLines * Vector3.up;
     }
 
     private void SpawnFinish(PinConstants pinConstants, int finishUpgrade, int areasCount, int index, int positionMultiplier)

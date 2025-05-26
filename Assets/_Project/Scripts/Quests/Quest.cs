@@ -1,4 +1,6 @@
 using System;
+using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Quest
 {
@@ -158,6 +160,7 @@ public class Quest
         return data.Type switch
         {
             QuestRewardType.Coins => new CoinsReward(data.IntProperties[0]),
+            QuestRewardType.Diamonds => new DiamondsReward(data.IntProperties[0]),
             QuestRewardType.UnlockUpgrade => new UnlockUpgrade((Pin.Type)data.IntProperties[0]),
             QuestRewardType.IncreaseHeight => new IncreaseHeightReward(),
             QuestRewardType.IncreaseWidth => new IncreaseWidthReward(),
@@ -175,11 +178,11 @@ public class Quest
                 Type = QuestRewardType.Coins,
                 IntProperties = new int[] { coinsReward.CoinsCount }
             },
-            // CoinsReward coinsReward => new QuestRewardData
-            // {
-            //     Type = QuestRewardType.Coins,
-            //     IntProperties = new int[] { coinsReward.CoinsCount }
-            // },
+            DiamondsReward diamondsReward => new QuestRewardData
+            {
+                Type = QuestRewardType.Coins,
+                IntProperties = new int[] { diamondsReward.DiamondsCount }
+            },
             UnlockUpgrade unlockUpgrade => new QuestRewardData
             {
                 Type = QuestRewardType.UnlockUpgrade,
@@ -206,5 +209,15 @@ public class Quest
     {
         public QuestObjectiveData[] ObjectivesData;
         public QuestRewardData[] RewardsData;
+        public Rarity Rarity;
+    }
+
+    [Serializable]
+    public struct Rarity
+    {
+        public int ObjectivesCount;
+        public int RewardsCount;
+        public float Chance;
+        public Color Color;
     }
 }

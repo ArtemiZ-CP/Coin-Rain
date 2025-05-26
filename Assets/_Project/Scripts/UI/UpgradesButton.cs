@@ -6,9 +6,9 @@ public class UpgradesButton : MonoBehaviour
 
     private void OnEnable()
     {
-        PlayerData.OnUpgradeUnlock += OnBaseBinUpgradeActive;
+        PlayerMapUpgradesData.OnUpgradePin += OnBaseBinUpgradeActive;
 
-        if (PlayerData.IsUpgradeUnlocked == false)
+        if (PlayerMapUpgradesData.IsUpgradeUnlocked == false)
         {
             _upgradesButton.SetActive(false);
         }
@@ -16,7 +16,7 @@ public class UpgradesButton : MonoBehaviour
 
     private void OnDisable()
     {
-        PlayerData.OnUpgradeUnlock -= OnBaseBinUpgradeActive;
+        PlayerMapUpgradesData.OnUpgradePin -= OnBaseBinUpgradeActive;
     }
 
     private void OnBaseBinUpgradeActive(Pin.Type upgradeType)

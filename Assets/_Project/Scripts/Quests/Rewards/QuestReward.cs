@@ -23,6 +23,10 @@ public abstract class QuestReward
         {
             return $"{coinsReward.CoinsCount} монет";
         }
+        else if (this is DiamondsReward diamondsReward)
+        {
+            return $"{diamondsReward.DiamondsCount} алмазов";
+        }
         else if (this is UnlockUpgrade unlockUpgrade)
         {
             if (unlockUpgrade.PinType == Pin.Type.Base)
@@ -43,7 +47,7 @@ public abstract class QuestReward
             }
             else
             {
-                return "Неизвестная награда";
+                return $"Неизвестная награда {unlockUpgrade.PinType}";
             }
         }
         else if (this is IncreaseHeightReward)
@@ -60,7 +64,7 @@ public abstract class QuestReward
         }
         else
         {
-            return "Неизвестная награда";
+            return $"Неизвестная награда {GetType().Name}";
         }
     }
 }

@@ -21,30 +21,23 @@ public class CurrencyDisplayer : MonoBehaviour
 
     private void OnEnable()
     {
-        UpdateCoinsText();
-        UpdateDiamondsText();
-        PlayerData.OnCoinsChanged += UpdateCoinsText;
-        PlayerData.OnDiamondsChanged += UpdateDiamondsText;
+        UpdateCurrencyText();
+        PlayerCurrencyData.OnCurrencyChanged += UpdateCurrencyText;
         PlayerBall.OnTemporaryCoinsChanged += UpdateTemporaryCoinsText;
         BallsController.OnBallDropped += ResetTemporaryCoinsText;
     }
 
     private void OnDisable()
     {
-        PlayerData.OnCoinsChanged -= UpdateCoinsText;
-        PlayerData.OnDiamondsChanged -= UpdateDiamondsText;
+        PlayerCurrencyData.OnCurrencyChanged -= UpdateCurrencyText;
         PlayerBall.OnTemporaryCoinsChanged -= UpdateTemporaryCoinsText;
         BallsController.OnBallDropped -= ResetTemporaryCoinsText;
     }
 
-    private void UpdateCoinsText()
+    private void UpdateCurrencyText()
     {
-        _mainCoinsText.text = $"{PlayerData.Coins:0.#} Coins";
-    }
-
-    private void UpdateDiamondsText()
-    {
-        _diamondsText.text = $"{PlayerData.Diamonds} Diamonds";
+        _mainCoinsText.text = $"{PlayerCurrencyData.Coins:0.#} Coins";
+        _diamondsText.text = $"{PlayerCurrencyData.Diamonds} Diamonds";
     }
 
     private void UpdateTemporaryCoinsText(PlayerBall playerBall, float coins)

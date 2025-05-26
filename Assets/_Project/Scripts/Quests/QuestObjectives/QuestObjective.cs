@@ -20,12 +20,20 @@ public abstract class QuestObjective
 
     protected QuestObjective()
     {
+        BallsController.OnBallDropped += OnBallDropped;
         BallsController.OnReset += OnReset;
     }
 
     ~QuestObjective()
     {
+        BallsController.OnBallDropped -= OnBallDropped;
         BallsController.OnReset -= OnReset;
+    }
+
+    public virtual void OnBallDropped(PlayerBall playerBall)
+    {
+        _isCompleted = false;
+        ChangeObjectiveProgress(0);
     }
 
     public virtual void OnReset()
@@ -71,12 +79,16 @@ public abstract class QuestObjective
         {
             return $"Заработать монет за один запуск: {earnCoinsByAllBalls.CoinsCount}";
         }
+        else if (this is FallTimeObjective fallTime)
+        {
+            return $"Провести время в падении: {fallTime.Timer} сек";
+        }
         else
         {
             return "Неизвестный квест";
         }
     }
-    
+
     protected void SetCompleted()
     {
         _isCompleted = true;

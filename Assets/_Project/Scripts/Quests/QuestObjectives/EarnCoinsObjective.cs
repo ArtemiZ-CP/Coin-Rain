@@ -7,13 +7,13 @@ public class EarnCoinsObjective : QuestObjective
     public EarnCoinsObjective(float coinsCount)
     {
         _coinsCount = coinsCount;
-        BallsController.OnBallHitPin += OnBallHitPin;
+        PlayerBall.OnBallHitPin += OnBallHitPin;
         BallsController.OnBallFinished += OnBallFinished;
     }
 
     ~EarnCoinsObjective()
     {
-        BallsController.OnBallHitPin -= OnBallHitPin;
+        PlayerBall.OnBallHitPin -= OnBallHitPin;
         BallsController.OnBallFinished -= OnBallFinished;
     }
 

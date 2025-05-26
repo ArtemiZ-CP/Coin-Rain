@@ -11,6 +11,6 @@ public class CoinsReward : QuestReward
 
     public override void ApplyReward()
     {
-        PlayerData.AddCoins(_coinsCount);
+        PlayerCurrencyData.AddCoins(_coinsCount);
     }
 }

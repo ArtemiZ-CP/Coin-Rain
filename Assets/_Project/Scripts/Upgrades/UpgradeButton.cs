@@ -40,7 +40,7 @@ public abstract class UpgradeButton<T> : MonoBehaviour
 
     private void OnClick()
     {
-        if (PlayerData.TryToBuy(_cost))
+        if (PlayerCurrencyData.TryToBuy(_cost))
         {
             _level++;
             UpdateButton();

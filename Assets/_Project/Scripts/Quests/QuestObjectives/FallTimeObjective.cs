@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using UnityEngine;
 
 public class FallTimeObjective : QuestObjective
@@ -11,33 +12,32 @@ public class FallTimeObjective : QuestObjective
     public FallTimeObjective(float coinsCount)
     {
         _timer = coinsCount;
-        BallsController.OnBallDropped += StartTimer;
-        BallsController.OnFixedUpdate += UpdateTimer;
         BallsController.OnAllBallsFinished += OnBallsFinished;
+        BallsController.OnFixedUpdate += UpdateTimer;
     }
 
     ~FallTimeObjective()
     {
-        BallsController.OnBallDropped -= StartTimer;
-        BallsController.OnFixedUpdate -= UpdateTimer;
         BallsController.OnAllBallsFinished -= OnBallsFinished;
+        BallsController.OnFixedUpdate -= UpdateTimer;
     }
 
-    private void StartTimer(PlayerBall playerBall)
+    public override void OnBallDropped(PlayerBall playerBall)
     {
+        base.OnBallDropped(playerBall);
         _startTime = Time.time;
         ChangeObjectiveProgress(0);
     }
 
     private void UpdateTimer()
     {
-        float time = _startTime - Time.time;
+        float time = Time.time - _startTime;
         ChangeObjectiveProgress(time / _timer);
     }
 
     private void OnBallsFinished(PlayerBall playerBall, float coins)
     {
-        float time = _startTime - Time.time;
+        float time = Time.time - _startTime;
 
         if (time < _timer)
         {

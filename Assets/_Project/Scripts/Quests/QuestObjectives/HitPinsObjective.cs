@@ -12,12 +12,12 @@ public class HitPinsObjective : QuestObjective
     {
         _pinsCount = pinsCount;
         _pinType = pinType;
-        BallsController.OnBallHitPin += OnBallHitPin;
+        PlayerBall.OnBallHitPin += OnBallHitPin;
     }
 
     ~HitPinsObjective()
     {
-        BallsController.OnBallHitPin -= OnBallHitPin;
+        PlayerBall.OnBallHitPin -= OnBallHitPin;
     }
 
     private void OnBallHitPin(PlayerBall playerBall, Pin.Type type)

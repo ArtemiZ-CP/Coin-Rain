@@ -9,7 +9,7 @@ public class BaseBinUpgradeButton : UpgradeButton<float>
     {
         base.OnEnable();
 
-        if (PlayerData.IsUpgradeUnlocked == false)
+        if (PlayerMapUpgradesData.IsUpgradeUnlocked == false)
         {
             gameObject.SetActive(false);
         }
@@ -17,12 +17,12 @@ public class BaseBinUpgradeButton : UpgradeButton<float>
 
     protected override float GetDefaultValue()
     {
-        return PlayerData.DefaultRewardFromPin;
+        return PlayerPinsData.DefaultRewardFromPin;
     }
 
     protected override UpgradeData[] GetUpgrades(out int level)
     {
-        level = PlayerData.DefaultLevel;
+        level = PlayerMapUpgradesData.DefaultLevel;
 
         UpgradeData[] upgrades = new UpgradeData[MaxLevel];
 
@@ -31,7 +31,7 @@ public class BaseBinUpgradeButton : UpgradeButton<float>
             upgrades[i] = new UpgradeData
             {
                 Cost = StartCost + i * StepCost,
-                Value = PlayerData.DefaultRewardFromPin + (i + 1) * StepValue
+                Value = PlayerPinsData.DefaultRewardFromPin + (i + 1) * StepValue
             };
         }
 
@@ -40,11 +40,11 @@ public class BaseBinUpgradeButton : UpgradeButton<float>
 
     protected override void SetRewardText()
     {
-        SetRewardText($"Reward from Bin: {PlayerData.RewardFromPin}");
+        SetRewardText($"Reward from Bin: {PlayerPinsData.RewardFromPin}");
     }
 
     protected override void UpdateValue(float value)
     {
-        PlayerData.SetRewardFromPin(value);
+        PlayerPinsData.SetRewardFromPin(value);
     }
 }

@@ -2,7 +2,7 @@ public class DiamondsReward : QuestReward
 {
     private readonly int _diamondsCount;
 
-    public int CoinsCount => _diamondsCount;
+    public int DiamondsCount => _diamondsCount;
 
     public DiamondsReward(int coinsCount)
     {
@@ -11,6 +11,6 @@ public class DiamondsReward : QuestReward
 
     public override void ApplyReward()
     {
-        PlayerData.AddCoins(_diamondsCount);
+        PlayerCurrencyData.AddCoins(_diamondsCount);
     }
 }

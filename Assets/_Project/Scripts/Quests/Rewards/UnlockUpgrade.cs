@@ -11,6 +11,6 @@ public class UnlockUpgrade : QuestReward
 
     public override void ApplyReward()
     {
-        PlayerData.UnlockUpgrade(_pinType);
+        PlayerMapUpgradesData.UnlockUpgrade(_pinType);
     }
 }

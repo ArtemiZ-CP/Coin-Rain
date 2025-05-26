@@ -7,29 +7,46 @@ public class QuestGenerator : MonoBehaviour
 {
     [SerializeField] private SelectQuestWindow _selectQuestWindow;
     [SerializeField] private int _chooseQuestsCount;
-    [SerializeField] private Rarity[] _questRarities;
+    [SerializeField] private Quest.Rarity[] _questRarities;
     [SerializeField] private ObjectiveSampleData[] _objectiveSamples;
     [SerializeField] private RewardSampleData[] _rewardSamples;
+    [SerializeField] private GetNewQuestsButton _generateQuestsButton;
+
+    private void OnEnable()
+    {
+        _generateQuestsButton.OnClick += GenerateQuest;
+    }
+
+    private void OnDisable()
+    {
+        _generateQuestsButton.OnClick -= GenerateQuest;
+    }
 
     public void GenerateQuest()
     {
+        if (BallsController.Instance.IsStarting)
+        {
+            return;
+        }
+
         Quest.Data[] datas = new Quest.Data[_chooseQuestsCount];
 
         for (int i = 0; i < _chooseQuestsCount; i++)
         {
-            Rarity randomDifficulty = GetRandomRarity();
+            Quest.Rarity randomDifficulty = GetRandomRarity();
             datas[i] = GenerateQuest(randomDifficulty);
         }
 
         _selectQuestWindow.DisplayQuests(datas);
     }
 
-    private Quest.Data GenerateQuest(Rarity rarity)
+    private Quest.Data GenerateQuest(Quest.Rarity rarity)
     {
         Quest.Data multiData = new()
         {
             ObjectivesData = CreateObjectives(rarity.ObjectivesCount),
-            RewardsData = CreateRewards(rarity.RewardsCount)
+            RewardsData = CreateRewards(rarity.RewardsCount),
+            Rarity = rarity
         };
 
         return multiData;
@@ -59,7 +76,7 @@ public class QuestGenerator : MonoBehaviour
         return questRewardDatas;
     }
 
-    private Rarity GetRandomRarity()
+    private Quest.Rarity GetRandomRarity()
     {
         int rarityIndex = GetRandomIndex(i => _questRarities[i].Chance, _questRarities.Length);
         return _questRarities[rarityIndex];
@@ -70,26 +87,43 @@ public class QuestGenerator : MonoBehaviour
         switch (questObjectiveData.Type)
         {
             case QuestObjectiveType.HitFinish:
-                questObjectiveData.IntProperties = new[] { 0 };
+                questObjectiveData.IntProperties = ObjectiveGenerator.GetHitFinishObjectiveData();
                 break;
             case QuestObjectiveType.HitPins:
-                questObjectiveData.IntProperties = new[] { 0, 0 };
+                questObjectiveData.IntProperties = ObjectiveGenerator.GetHitPinsObjectiveData();
                 break;
             case QuestObjectiveType.EarnCoinsByOneBall:
-                questObjectiveData.FloatProperties = new[] { 0f };
+                questObjectiveData.FloatProperties = ObjectiveGenerator.GetEarnCoinsByOneBallObjectiveData();
                 break;
             case QuestObjectiveType.EarnCoinsByAllBalls:
-                questObjectiveData.FloatProperties = new[] { 0f };
+                questObjectiveData.FloatProperties = ObjectiveGenerator.GetEarnCoinsByAllBallsObjectiveData();
                 break;
             case QuestObjectiveType.FallTime:
-                questObjectiveData.FloatProperties = new[] { 0f };
+                questObjectiveData.FloatProperties = ObjectiveGenerator.GetFallTimeObjectiveData();
                 break;
         }
     }
 
     private void SetupRandomReward(ref QuestRewardData questRewardData)
     {
-
+        switch (questRewardData.Type)
+        {
+            case QuestRewardType.Coins:
+                questRewardData.IntProperties = RewardGenerator.GetCoinsRewardData();
+                break;
+            case QuestRewardType.Diamonds:
+                questRewardData.IntProperties = RewardGenerator.GetDiamondsRewardData();
+                break;
+            case QuestRewardType.UnlockUpgrade:
+                questRewardData.IntProperties = RewardGenerator.GetUnlockUpgradeRewardData();
+                break;
+            case QuestRewardType.IncreaseHeight:
+                break;
+            case QuestRewardType.IncreaseWidth:
+                break;
+            case QuestRewardType.IncreaseWinAreaMultiplier:
+                break;
+        }
     }
 
     private QuestObjectiveData[] GetRandomObjectives(int objectivesCount)
@@ -105,8 +139,16 @@ public class QuestGenerator : MonoBehaviour
             }
 
             int objectiveIndex = GetRandomIndex(i => objectives[i].Chance, objectives.Count);
-            questObjectiveDatas[i] = objectives[objectiveIndex].QuestObjectiveData;
-            objectives.RemoveAt(objectiveIndex);
+            QuestObjectiveData objectiveData = objectives[objectiveIndex].QuestObjectiveData;
+            questObjectiveDatas[i] = objectiveData;
+
+            for (int j = objectives.Count - 1; j >= 0; j--)
+            {
+                if (objectives[j].QuestObjectiveData.Type == objectiveData.Type)
+                {
+                    objectives.RemoveAt(j);
+                }
+            }
         }
 
         return questObjectiveDatas;
@@ -157,21 +199,11 @@ public class QuestGenerator : MonoBehaviour
     }
 
     [Serializable]
-    private struct Rarity
-    {
-        public int ObjectivesCount;
-        public int RewardsCount;
-        public float Chance;
-        public Color Color;
-    }
-
-    [Serializable]
     private struct ObjectiveSampleData
     {
         public QuestObjectiveData QuestObjectiveData;
         public float Chance;
     }
-
 
     [Serializable]
     private struct RewardSampleData
