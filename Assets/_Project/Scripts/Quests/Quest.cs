@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class Quest
 {
@@ -113,11 +112,11 @@ public class Quest
     {
         return data.Type switch
         {
-            QuestObjectiveType.HitFinish => new HitFinishObjective(data.IntProperties[0]),
-            QuestObjectiveType.HitPins => new HitPinsObjective(data.IntProperties[0], (Pin.Type)data.IntProperties[1]),
-            QuestObjectiveType.EarnCoinsByOneBall => new EarnCoinsObjective(data.FloatProperties[0]),
-            QuestObjectiveType.EarnCoinsByAllBalls => new EarnCoinsByAllBallsObjective(data.FloatProperties[0]),
-            QuestObjectiveType.FallTime => new FallTimeObjective(data.FloatProperties[0]),
+            QuestObjectiveType.HitFinish => new HitFinishObjective(data.Condition, data.IntProperties[0]),
+            QuestObjectiveType.HitPins => new HitPinsObjective(data.Condition, data.IntProperties[0], (Pin.Type)data.IntProperties[1]),
+            QuestObjectiveType.EarnCoinsByOneBall => new EarnCoinsObjective(data.Condition, data.FloatProperties[0]),
+            QuestObjectiveType.EarnCoinsByAllBalls => new EarnCoinsByAllBallsObjective(data.Condition, data.FloatProperties[0]),
+            QuestObjectiveType.FallTime => new FallTimeObjective(data.Condition, data.FloatProperties[0]),
             _ => null,
         };
     }
@@ -129,6 +128,7 @@ public class Quest
             HitFinishObjective hitFinish => new QuestObjectiveData
             {
                 Type = QuestObjectiveType.HitFinish,
+                Condition = hitFinish.Condition,
                 IntProperties = new int[] { hitFinish.FinishMultiplierToHit }
             },
             HitPinsObjective hitPins => new QuestObjectiveData
@@ -216,7 +216,9 @@ public class Quest
     public struct Rarity
     {
         public int ObjectivesCount;
-        public int RewardsCount;
+        public QuestRewardType[] RequiredRewards;
+        public QuestRewardType[] RandomRewards;
+        public int RandomRewardsCount;
         public float Chance;
         public Color Color;
     }

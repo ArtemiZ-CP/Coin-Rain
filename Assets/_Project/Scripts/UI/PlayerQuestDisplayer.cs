@@ -6,6 +6,8 @@ public class PlayerQuestDisplayer : MonoBehaviour
 {
     [SerializeField] private TMP_Text _questDescription;
     [SerializeField] private Image _progressBar;
+    [SerializeField] private Color _normalColor;
+    [SerializeField] private Color _negativeColor;
 
     private QuestObjective _currentQuestObjective;
 
@@ -27,7 +29,7 @@ public class PlayerQuestDisplayer : MonoBehaviour
         _currentQuestObjective = questObjective;
         _currentQuestObjective.OnObjectiveProgressChanged += UpdateProgressBar;
 
-        UpdateProgressBar(0);
+        UpdateProgressBar(0, negative: false);
         SetDescriptionText(questObjective);
     }
 
@@ -36,7 +38,7 @@ public class PlayerQuestDisplayer : MonoBehaviour
         _questDescription.text = questObjective.GetDescriptionText();
     }
 
-    private void UpdateProgressBar(float progress)
+    private void UpdateProgressBar(float progress, bool negative)
     {
         if (_currentQuestObjective == null)
         {
@@ -44,5 +46,6 @@ public class PlayerQuestDisplayer : MonoBehaviour
         }
 
         _progressBar.fillAmount = progress;
+        _progressBar.color = negative ? _negativeColor : _normalColor;
     }
 }

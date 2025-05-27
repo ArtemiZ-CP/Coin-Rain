@@ -11,10 +11,10 @@ public class CameraSize : MonoBehaviour
     {
         PinConstants pinConstants = GameConstants.Instance.PinConstants;
 
-        float downBorder = -1 * PlayerMapUpgradesData.HeightUpgrade * pinConstants.OffsetBetweenLines;
+        float downBorder = -1 * PlayerMapUpgradesData.MapHeight * pinConstants.OffsetBetweenLines;
         float height = _upBorder - downBorder;
         float widthPaddingPersantage = (_uiPanel.rect.xMax + _uiPanel.position.x) * 2 / _camera.pixelWidth;
-        float width = (PlayerMapUpgradesData.WidthUpgrade + 1) * 2 * pinConstants.OffsetBetweenPinsInLine;
+        float width = (PlayerMapUpgradesData.MapWidth + 1) * 2 * pinConstants.OffsetBetweenPinsInLine;
         float widthPadding = width / (1 - widthPaddingPersantage);
         float aspect = _camera.aspect;
         float sizeByHeight = height / 2f;

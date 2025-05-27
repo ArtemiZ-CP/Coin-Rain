@@ -8,7 +8,7 @@ public class HitPinsObjective : QuestObjective
     public int PinsCount => _pinsCount;
     public Pin.Type PinType => _pinType;
 
-    public HitPinsObjective(int pinsCount, Pin.Type pinType)
+    public HitPinsObjective(Condition condition, int pinsCount, Pin.Type pinType) : base(condition)
     {
         _pinsCount = pinsCount;
         _pinType = pinType;
@@ -28,13 +28,7 @@ public class HitPinsObjective : QuestObjective
         }
 
         _currentPinsCount++;
-
-        ChangeObjectiveProgress((float)_currentPinsCount / _pinsCount);
-
-        if (_currentPinsCount >= _pinsCount)
-        {
-            SetCompleted();
-        }
+        TryComplete(_currentPinsCount, _pinsCount);
     }
 
     public override void OnReset()

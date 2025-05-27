@@ -302,6 +302,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _questDescription: {fileID: 712539869993265708}
   _progressBar: {fileID: 5056816029586422385}
+  _normalColor: {r: 0, g: 1, b: 0, a: 1}
+  _negativeColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &6273094260876670589
 GameObject:
   m_ObjectHideFlags: 0

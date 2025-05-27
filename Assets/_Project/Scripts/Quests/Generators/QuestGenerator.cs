@@ -45,7 +45,7 @@ public class QuestGenerator : MonoBehaviour
         Quest.Data multiData = new()
         {
             ObjectivesData = CreateObjectives(rarity.ObjectivesCount),
-            RewardsData = CreateRewards(rarity.RewardsCount),
+            RewardsData = CreateRewards(rarity),
             Rarity = rarity
         };
 
@@ -54,19 +54,16 @@ public class QuestGenerator : MonoBehaviour
 
     private QuestObjectiveData[] CreateObjectives(int objectivesCount)
     {
-        QuestObjectiveData[] questObjectiveData = GetRandomObjectives(objectivesCount);
+        List<QuestObjectiveData> questObjectiveData = GetRandomObjectives(objectivesCount);
 
-        for (int i = 0; i < questObjectiveData.Length; i++)
-        {
-            SetupRandomObjective(ref questObjectiveData[i]);
-        }
+        ObjectiveGenerator.SetupRandomObjectives(questObjectiveData);
 
-        return questObjectiveData;
+        return questObjectiveData.ToArray();
     }
 
-    private QuestRewardData[] CreateRewards(int rewardsCount)
+    private QuestRewardData[] CreateRewards(Quest.Rarity rarity)
     {
-        QuestRewardData[] questRewardDatas = GetRandomRewards(rewardsCount);
+        QuestRewardData[] questRewardDatas = GetRandomRewards(rarity);
 
         for (int i = 0; i < questRewardDatas.Length; i++)
         {
@@ -80,28 +77,6 @@ public class QuestGenerator : MonoBehaviour
     {
         int rarityIndex = GetRandomIndex(i => _questRarities[i].Chance, _questRarities.Length);
         return _questRarities[rarityIndex];
-    }
-
-    private void SetupRandomObjective(ref QuestObjectiveData questObjectiveData)
-    {
-        switch (questObjectiveData.Type)
-        {
-            case QuestObjectiveType.HitFinish:
-                questObjectiveData.IntProperties = ObjectiveGenerator.GetHitFinishObjectiveData();
-                break;
-            case QuestObjectiveType.HitPins:
-                questObjectiveData.IntProperties = ObjectiveGenerator.GetHitPinsObjectiveData();
-                break;
-            case QuestObjectiveType.EarnCoinsByOneBall:
-                questObjectiveData.FloatProperties = ObjectiveGenerator.GetEarnCoinsByOneBallObjectiveData();
-                break;
-            case QuestObjectiveType.EarnCoinsByAllBalls:
-                questObjectiveData.FloatProperties = ObjectiveGenerator.GetEarnCoinsByAllBallsObjectiveData();
-                break;
-            case QuestObjectiveType.FallTime:
-                questObjectiveData.FloatProperties = ObjectiveGenerator.GetFallTimeObjectiveData();
-                break;
-        }
     }
 
     private void SetupRandomReward(ref QuestRewardData questRewardData)
@@ -126,10 +101,10 @@ public class QuestGenerator : MonoBehaviour
         }
     }
 
-    private QuestObjectiveData[] GetRandomObjectives(int objectivesCount)
+    private List<QuestObjectiveData> GetRandomObjectives(int objectivesCount)
     {
         List<ObjectiveSampleData> objectives = _objectiveSamples.ToList();
-        QuestObjectiveData[] questObjectiveDatas = new QuestObjectiveData[objectivesCount];
+        List<QuestObjectiveData> questObjectiveDatas = new();
 
         for (int i = 0; i < objectivesCount; i++)
         {
@@ -140,7 +115,7 @@ public class QuestGenerator : MonoBehaviour
 
             int objectiveIndex = GetRandomIndex(i => objectives[i].Chance, objectives.Count);
             QuestObjectiveData objectiveData = objectives[objectiveIndex].QuestObjectiveData;
-            questObjectiveDatas[i] = objectiveData;
+            questObjectiveDatas.Add(objectiveData);
 
             for (int j = objectives.Count - 1; j >= 0; j--)
             {
@@ -154,12 +129,12 @@ public class QuestGenerator : MonoBehaviour
         return questObjectiveDatas;
     }
 
-    private QuestRewardData[] GetRandomRewards(int rewardsCount)
+    private QuestRewardData[] GetRandomRewards(Quest.Rarity rarity)
     {
         List<RewardSampleData> rewards = _rewardSamples.ToList();
-        QuestRewardData[] questRewardData = new QuestRewardData[rewardsCount];
+        List<QuestRewardData> questRewardData = new();
 
-        for (int i = 0; i < rewardsCount; i++)
+        for (int i = 0; i < rarity.RandomRewardsCount; i++)
         {
             if (rewards.Count == 0)
             {
@@ -167,11 +142,11 @@ public class QuestGenerator : MonoBehaviour
             }
 
             int rewardIndex = GetRandomIndex(i => rewards[i].Chance, rewards.Count);
-            questRewardData[i] = rewards[rewardIndex].QuestRewardData;
+            questRewardData.Add(rewards[rewardIndex].QuestRewardData);
             rewards.RemoveAt(rewardIndex);
         }
 
-        return questRewardData;
+        return questRewardData.ToArray();
     }
 
     private int GetRandomIndex(Func<int, float> getChanceByIndex, int length)

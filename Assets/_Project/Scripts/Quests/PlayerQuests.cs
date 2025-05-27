@@ -5,6 +5,8 @@ public class PlayerQuests : MonoBehaviour
 {
     private Quest _activeQuest;
 
+    public Quest ActiveQuest => _activeQuest;
+
     public event Action<Quest> OnQuestsUpdated;
 
     private void Awake()

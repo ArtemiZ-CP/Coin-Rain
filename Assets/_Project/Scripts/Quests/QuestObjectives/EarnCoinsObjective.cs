@@ -4,7 +4,7 @@ public class EarnCoinsObjective : QuestObjective
 
     public float CoinsCount => _coinsCount;
 
-    public EarnCoinsObjective(float coinsCount)
+    public EarnCoinsObjective(Condition condition, float coinsCount) : base(condition)
     {
         _coinsCount = coinsCount;
         PlayerBall.OnBallHitPin += OnBallHitPin;
@@ -34,9 +34,6 @@ public class EarnCoinsObjective : QuestObjective
 
     private void OnBallFinished(PlayerBall playerBall, int finishMultiplier, float coins)
     {
-        if (coins >= _coinsCount)
-        {
-            SetCompleted();
-        }
+        TryComplete(coins, _coinsCount);
     }
 }

@@ -8,18 +8,26 @@ public class GetNewQuestsButton : MonoBehaviour
 
     public event System.Action OnClick;
 
+    private void Awake()
+    {
+        if (_playerQuests.ActiveQuest == null)
+        {
+            ShowButton();
+        }
+    }
+
     private void OnEnable()
     {
         _button.onClick.AddListener(HandleButtonClick);
         SelectQuestButton.OnQuestSelected += HideButton;
-        _playerQuests.OnQuestsUpdated += ShowButton;
+        _playerQuests.OnQuestsUpdated += UpdateButton;
     }
 
     private void OnDisable()
     {
         _button.onClick.RemoveListener(HandleButtonClick);
         SelectQuestButton.OnQuestSelected -= HideButton;
-        _playerQuests.OnQuestsUpdated -= ShowButton;
+        _playerQuests.OnQuestsUpdated -= UpdateButton;
     }
 
     private void HandleButtonClick()
@@ -31,14 +39,19 @@ public class GetNewQuestsButton : MonoBehaviour
     {
         _button.gameObject.SetActive(false);
     }
-    
-    private void ShowButton(Quest quest)
+
+    private void UpdateButton(Quest quest)
     {
         if (quest != null)
         {
             return;
         }
 
+        ShowButton();
+    }
+
+    private void ShowButton()
+    {
         _button.gameObject.SetActive(true);
     }
 }

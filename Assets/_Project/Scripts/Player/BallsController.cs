@@ -21,7 +21,7 @@ public class BallsController : MonoBehaviour
 
     public static event System.Action<PlayerBall> OnBallDropped;
     public static event System.Action<PlayerBall, int, float> OnBallFinished;
-    public static event System.Action<PlayerBall, float> OnAllBallsFinished;
+    public static event System.Action<float> OnAllBallsFinished;
     public static event System.Action OnFixedUpdate;
     public static event System.Action OnReset;
 
@@ -82,7 +82,7 @@ public class BallsController : MonoBehaviour
         }
 
         _isMooving = true;
-        _maxX = (PlayerMapUpgradesData.WidthUpgrade + 0.5f) * GameConstants.Instance.PinConstants.OffsetBetweenPinsInLine;
+        _maxX = (PlayerMapUpgradesData.MapWidth + 0.5f) * GameConstants.Instance.PinConstants.OffsetBetweenPinsInLine;
     }
 
     public void PointerUp()
@@ -134,7 +134,7 @@ public class BallsController : MonoBehaviour
 
         if (_pool.CountActive == 0)
         {
-            OnAllBallsFinished?.Invoke(playerBall, _currentCoins);
+            OnAllBallsFinished?.Invoke(_currentCoins);
             Reset();
         }
     }

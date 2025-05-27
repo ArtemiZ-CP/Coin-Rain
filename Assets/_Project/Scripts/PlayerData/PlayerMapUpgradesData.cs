@@ -7,19 +7,19 @@ public static class PlayerMapUpgradesData
     public const float DefaultGameSpeed = 1f;
     public const int DefaultWidth = 1;
     public const int DefaultHeight = 3;
-    public const int DefaultWinAreasUpgrade = 0;
+    public const int DefaultMinFinishMultiplier = 0;
 
     private static bool _isUpgradeUnlocked;
     private static float _gameSpeedUpgrade;
-    private static int _widthUpgrade;
-    private static int _heightUpgrade;
-    private static int _winAreasUpgrade;
+    private static int _mapWidth;
+    private static int _mapHeight;
+    private static int _minFinishMultiplier;
 
     public static bool IsUpgradeUnlocked => _isUpgradeUnlocked;
     public static float GameSpeedUpgrade => _gameSpeedUpgrade;
-    public static int WidthUpgrade => _widthUpgrade;
-    public static int HeightUpgrade => _heightUpgrade;
-    public static int WinAreasUpgrade => _winAreasUpgrade;
+    public static int MapWidth => _mapWidth;
+    public static int MapHeight => _mapHeight;
+    public static int MinFinishMultiplier => _minFinishMultiplier;
 
     public static event System.Action OnMapUpdate;
     public static event System.Action OnFinishUpdate;
@@ -29,9 +29,9 @@ public static class PlayerMapUpgradesData
     {
         _isUpgradeUnlocked = DefaultUpgradesUnlocked;
         _gameSpeedUpgrade = DefaultGameSpeed;
-        _widthUpgrade = DefaultWidth;
-        _heightUpgrade = DefaultHeight;
-        _winAreasUpgrade = DefaultWinAreasUpgrade;
+        _mapWidth = DefaultWidth;
+        _mapHeight = DefaultHeight;
+        _minFinishMultiplier = DefaultMinFinishMultiplier;
 
         OnMapUpdate?.Invoke();
         OnFinishUpdate?.Invoke();
@@ -58,7 +58,7 @@ public static class PlayerMapUpgradesData
 
         OnUpgradePin?.Invoke(upgradeType);
     }
-    
+
     public static void SetGameSpeed(float value)
     {
         if (value < 0)
@@ -72,25 +72,24 @@ public static class PlayerMapUpgradesData
 
     public static void IncreaseWidth()
     {
-        _widthUpgrade++;
+        _mapWidth++;
         OnMapUpdate?.Invoke();
     }
 
     public static void IncreaseHeight()
     {
-        _heightUpgrade++;
+        _mapHeight++;
         OnMapUpdate?.Invoke();
     }
 
-    public static void SetWinAreasUpgrade(int value)
+    public static void IncreaseFinishMultiplier(int value = 1)
     {
-        _winAreasUpgrade = value;
-        OnFinishUpdate?.Invoke();
-    }
+        if (value < 1)
+        {
+            return;
+        }
 
-    public static void IncreaseWinAreaMultiplier()
-    {
-        _winAreasUpgrade++;
+        _minFinishMultiplier += value;
         OnFinishUpdate?.Invoke();
     }
 }

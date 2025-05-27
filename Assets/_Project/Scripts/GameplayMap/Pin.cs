@@ -56,7 +56,7 @@ public class Pin : MonoBehaviour
         UpdateColor();
     }
 
-    public bool Touch(PlayerBall playerBall, out float coins)
+    public bool TryHit(PlayerBall playerBall, out float coins)
     {
         if (_isTouched)
         {
@@ -69,7 +69,7 @@ public class Pin : MonoBehaviour
         coins = _pinType switch
         {
             Type.Base => PlayerPinsData.RewardFromPin,
-            Type.Gold => PlayerPinsData.GoldPinsValueUpgrade * PlayerPinsData.RewardFromPin,
+            Type.Gold => PlayerPinsData.GoldPinsValue * PlayerPinsData.RewardFromPin,
             Type.Multiplying => TouchMultiplierPin(playerBall),
             Type.Bomb => TouchBombPin(playerBall),
             _ => throw new System.NotImplementedException(),
@@ -107,7 +107,7 @@ public class Pin : MonoBehaviour
     {
         float coins = PlayerPinsData.RewardFromPin;
 
-        for (int i = 0; i < PlayerPinsData.MultiPinsValueUpgrade; i++)
+        for (int i = 0; i < PlayerPinsData.MultiPinsValue; i++)
         {
             PlayerBall newBall = BallsController.Instance.SpawnBall(playerBall.Position);
             newBall.SetRandomImpulse();

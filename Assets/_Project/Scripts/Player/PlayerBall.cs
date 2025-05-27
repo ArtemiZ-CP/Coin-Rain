@@ -52,7 +52,7 @@ public class PlayerBall : MonoBehaviour
 
     public void OnPinHit(Pin pin)
     {
-        if (pin.Touch(this, out float coins))
+        if (pin.TryHit(this, out float coins))
         {
             _temporaryCoins += coins;
             OnCoinsChanged?.Invoke(_temporaryCoins);

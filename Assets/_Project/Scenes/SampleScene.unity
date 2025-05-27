@@ -5082,22 +5082,24 @@ MonoBehaviour:
   _selectQuestWindow: {fileID: 1146502242}
   _chooseQuestsCount: 3
   _questRarities:
-  - ObjectivesCount: 1
-    RewardsCount: 2
+  - ObjectivesCount: 5
+    RequiredRewards: 00000000
+    RandomRewards: 
+    RandomRewardsCount: 0
     Chance: 1
-    Color: {r: 0, g: 1, b: 0.14653754, a: 1}
+    Color: {r: 0.07539296, g: 1, b: 0, a: 1}
   - ObjectivesCount: 2
-    RewardsCount: 2
+    RequiredRewards: 00000000
+    RandomRewards: 02000000030000000400000005000000
+    RandomRewardsCount: 1
     Chance: 0.5
-    Color: {r: 0, g: 0.17699146, b: 1, a: 1}
+    Color: {r: 0, g: 0.26723528, b: 1, a: 1}
   - ObjectivesCount: 3
-    RewardsCount: 2
+    RequiredRewards: 0000000001000000
+    RandomRewards: 02000000030000000400000005000000
+    RandomRewardsCount: 1
     Chance: 0.1
-    Color: {r: 1, g: 0.9490196, b: 0, a: 1}
-  - ObjectivesCount: 3
-    RewardsCount: 2
-    Chance: 0.1
-    Color: {r: 1, g: 0.8691972, b: 0, a: 1}
+    Color: {r: 1, g: 0.8405011, b: 0, a: 1}
   _objectiveSamples:
   - QuestObjectiveData:
       Type: 0
@@ -6622,6 +6624,50 @@ MonoBehaviour:
   _costText: {fileID: 765232664}
   _upgrades:
     Datas: []
+--- !u!1 &804113518
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 804113519}
+  - component: {fileID: 804113520}
+  m_Layer: 0
+  m_Name: PlayerDataLoader
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &804113519
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 804113518}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1322348683}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &804113520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 804113518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41147075fcce64e1a8dbb56c2d1f8d08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &814397449
 GameObject:
   m_ObjectHideFlags: 0
@@ -10369,6 +10415,7 @@ Transform:
   m_Children:
   - {fileID: 99557068}
   - {fileID: 596941155}
+  - {fileID: 804113519}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1327960120

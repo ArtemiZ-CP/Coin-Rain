@@ -1,9 +1,10 @@
 public class HitFinishObjective : QuestObjective
 {
     private readonly int _finishMultiplierToHit;
+
     public int FinishMultiplierToHit => _finishMultiplierToHit;
 
-    public HitFinishObjective(int finishMultiplierToHit)
+    public HitFinishObjective(Condition condition, int finishMultiplierToHit) : base(condition)
     {
         _finishMultiplierToHit = finishMultiplierToHit;
         BallsController.OnBallFinished += OnBallFinished;
@@ -16,9 +17,6 @@ public class HitFinishObjective : QuestObjective
 
     private void OnBallFinished(PlayerBall playerBall, int finishMultiplier, float coint)
     {
-        if (finishMultiplier == _finishMultiplierToHit)
-        {
-            SetCompleted();
-        }
+        TryComplete(finishMultiplier, _finishMultiplierToHit);
     }
 }
