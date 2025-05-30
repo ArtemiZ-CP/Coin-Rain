@@ -82,7 +82,7 @@ public class BallsController : MonoBehaviour
         }
 
         _isMooving = true;
-        _maxX = (PlayerMapUpgradesData.MapWidth + 0.5f) * GameConstants.Instance.PinConstants.OffsetBetweenPinsInLine;
+        _maxX = (PlayerMapData.MapWidth + 0.5f) * GameConstants.Instance.PinConstants.OffsetBetweenPinsInLine;
     }
 
     public void PointerUp()
@@ -106,7 +106,7 @@ public class BallsController : MonoBehaviour
         return newPlayerBall;
     }
 
-    public float Blast(Pin pin, PlayerBall playerBall) => _pinsMap.Blast(pin, playerBall);
+    public float Blast(PinObject pin, PlayerBall playerBall, int range, float coins) => _pinsMap.Blast(pin, playerBall, range, coins);
 
     private void ActionOnGetBall(PlayerBall ball)
     {

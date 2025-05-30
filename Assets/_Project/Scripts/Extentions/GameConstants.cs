@@ -28,7 +28,7 @@ public struct PinConstants
 {
     public PinsLine Line1Prefab;
     public PinsLine Line2Prefab;
-    public Pin PinPrefab;
+    public PinObject PinPrefab;
     public WinArea WinAreaPrefab;
     public float OffsetBetweenPinsInLine;
     public float MultiplyingBallImpulse;

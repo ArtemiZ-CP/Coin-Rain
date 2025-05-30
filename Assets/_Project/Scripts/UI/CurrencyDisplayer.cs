@@ -6,7 +6,6 @@ public class CurrencyDisplayer : MonoBehaviour
 {
     private static readonly Dictionary<PlayerBall, float> _temporaryCoins = new();
 
-    [SerializeField] private TMP_Text _diamondsText;
     [SerializeField] private TMP_Text _mainCoinsText;
     [SerializeField] private TMP_Text _temporaryCoinsText;
 
@@ -22,22 +21,21 @@ public class CurrencyDisplayer : MonoBehaviour
     private void OnEnable()
     {
         UpdateCurrencyText();
-        PlayerCurrencyData.OnCurrencyChanged += UpdateCurrencyText;
+        PlayerCoinsData.OnCurrencyChanged += UpdateCurrencyText;
         PlayerBall.OnTemporaryCoinsChanged += UpdateTemporaryCoinsText;
         BallsController.OnBallDropped += ResetTemporaryCoinsText;
     }
 
     private void OnDisable()
     {
-        PlayerCurrencyData.OnCurrencyChanged -= UpdateCurrencyText;
+        PlayerCoinsData.OnCurrencyChanged -= UpdateCurrencyText;
         PlayerBall.OnTemporaryCoinsChanged -= UpdateTemporaryCoinsText;
         BallsController.OnBallDropped -= ResetTemporaryCoinsText;
     }
 
     private void UpdateCurrencyText()
     {
-        _mainCoinsText.text = $"{PlayerCurrencyData.Coins:0.#} Coins";
-        _diamondsText.text = $"{PlayerCurrencyData.Diamonds} Diamonds";
+        _mainCoinsText.text = $"{PlayerCoinsData.Coins:0.#} Coins";
     }
 
     private void UpdateTemporaryCoinsText(PlayerBall playerBall, float coins)

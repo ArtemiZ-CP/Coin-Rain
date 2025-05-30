@@ -2,8 +2,8 @@ public static class PlayerData
 {
     public static void Reset()
     {
-        PlayerCurrencyData.Reset();
-        PlayerPinsData.Reset();
-        PlayerMapUpgradesData.Reset();
+        PlayerCoinsData.Reset();
+        Pin.ResetAll();
+        PlayerMapData.Reset();
     }
 }

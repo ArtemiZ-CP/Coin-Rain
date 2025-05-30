@@ -50,21 +50,21 @@ public class PlayerBall : MonoBehaviour
         _rigidbody.transform.localPosition = position;
     }
 
-    public void OnPinHit(Pin pin)
+    public void OnPinHit(PinObject pin)
     {
-        if (pin.TryHit(this, out float coins))
+        if (pin.TryTouch(this, out float coins))
         {
             _temporaryCoins += coins;
             OnCoinsChanged?.Invoke(_temporaryCoins);
             OnTemporaryCoinsChanged?.Invoke(this, _temporaryCoins);
-            OnBallHitPin?.Invoke(this, pin.PinType);
+            OnBallHitPin?.Invoke(this, pin.PinItem.Type);
         }
     }
 
     public void OnWinAreaHit(WinArea winArea)
     {
         _temporaryCoins *= winArea.Multiplier;
-        PlayerCurrencyData.AddCoins(_temporaryCoins);
+        PlayerCoinsData.AddCoins(_temporaryCoins);
         OnCoinsChanged?.Invoke(_temporaryCoins);
         OnTemporaryCoinsChanged?.Invoke(this, _temporaryCoins);
         OnBallFinished?.Invoke(this, winArea.Multiplier, _temporaryCoins);
