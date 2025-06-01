@@ -8,13 +8,6 @@ public class PinsLine : MonoBehaviour
 
     public IReadOnlyList<PinObject> Pins => _pins;
 
-    public static int GetPinsCount(bool firstLine)
-    {
-        int pinsCount = firstLine ? PlayerMapData.MapWidth * 2 + 1 : PlayerMapData.MapWidth * 2 + 2;
-        return pinsCount;
-    }
-
-    [ContextMenu("Update Pins")]
     public void UpdatePins()
     {
         PinConstants pinConstants = GameConstants.Instance.PinConstants;
@@ -31,7 +24,7 @@ public class PinsLine : MonoBehaviour
             }
         }
 
-        int pinsCount = GetPinsCount(_firstLine);
+        int pinsCount = PlayerMapData.GetPinsCount(_firstLine);
 
         for (int i = 0; i < pinsCount; i++)
         {
@@ -62,14 +55,6 @@ public class PinsLine : MonoBehaviour
 
             pin.ResetPin(pinPosition);
             _pins.Add(pin);
-        }
-    }
-
-    public void Reset()
-    {
-        foreach (PinObject pin in _pins)
-        {
-            pin.ResetPin();
         }
     }
 }

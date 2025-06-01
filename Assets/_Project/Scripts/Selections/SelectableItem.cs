@@ -6,10 +6,15 @@ public class SelectableItem : MonoBehaviour
 {
     [SerializeField] private Button _selectButton;
     [SerializeField] private TMP_Text _priceText;
+    [SerializeField] private Image _itemImage;
+    [SerializeField] private Image _sideImage;
+    [SerializeField] private Color _ableToBuyColor = Color.white;
+    [SerializeField] private Color _notAbleToBuyColor = Color.red;
 
     private Item _item;
+    private bool _haveToBuy;
 
-    public event System.Action<SelectableItem> OnItemSelected;
+    public event System.Action<Item> OnItemSelected;
 
     private void OnEnable()
     {
@@ -23,28 +28,38 @@ public class SelectableItem : MonoBehaviour
         PlayerCoinsData.OnCurrencyChanged -= UpdatePriceText;
     }
 
-    public void Initialize(Item item)
+    public void Initialize(Item item, bool haveToBuy)
     {
         _item = item;
-        HidePriceText();
+        _haveToBuy = haveToBuy;
+        _itemImage.sprite = _item.ItemSprite;
+        _sideImage.sprite = _item.SideSprite;
+        _sideImage.gameObject.SetActive(_item.SideSprite != null);
+
+        UpdatePriceText();
     }
 
     private void OnSelectButtonClicked()
     {
-        // Handle the selection logic here
-        Debug.Log($"{gameObject.name} selected.");
+        if (_haveToBuy && PlayerCoinsData.TryToBuy(_item.Price) == false)
+        {
+            return;
+        }
+
+        OnItemSelected?.Invoke(_item);
     }
 
     private void UpdatePriceText()
     {
-        _priceText.gameObject.SetActive(true);
-        Color textColor = _item.Price > PlayerCoinsData.Coins ? Color.red : Color.white;
+        _priceText.gameObject.SetActive(_haveToBuy);
+
+        if (_haveToBuy == false)
+        {
+            return;
+        }
+
+        Color textColor = _item.Price > PlayerCoinsData.Coins ? _notAbleToBuyColor : _ableToBuyColor;
         _priceText.color = textColor;
         _priceText.text = $"{_item.Price} Coins";
-    }
-
-    private void HidePriceText()
-    {
-        _priceText.gameObject.SetActive(false);
     }
 }

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class CurrencyDisplayer : MonoBehaviour
+public class CurrencyView : MonoBehaviour
 {
     private static readonly Dictionary<PlayerBall, float> _temporaryCoins = new();
 

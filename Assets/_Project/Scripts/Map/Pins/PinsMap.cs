@@ -5,7 +5,8 @@ public class PinsMap : MonoBehaviour
 {
     public static PinsMap Instance { get; private set; }
 
-    [SerializeField] private List<PinsLine> _pinLines = new();
+    private readonly List<PinsLine> _pinLines = new();
+
     [SerializeField] private PinItemsScriptableObject _pinItemsScriptableObject = default;
 
     private PinConstants _pinConstants = default;
@@ -23,16 +24,8 @@ public class PinsMap : MonoBehaviour
         _pinConstants = GameConstants.Instance.PinConstants;
     }
 
-    [ContextMenu("Update Pins")]
     public void UpdatePins()
     {
-#if UNITY_EDITOR
-        if (Application.isPlaying == false)
-        {
-            _pinConstants = GameConstants.Instance.PinConstants;
-        }
-#endif
-
         _pinLines.Clear();
 
         for (int i = transform.childCount - 1; i >= 0; i--)
@@ -47,7 +40,7 @@ public class PinsMap : MonoBehaviour
             }
         }
 
-        for (int i = 0; i < PlayerMapData.MapHeight; i++)
+        for (int i = 0; i < PlayerMapData.LinesCount; i++)
         {
             PinsLine pinsLine;
 
@@ -74,7 +67,6 @@ public class PinsMap : MonoBehaviour
 
         foreach (PinsLine pinsLine in _pinLines)
         {
-            pinsLine.Reset();
             pins.AddRange(pinsLine.Pins);
         }
 
@@ -94,7 +86,8 @@ public class PinsMap : MonoBehaviour
         {
             foreach (PinObject pin in pinsLine.Pins)
             {
-                if (blastPin.transform.position.IsEnoughClose(pin.transform.position, blastRange) == false)
+                if (pin == blastPin ||
+                    blastPin.transform.position.IsEnoughClose(pin.transform.position, blastRange) == false)
                 {
                     continue;
                 }

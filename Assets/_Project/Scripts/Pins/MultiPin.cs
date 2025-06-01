@@ -6,7 +6,7 @@ public class MultiPin : Pin
 
     public override void Reset()
     {
-        _coinsReward = DefaultReward;
+        coinsReward = DefaultReward;
     }
 
     public override float Touch(PinObject pin, PlayerBall playerBall)
@@ -17,7 +17,7 @@ public class MultiPin : Pin
             newBall.SetRandomImpulse();
         }
 
-        return _coinsReward;
+        return coinsReward;
     }
 
     public override void Upgrade()

@@ -6,14 +6,15 @@ public class PlayerBall : MonoBehaviour
     private const float MinVelocityTime = 2.0f;
 
     [SerializeField] private Rigidbody2D _rigidbody;
+    [SerializeField] private PlayerBallCollider _ballCollider;
 
     private PinConstants _pinConstants;
     private float _lowVelocityTimer = 0f;
     private float _temporaryCoins = 0f;
     private bool _isMoving = false;
 
-    public float TemporaryCoins => _temporaryCoins;
     public Vector3 Position => _rigidbody.transform.localPosition;
+    public Vector3 Scale => _rigidbody.transform.lossyScale;
 
     public static event System.Action<PlayerBall, float> OnTemporaryCoinsChanged;
     public static event System.Action<PlayerBall, Pin.Type> OnBallHitPin;

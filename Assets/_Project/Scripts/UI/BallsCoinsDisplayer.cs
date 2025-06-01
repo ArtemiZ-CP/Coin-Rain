@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-public class BallsCoinsDisplayer : MonoBehaviour
+public class BallsCoinsView : MonoBehaviour
 {
     [SerializeField] private PlayerBall _ball;
     [SerializeField] private TMP_Text _coinsText;

@@ -20,7 +20,7 @@ public class GameplayMap : MonoBehaviour
         Pin.OnPinsUpdate -= UpdatePins;
     }
 
-    [ContextMenu("Update Map")]
+    [ContextMenu("Reset Map")]
     private void UpdateMap()
     {
         _pinsMap.UpdatePins();

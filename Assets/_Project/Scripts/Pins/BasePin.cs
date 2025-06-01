@@ -1,20 +1,18 @@
+using UnityEngine;
+
 public class BasePin : Pin
 {
     private const int DefaultReward = 1;
 
-    public BasePin()
-    {
-        _count = int.MaxValue;
-    }
-
     public override void Reset()
     {
-        _coinsReward = DefaultReward;
+        coinsReward = DefaultReward;
+        count = int.MaxValue;
     }
 
     public override float Touch(PinObject pin, PlayerBall playerBall)
     {
-        return _coinsReward;
+        return coinsReward;
     }
 
     public override void Upgrade()

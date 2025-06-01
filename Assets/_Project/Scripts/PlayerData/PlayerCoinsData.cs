@@ -1,6 +1,6 @@
 public static class PlayerCoinsData
 {
-    public const float DefaultCoins = 0;
+    public const float DefaultCoins = 10000;
 
     private static float _coins;
 

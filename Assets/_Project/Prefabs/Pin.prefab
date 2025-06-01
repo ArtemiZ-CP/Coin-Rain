@@ -335,7 +335,7 @@ CapsuleCollider2D:
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
-  m_Material: {fileID: 6200000, guid: 0abbb7edabb544d2eba8d5c5fcc745f6, type: 2}
+  m_Material: {fileID: 6200000, guid: 8b587b62e8fa444b0bae8621cfbe0877, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -595,8 +595,4 @@ MonoBehaviour:
   _linePin: {fileID: 4023669713623719824}
   _dotPinImage: {fileID: 4835858039744775146}
   _linePinImage: {fileID: 4857835164948198078}
-  _defaultColor: {r: 1, g: 1, b: 1, a: 1}
-  _goldColor: {r: 1, g: 1, b: 0, a: 1}
-  _multiplyingColor: {r: 0, g: 0.2251563, b: 1, a: 1}
-  _bombColor: {r: 0.6698113, g: 0.20059897, b: 0, a: 1}
   _touchedColor: {r: 0.37647063, g: 0.37647063, b: 0.37647063, a: 1}

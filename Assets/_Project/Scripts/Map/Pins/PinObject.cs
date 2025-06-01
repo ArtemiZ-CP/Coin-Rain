@@ -9,21 +9,14 @@ public class PinObject : MonoBehaviour
     [SerializeField] private Color _touchedColor;
 
     private int _position;
-    private bool _isTouched = false;
+    private int _durability;
     private PinItem _pinItem;
 
     public PinItem PinItem => _pinItem;
 
-    public void ResetPin()
-    {
-        ResetPin(_position);
-    }
-
     public void ResetPin(int position)
     {
-        _isTouched = false;
         _position = position;
-        SetPin(_pinItem);
 
         if (_position == 0)
         {
@@ -44,23 +37,29 @@ public class PinObject : MonoBehaviour
                 _linePin.transform.localScale = new Vector3(-1, 1, 1);
             }
         }
+
+        if (_pinItem != null)
+        {
+            _durability = Pin.Get(_pinItem.Type).Durability;
+        }
     }
 
     public void SetPin(PinItem pinItem)
     {
         _pinItem = pinItem;
+        ResetPin();
         UpdateColor();
     }
 
     public bool TryTouch(PlayerBall playerBall, out float coins)
     {
-        if (_isTouched)
+        if (_durability <= 0)
         {
             coins = 0;
             return false;
         }
 
-        _isTouched = true;
+        _durability--;
 
         Pin pin = Pin.Get(_pinItem.Type);
         coins = pin.Touch(this, playerBall);
@@ -69,11 +68,16 @@ public class PinObject : MonoBehaviour
         return true;
     }
 
+    private void ResetPin()
+    {
+        ResetPin(_position);
+    }
+
     private void UpdateColor()
     {
         Color color;
 
-        if (_isTouched)
+        if (_durability <= 0)
         {
             color = _touchedColor;
         }

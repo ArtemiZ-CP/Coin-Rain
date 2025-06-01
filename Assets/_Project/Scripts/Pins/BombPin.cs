@@ -8,12 +8,12 @@ public class BombPin : Pin
 
     public override void Reset()
     {
-        _coinsReward = DefaultReward;
+        coinsReward = DefaultReward;
     }
 
     public override float Touch(PinObject pin, PlayerBall playerBall)
     {
-        return BallsController.Instance.Blast(pin, playerBall, _blastRange, _coinsReward);
+        return BallsController.Instance.Blast(pin, playerBall, _blastRange, coinsReward);
     }
 
     public override void Upgrade()

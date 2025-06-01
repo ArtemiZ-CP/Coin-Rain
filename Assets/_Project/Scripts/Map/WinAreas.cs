@@ -1,27 +1,28 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class WinAreas : MonoBehaviour
 {
-    [SerializeField] private List<WinArea> winAreas = new();
+    private readonly List<WinArea> _winAreas = new();
 
     private void OnEnable()
     {
+        BallsController.OnReset += UpdateAreas;
         PlayerMapData.OnMapUpdate += UpdateAreas;
-        PlayerMapData.OnFinishUpdate += UpdateAreas;
+        PlayerFinishData.OnFinishUpdate += UpdateAreas;
     }
 
     private void OnDisable()
     {
+        BallsController.OnReset -= UpdateAreas;
         PlayerMapData.OnMapUpdate -= UpdateAreas;
-        PlayerMapData.OnFinishUpdate -= UpdateAreas;
+        PlayerFinishData.OnFinishUpdate -= UpdateAreas;
     }
 
-    [ContextMenu("Update Areas")]
     public void UpdateAreas()
     {
-        PinConstants pinConstants = GameConstants.Instance.PinConstants;
-        winAreas.Clear();
+        _winAreas.Clear();
 
         for (int i = transform.childCount - 1; i >= 0; i--)
         {
@@ -35,24 +36,56 @@ public class WinAreas : MonoBehaviour
             }
         }
 
-        int areasCount = (PlayerMapData.MapWidth + 1) * 2;
-        int minFinishMultiplier = PlayerMapData.MinFinishMultiplier;
+        float mapWidth = PlayerMapData.GetMapWidth();
+        float widthSum = 0;
 
-        for (int i = 0; i < areasCount / 2; i++)
+        List<(float finishWidth, PlayerFinishData.FinishData finishData)> finishData = new();
+
+        foreach (PlayerFinishData.FinishType finishType in Enum.GetValues(typeof(PlayerFinishData.FinishType)))
         {
-            SpawnFinish(pinConstants, minFinishMultiplier, areasCount, i, positionMultiplier: 1);
-            SpawnFinish(pinConstants, minFinishMultiplier, areasCount, i, positionMultiplier: -1);
+            PlayerFinishData.FinishData finishCount = PlayerFinishData.GetFinishData(finishType);
+
+            if (finishCount != null && finishCount.Count > 0)
+            {
+                for (int j = 0; j < finishCount.Count; j++)
+                {
+                    finishData.Add((finishCount.Width, finishCount));
+                    widthSum += finishCount.Width;
+                }
+            }
         }
 
-        transform.position = -1 * (PlayerMapData.MapHeight - 1) * pinConstants.OffsetBetweenLines * Vector3.up;
+        System.Random rng = new((int)Time.time);
+        for (int i = finishData.Count - 1; i > 0; i--)
+        {
+            int swapIndex = rng.Next(i + 1);
+            (finishData[swapIndex], finishData[i]) = (finishData[i], finishData[swapIndex]);
+        }
+
+        float widthMultiplier = mapWidth / widthSum;
+        float finishPosition = -mapWidth / 2 + finishData[0].finishWidth * widthMultiplier / 2;
+        PinConstants pinConstants = GameConstants.Instance.PinConstants;
+
+        for (int j = 0; j < finishData.Count; j++)
+        {
+            (float finishWidth, PlayerFinishData.FinishData finish) = finishData[j];
+            SpawnFinish(pinConstants, finish, finishWidth * widthMultiplier, finishPosition);
+
+            if (j < finishData.Count - 1)
+            {
+                finishPosition += finishWidth * widthMultiplier / 2;
+                finishPosition += finishData[j + 1].finishWidth * widthMultiplier / 2;
+            }
+        }
+
+        transform.position = -1 * PlayerMapData.GetMapHeight() * Vector3.up;
     }
 
-    private void SpawnFinish(PinConstants pinConstants, int finishUpgrade, int areasCount, int index, int positionMultiplier)
+    private void SpawnFinish(PinConstants pinConstants, PlayerFinishData.FinishData finish, float width, float finishPosition)
     {
         WinArea winArea = Instantiate(pinConstants.WinAreaPrefab, transform);
-        float positionX = (index - (areasCount - 1) / 2.0f) * pinConstants.OffsetBetweenPinsInLine * positionMultiplier;
-        winArea.transform.localPosition = positionX * Vector3.right;
-        winArea.SetMultiplier(index + finishUpgrade);
-        winAreas.Add(winArea);
+        winArea.transform.localPosition = finishPosition * Vector3.right;
+        winArea.Initialize(finish.Multiplier, width, finish.Type);
+        _winAreas.Add(winArea);
     }
 }

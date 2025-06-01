@@ -12,12 +12,11 @@ public class BallsController : MonoBehaviour
 
     private PlayerBall _targetBall;
     private ObjectPool<PlayerBall> _pool;
+    private bool _controllable = false;
     private bool _isStarting = false;
     private bool _isMooving = false;
     private float _maxX;
     private float _currentCoins;
-
-    public bool IsStarting => _isStarting;
 
     public static event System.Action<PlayerBall> OnBallDropped;
     public static event System.Action<PlayerBall, int, float> OnBallFinished;
@@ -46,14 +45,9 @@ public class BallsController : MonoBehaviour
         );
     }
 
-    private void Start()
-    {
-        Reset();
-    }
-
     private void Update()
     {
-        if (_isStarting)
+        if (_isStarting || _controllable == false)
         {
             return;
         }
@@ -76,18 +70,18 @@ public class BallsController : MonoBehaviour
 
     public void PointerDown()
     {
-        if (_isStarting)
+        if (_isStarting || _controllable == false)
         {
             return;
         }
 
         _isMooving = true;
-        _maxX = (PlayerMapData.MapWidth + 0.5f) * GameConstants.Instance.PinConstants.OffsetBetweenPinsInLine;
+        _maxX = (PlayerMapData.GetMapWidth() - _targetBall.Scale.x) / 2;
     }
 
     public void PointerUp()
     {
-        if (_isStarting)
+        if (_isStarting || _isMooving == false || _controllable == false)
         {
             return;
         }
@@ -96,6 +90,22 @@ public class BallsController : MonoBehaviour
         _isStarting = true;
         _targetBall.Drop();
         OnBallDropped?.Invoke(_targetBall);
+    }
+
+    public void SetControllable(bool value)
+    {
+        _controllable = value;
+    }
+
+    public void Reset()
+    {
+        _currentCoins = 0;
+        _isStarting = false;
+        _targetBall = _pool.Get();
+        _targetBall.Spawn();
+        _pinsMap.Reset();
+        Move(Vector2.zero);
+        OnReset?.Invoke();
     }
 
     public PlayerBall SpawnBall(Vector3 position)
@@ -137,17 +147,6 @@ public class BallsController : MonoBehaviour
             OnAllBallsFinished?.Invoke(_currentCoins);
             Reset();
         }
-    }
-
-    private void Reset()
-    {
-        _currentCoins = 0;
-        _isStarting = false;
-        _targetBall = _pool.Get();
-        _targetBall.Spawn();
-        _pinsMap.Reset();
-        Move(Vector2.zero);
-        OnReset?.Invoke();
     }
 
     private void Move(Vector2 position)

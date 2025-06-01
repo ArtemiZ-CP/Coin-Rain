@@ -1,11 +1,17 @@
 using System;
+using System.Collections.Generic;
 
 public abstract class Pin
 {
-    public const int DefaultPinsCount = 0;
+    private static Dictionary<Type, Pin> _pinInstances = null;
 
-    protected static float _coinsReward;
-    protected static float _count;
+    protected float coinsReward;
+    protected int count = 0;
+    protected int durability = 1;
+
+    public float CoinsReward => coinsReward;
+    public int Count => count;
+    public int Durability => durability;
 
     public static event Action OnPinsUpdate;
 
@@ -16,10 +22,9 @@ public abstract class Pin
 
     public static void ResetAll()
     {
-        foreach (Type pin in GetAllTypes())
+        foreach (Pin pin in _pinInstances.Values)
         {
-            Get(pin).Reset();
-            _count = DefaultPinsCount;
+            pin.Reset();
         }
 
         OnPinsUpdate?.Invoke();
@@ -27,24 +32,73 @@ public abstract class Pin
 
     public static Pin Get(Type type)
     {
-        return type switch
+        _pinInstances ??= new Dictionary<Type, Pin>()
         {
-            Type.Base => new BasePin(),
-            Type.Gold => new GoldPin(),
-            Type.Multiplying => new MultiPin(),
-            Type.Bomb => new BombPin(),
-            _ => throw new NotImplementedException(),
+            { Type.Base, new BasePin() },
+            { Type.Gold, new GoldPin() },
+            { Type.Multiplying, new MultiPin() },
+            { Type.Bomb, new BombPin() }
         };
+
+        if (_pinInstances.TryGetValue(type, out Pin pin))
+        {
+            return pin;
+        }
+
+        return null;
     }
-    
-    public void IncreaseReward(float value)
+
+    public static List<Type> GetRecievedTypes()
     {
-        _coinsReward += value;
+        List<Type> receivedPins = new();
+        Type[] allTypes = GetAllTypes();
+        
+        for (int i = 0; i < allTypes.Length; i++)
+        {
+            Type type = allTypes[i];
+            Pin pin = Get(type);
+
+            if (pin != null && pin.Count > 0)
+            {
+                receivedPins.Add(type);
+            }
+        }
+
+        return receivedPins;
+    }
+
+    public void IncreaseReward(float value = 1)
+    {
+        coinsReward += value;
+    }
+
+    public void IncreaseCount(int value = 1)
+    {
+        count += value;
+        OnPinsUpdate?.Invoke();
+    }
+
+    public void DecreaseCount(int value = 1)
+    {
+        count -= value;
+
+        if (count < 0)
+        {
+            count = 0;
+        }
+
+        OnPinsUpdate?.Invoke();
+    }
+
+    public void IncreaseDurability(int value = 1)
+    {
+        durability += value;
+        OnPinsUpdate?.Invoke();
     }
 
     public float GetPinsCount()
     {
-        return _count;
+        return count;
     }
 
     public abstract void Reset();
