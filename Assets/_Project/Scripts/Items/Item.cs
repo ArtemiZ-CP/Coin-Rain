@@ -1,12 +1,15 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public abstract class Item
 {
+    [SerializeField] private string _name;
     [SerializeField] private float _price;
     [SerializeField] private Sprite _itemSprite;
     [SerializeField] private Rare _rare;
 
+    public string Name => _name;
     public float Price => _price;
     public Rare ItemRare => _rare;
     public Sprite ItemSprite => _itemSprite;

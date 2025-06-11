@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class SelectableItem : MonoBehaviour
 {
     [SerializeField] private Button _selectButton;
+    [SerializeField] private TMP_Text _itemNameText;
     [SerializeField] private TMP_Text _priceText;
     [SerializeField] private Image _itemImage;
     [SerializeField] private Color _ableToBuyColor = Color.white;
@@ -32,6 +33,7 @@ public class SelectableItem : MonoBehaviour
         _item = item;
         _haveToBuy = haveToBuy;
         _itemImage.sprite = _item.ItemSprite;
+        _itemNameText.text = _item.Name;
 
         UpdatePriceText();
     }

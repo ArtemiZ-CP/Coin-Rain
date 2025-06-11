@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: BlessingItems
   m_EditorClassIdentifier: 
   _blessingItems:
-  - _price: 30
+  - _name: Golden Touch
+    _price: 30
     _itemSprite: {fileID: 21300000, guid: 36a000541291b4510ad30c4d74be59c9, type: 3}
     _rare: 0
     _blessingType: 0

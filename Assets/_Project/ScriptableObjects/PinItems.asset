@@ -13,28 +13,28 @@ MonoBehaviour:
   m_Name: PinItems
   m_EditorClassIdentifier: 
   _basePinItem:
+    _name: Base
     _price: 10
     _itemSprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-    _sideSprite: {fileID: 0}
     _rare: 0
     _type: 0
     _color: {r: 1, g: 1, b: 1, a: 1}
   _pinItems:
-  - _price: 10
+  - _name: Gold
+    _price: 10
     _itemSprite: {fileID: 21300000, guid: 0ff3f438b6a864961bdfc94b0154feac, type: 3}
-    _sideSprite: {fileID: 0}
     _rare: 0
     _type: 1
     _color: {r: 1, g: 1, b: 0, a: 1}
-  - _price: 15
+  - _name: Multi
+    _price: 15
     _itemSprite: {fileID: 1080663263997981637, guid: baa5d07df88e646bab22ce6b9318a0c7, type: 3}
-    _sideSprite: {fileID: 0}
     _rare: 0
     _type: 2
     _color: {r: 0, g: 0.68534803, b: 1, a: 1}
-  - _price: 20
+  - _name: Bomb
+    _price: 20
     _itemSprite: {fileID: 21300000, guid: 69cbf49fcdb3a46b6bce10425f4db845, type: 3}
-    _sideSprite: {fileID: 0}
     _rare: 0
     _type: 3
     _color: {r: 1, g: 0.29922482, b: 0, a: 1}
