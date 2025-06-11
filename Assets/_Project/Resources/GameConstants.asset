@@ -21,6 +21,8 @@ MonoBehaviour:
     MultiplyingBallImpulse: 5
     StartBallImpulse: 3
   _blessingItems: {fileID: 11400000, guid: d880dec7db7114a959d738603f9cf69d, type: 2}
-  _constructionItems: {fileID: 11400000, guid: a7d1fdd73458949e0b47cf87aeac47f5, type: 2}
+  _upgradeBlessingItems: {fileID: 11400000, guid: d880dec7db7114a959d738603f9cf69d, type: 2}
+  _mapItems: {fileID: 11400000, guid: a7d1fdd73458949e0b47cf87aeac47f5, type: 2}
   _pinItems: {fileID: 11400000, guid: 2df7fdb3103f445d5942147fca338951, type: 2}
+  _upgradePinItems: {fileID: 11400000, guid: e4946694b93ec4503af951d368174711, type: 2}
   _coinsItems: {fileID: 11400000, guid: 3cac6856891f34e6ba350655d1898349, type: 2}

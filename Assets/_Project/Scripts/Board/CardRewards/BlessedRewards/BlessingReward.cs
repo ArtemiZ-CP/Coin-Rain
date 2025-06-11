@@ -16,4 +16,12 @@ public class BlessingReward : BlessedCardReward
 
         items = Item.GetRandomItems(_blessingItems, 1);
     }
+
+    public override void HandleItemSelected(Item item)
+    {
+        if (item is BlessingItem blessing)
+        {
+            Blessing.Get(blessing.Type).Get();
+        }
+    }
 }

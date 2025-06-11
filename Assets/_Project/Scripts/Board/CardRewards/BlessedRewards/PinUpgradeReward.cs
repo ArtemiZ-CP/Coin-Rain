@@ -1,27 +1,26 @@
 using System.Collections.Generic;
-using System.Linq;
 
-public class CoinsReward : BlessedCardReward
+public class PinUpgradeReward : BlessedCardReward
 {
-    private readonly List<CoinsItem> _coinsItems;
+    private readonly List<PinItem> _pinItems;
 
-    public CoinsReward()
+    public PinUpgradeReward()
     {
-        _coinsItems = GameConstants.Instance.CoinsItemsSO.CoinsItems.ToList();
+        _pinItems = GameConstants.Instance.UpgradePinItemsSO.GetReceivedItems();
     }
 
     public override void GetRewardData(out List<Item> items, out string stageName, out int maxSelectCount, out bool haveToBuy, out bool showCloseButton)
     {
         base.GetRewardData(out items, out stageName, out maxSelectCount, out haveToBuy, out showCloseButton);
 
-        items = Item.GetRandomItems(_coinsItems, 1);
+        items = Item.GetRandomItems(_pinItems, 1);
     }
 
     public override void HandleItemSelected(Item item)
     {
-        if (item is CoinsItem coinsItem)
+        if (item is PinItem pinItem)
         {
-            PlayerCoinsData.AddCoins(coinsItem.Coins);
+            Pin.Get(pinItem.Type).Upgrade();
         }
     }
 }

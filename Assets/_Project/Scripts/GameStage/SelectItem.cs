@@ -6,6 +6,8 @@ public class SelectItem : GameStage
     [SerializeField] private ItemSelectWindow _itemSelectWindow;
 
     private CardReward _cardReward;
+    private int _maxSelectCount;
+    private int _selectedCount;
 
     private void OnEnable()
     {
@@ -29,6 +31,8 @@ public class SelectItem : GameStage
         base.StartStage();
         _cardReward.GetRewardData(out List<Item> items, out string stageName, out int maxSelectCount, out bool haveToBuy, out bool showCloseButton);
         _itemSelectWindow.Show(items, stageName, haveToBuy, showCloseButton);
+        _selectedCount = 0;
+        _maxSelectCount = Mathf.Min(maxSelectCount, items.Count);
     }
 
     public override void EndStage()
@@ -44,15 +48,12 @@ public class SelectItem : GameStage
             return;
         }
 
-        if (item is BlessingItem blessing)
-        {
-            Blessing.Get(blessing.Type).Get();
-        }
-        else if (item is CoinsItem coinsItem)
-        {
-            PlayerCoinsData.AddCoins(coinsItem.Coins);
-        }
+        _cardReward.HandleItemSelected(item);
+        _selectedCount++;
 
-        EndStage();
+        if (_selectedCount >= _maxSelectCount)
+        {
+            EndStage();
+        }
     }
 }

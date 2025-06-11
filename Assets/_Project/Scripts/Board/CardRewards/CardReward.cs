@@ -2,7 +2,6 @@ using System.Collections.Generic;
 
 public abstract class CardReward
 {
-    public abstract CardReward GenerateReward();
     public virtual void GetRewardData(out List<Item> items, out string stageName, out int maxSelectCount, out bool haveToBuy, out bool showCloseButton)
     {
         items = new List<Item>();
@@ -11,4 +10,10 @@ public abstract class CardReward
         haveToBuy = false;
         showCloseButton = true;
     }
+
+    public virtual void HandleItemSelected(Item item)
+    {
+    }
+
+    public abstract CardReward GenerateReward();
 }

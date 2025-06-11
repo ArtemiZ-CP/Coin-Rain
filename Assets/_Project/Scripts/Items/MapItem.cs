@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public class ConstructionItem : Item
+public class MapItem : Item
 {
     [SerializeField] private Type _itemType;
 

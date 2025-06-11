@@ -7,6 +7,8 @@ public class BlessedCardReward : CardReward
     {
         { Type.Blessing, new BlessingReward() },
         { Type.Coins, new CoinsReward() },
+        { Type.PinUpgrade, new PinUpgradeReward() },
+        { Type.MapUpgrade, new MapUpgradeReward() },
     };
 
     public Type GetCardType()
@@ -48,10 +50,10 @@ public class BlessedCardReward : CardReward
     {
         Blessing,
         Coins,
+        PinUpgrade,
+        MapUpgrade,
         // Cleansing,
-        // MapUpgrade,
         // BallUpgrade,
-        // PinUpgrade,
         // CardUpgrade,
         // VIPShop,
         // RestartRound,
