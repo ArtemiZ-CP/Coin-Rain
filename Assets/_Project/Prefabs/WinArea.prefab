@@ -185,6 +185,7 @@ MonoBehaviour:
   _background: {fileID: 7022643973118603131}
   _leftBorder: {fileID: 3078139978711236466}
   _rightBorder: {fileID: 3502162883117146544}
+  _collider: {fileID: 426288498122575985}
   _backgroundColor:
   - Type: 0
     Color: {r: 1, g: 0, b: 0, a: 0.68235296}

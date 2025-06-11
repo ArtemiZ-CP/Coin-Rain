@@ -3,7 +3,10 @@ using System.Collections.Generic;
 
 public abstract class Blessing
 {
-    private static Dictionary<Type, Blessing> _blessingInstances = null;
+    private static readonly Dictionary<Type, Blessing> _blessingInstances = new()
+    {
+        { Type.GoldenTouch, new GoldenTouchBlessing() },
+    };
 
     protected int level = 0;
 
@@ -16,11 +19,6 @@ public abstract class Blessing
 
     public static Blessing Get(Type type)
     {
-        _blessingInstances ??= new Dictionary<Type, Blessing>()
-        {
-            { Type.GoldenTouch, new GoldenTouchBlessing() },
-        };
-
         if (_blessingInstances.TryGetValue(type, out Blessing blessing))
         {
             return blessing;

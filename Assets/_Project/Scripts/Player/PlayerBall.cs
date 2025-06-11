@@ -4,6 +4,7 @@ public class PlayerBall : MonoBehaviour
 {
     private const float MinVelocity = 0.1f;
     private const float MinVelocityTime = 2.0f;
+    private const float MinTimeToHit = 0.1f;
 
     [SerializeField] private Rigidbody2D _rigidbody;
     [SerializeField] private PlayerBallCollider _ballCollider;
@@ -12,6 +13,7 @@ public class PlayerBall : MonoBehaviour
     private float _lowVelocityTimer = 0f;
     private float _temporaryCoins = 0f;
     private bool _isMoving = false;
+    private float _timeFromSpawn = 0f;
 
     public Vector3 Position => _rigidbody.transform.localPosition;
     public Vector3 Scale => _rigidbody.transform.lossyScale;
@@ -44,6 +46,15 @@ public class PlayerBall : MonoBehaviour
         {
             _lowVelocityTimer = 0f;
         }
+        
+        if (_isMoving)
+        {
+            _timeFromSpawn += Time.fixedDeltaTime;
+        }
+        else
+        {
+            _timeFromSpawn = 0f;
+        }
     }
 
     public void SetPosition(Vector3 position)
@@ -53,6 +64,11 @@ public class PlayerBall : MonoBehaviour
 
     public void OnPinHit(PinObject pin)
     {
+        if (_timeFromSpawn < MinTimeToHit)
+        {
+            return;
+        }
+
         if (pin.TryTouch(this, out float coins))
         {
             _temporaryCoins += coins;
@@ -87,6 +103,11 @@ public class PlayerBall : MonoBehaviour
     {
         Vector2 direction = Random.insideUnitCircle.normalized;
         _rigidbody.AddForce(direction * _pinConstants.MultiplyingBallImpulse, ForceMode2D.Impulse);
+    }
+
+    public void SetImpulse(Vector2 direction, float impulse)
+    {
+        _rigidbody.AddForce(direction * impulse, ForceMode2D.Impulse);
     }
 
     public void Spawn()

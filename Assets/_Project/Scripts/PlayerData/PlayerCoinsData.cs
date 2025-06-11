@@ -1,6 +1,6 @@
 public static class PlayerCoinsData
 {
-    public const float DefaultCoins = 10000;
+    private const float InitialCoins = 50f;
 
     private static float _coins;
 
@@ -10,7 +10,7 @@ public static class PlayerCoinsData
 
     public static void Reset()
     {
-        _coins = DefaultCoins;
+        _coins = InitialCoins;
 
         OnCurrencyChanged?.Invoke();
     }

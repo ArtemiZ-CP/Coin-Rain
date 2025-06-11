@@ -19,8 +19,16 @@ public class GameConstants : ScriptableObject
     }
 
     [SerializeField] private PinConstants _pinConstants;
+    [SerializeField] private BlessingItemsScriptableObject _blessingItems;
+    [SerializeField] private ConstructionItemsScriptableObject _constructionItems;
+    [SerializeField] private PinItemsScriptableObject _pinItems;
+    [SerializeField] private CoinsItemScriptableObject _coinsItems;
 
     public PinConstants PinConstants => _pinConstants;
+    public BlessingItemsScriptableObject BlessingItemsSO => _blessingItems;
+    public ConstructionItemsScriptableObject ConstructionItemsSO => _constructionItems;
+    public PinItemsScriptableObject PinItemsSO => _pinItems;
+    public CoinsItemScriptableObject CoinsItemsSO => _coinsItems;
 }
 
 [Serializable]
@@ -32,6 +40,7 @@ public struct PinConstants
     public WinArea WinAreaPrefab;
     public float OffsetBetweenPinsInLine;
     public float MultiplyingBallImpulse;
+    public float StartBallImpulse;
     
     public readonly float OffsetBetweenLines => OffsetBetweenPinsInLine * Mathf.Sqrt(3) / 2;
 }

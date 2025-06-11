@@ -40,7 +40,7 @@ public class PinObject : MonoBehaviour
 
         if (_pinItem != null)
         {
-            _durability = Pin.Get(_pinItem.Type).Durability;
+            _durability = Pin.Get(_pinItem.Type).Durability + PlayerMapData.MapDurability;
         }
     }
 

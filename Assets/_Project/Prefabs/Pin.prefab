@@ -375,6 +375,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _pin: {fileID: 679837531863789334}
+  _collider: {fileID: 5330125091538933394}
 --- !u!1 &6477824585190065964
 GameObject:
   m_ObjectHideFlags: 0
@@ -545,6 +546,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _pin: {fileID: 679837531863789334}
+  _collider: {fileID: 5842020634148234428}
 --- !u!1 &6907255027623562526
 GameObject:
   m_ObjectHideFlags: 0

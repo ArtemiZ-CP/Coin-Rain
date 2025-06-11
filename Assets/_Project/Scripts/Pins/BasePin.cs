@@ -1,11 +1,10 @@
-using UnityEngine;
-
 public class BasePin : Pin
 {
     private const int DefaultReward = 1;
 
     public override void Reset()
     {
+        base.Reset();
         coinsReward = DefaultReward;
         count = int.MaxValue;
     }

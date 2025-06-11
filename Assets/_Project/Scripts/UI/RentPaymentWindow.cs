@@ -1,10 +1,12 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class RentPaymentWindow : MonoBehaviour
 {
     [SerializeField] private TMP_Text _rentText;
+    [SerializeField] private TMP_Text _buttonText;
     [SerializeField] private Button _payButton;
 
     private int _rent;
@@ -21,10 +23,21 @@ public class RentPaymentWindow : MonoBehaviour
         _payButton.onClick.RemoveListener(Pay);
     }
 
-    public void Initialize(int rent)
+    public void Show(int rent)
     {
-        _rentText.text = $"Rent: {rent}";
-        _rent = rent;
+        if (PlayerCoinsData.Coins < rent)
+        {
+            _rentText.text = $"You don't have enough coins to pay the rent. You need {rent} coins.";
+            _buttonText.text = "End game";
+            _rent = -1;
+        }
+        else
+        {
+            _rentText.text = $"Rent: {rent}";
+            _buttonText.text = "Pay";
+            _rent = rent;
+        }
+
         Show();
     }
 
@@ -40,6 +53,13 @@ public class RentPaymentWindow : MonoBehaviour
 
     private void Pay()
     {
+        if (_rent < 0)
+        {
+            PlayerData.Reset();
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            return;
+        }
+
         if (PlayerCoinsData.TryToBuy(_rent))
         {
             OnPaid?.Invoke();

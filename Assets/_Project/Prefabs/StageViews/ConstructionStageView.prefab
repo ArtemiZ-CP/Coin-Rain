@@ -160,7 +160,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7717931484709933663}
   m_Layer: 5
-  m_Name: ShopStageView
+  m_Name: ConstructionStageView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

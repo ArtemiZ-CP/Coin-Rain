@@ -5,23 +5,37 @@ public abstract class Item
 {
     [SerializeField] private float _price;
     [SerializeField] private Sprite _itemSprite;
-    [SerializeField] private Sprite _sideSprite;
     [SerializeField] private Rare _rare;
 
     public float Price => _price;
     public Rare ItemRare => _rare;
     public Sprite ItemSprite => _itemSprite;
-    public Sprite SideSprite => _sideSprite;
 
-    public Item(float price, Sprite itemSprite, Sprite sideSprite, Rare rare)
+    public static List<Item> GetRandomItems<T>(List<T> items, int count) where T : Item
     {
-        _price = price;
-        _itemSprite = itemSprite;
-        _sideSprite = sideSprite;
-        _rare = rare;
+        if (items == null || items.Count == 0 || count <= 0)
+        {
+            return new List<Item>();
+        }
+        
+        List<Item> selectedItems = new();
+        
+        for (int i = 0; i < count; i++)
+        {
+            if (items.Count == 0)
+            {
+                break;
+            }
+
+            T itemToRemove = GetRandomItems(items);
+            items.Remove(itemToRemove);
+            selectedItems.Add(itemToRemove);
+        }
+
+        return selectedItems;
     }
 
-    public static T GetRandomItem<T>(List<T> items) where T : Item
+    public static T GetRandomItems<T>(List<T> items) where T : Item
     {
         if (items == null || items.Count == 0)
         {
@@ -30,7 +44,7 @@ public abstract class Item
 
         float totalWeight = 0f;
 
-        foreach (var item in items)
+        foreach (T item in items)
         {
             totalWeight += GetItemChance(item);
         }
@@ -38,7 +52,7 @@ public abstract class Item
         float randomValue = Random.Range(0f, totalWeight);
         float currentWeight = 0f;
 
-        foreach (var item in items)
+        foreach (T item in items)
         {
             currentWeight += GetItemChance(item);
 

@@ -1,97 +1,87 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameStageController : MonoBehaviour
 {
-    private readonly List<GameStage> _stagesList = new();
-
-    [SerializeField] private GameStage _dropBallStage;
+    [SerializeField] private DropBallStage _dropBallStage;
+    [SerializeField] private BoardStage _boardStage;
+    [SerializeField] private GameStage _startStage;
     [SerializeField] private GameStage _finalStage;
-    [SerializeField] private List<StageInfo> _randomStages;
+    [SerializeField] private SelectItem _selectItemStage;
 
-    private int _currentStageIndex = 0;
+    private GameStage _currentStage;
+    private int _dropCount;
 
-    public IReadOnlyList<GameStage> StagesList => _stagesList;
-    public int CurrentStageIndex => _currentStageIndex;
-
-    public event Action OnStageUpdated;
-    public event Action OnStageMapUpdated;
+    public event Action OnBallStageStarted;
 
     private void Start()
     {
-        foreach (StageInfo stage in _randomStages)
-        {
-            stage.EndStage();
-        }
-
-        SetupStages();
-        StartStage();
+        StartNewRound();
     }
 
-    public void StartStage()
+    public void StartNewRound()
     {
-        GameStage currentStage = _stagesList[_currentStageIndex];
-        currentStage.OnStageEnded += EndCurrentStage;
-        currentStage.StartStage();
-        OnStageUpdated?.Invoke();
+        _currentStage = _startStage;
+        _currentStage.StartStage();
+        _currentStage.OnStageEnded += HandleStartRound;
     }
 
-    public void EndCurrentStage()
+    public void EndRound()
     {
-        _stagesList[_currentStageIndex].OnStageEnded -= EndCurrentStage;
-        _currentStageIndex++;
-
-        if (_currentStageIndex >= _stagesList.Count)
-        {
-            SetupStages();
-        }
-
-        StartStage();
+        _currentStage = _finalStage;
+        _currentStage.StartStage();
+        _currentStage.OnStageEnded += HandleEndRound;
     }
 
-    private void SetupStages()
+    public void StartStage(Card card)
     {
-        _currentStageIndex = 0;
-        _stagesList.Clear();
-
-        for (int i = 0; i < _randomStages.Count; i++)
+        if (card == null)
         {
-            for (int j = 0; j < _randomStages[i].Count; j++)
-            {
-                _stagesList.Add(_randomStages[i].Stage);
-            }
+            throw new ArgumentNullException(nameof(card), "Card cannot be null");
         }
 
-        RandomList(_stagesList);
-        _stagesList.Add(_finalStage);
-        
-        for (int i = _stagesList.Count - 1; i >= 0; i--)
-        {
-            _stagesList.Insert(i, _dropBallStage);
-        }
-
-        OnStageMapUpdated?.Invoke();
+        _dropCount = card.TurnsCount;
+        StartStage(card.CardReward);
     }
 
-    private void RandomList<T>(List<T> list)
+    private void StartStage(CardReward cardReward)
     {
-        for (int i = 0; i < list.Count; i++)
-        {
-            int randomIndex = UnityEngine.Random.Range(i, list.Count);
-            (list[randomIndex], list[i]) = (list[i], list[randomIndex]);
-        }
+        _selectItemStage.SetReward(cardReward);
+        _currentStage = _selectItemStage;
+        _currentStage.StartStage();
+        _currentStage.OnStageEnded += StartBallStage;
     }
 
-    [Serializable]
-    public struct StageInfo
+    private void StartBallStage()
     {
-        public GameStage Stage;
-        public int Count;
+        OnBallStageStarted?.Invoke();
+        _currentStage.OnStageEnded -= StartBallStage;
+        _currentStage = _dropBallStage;
+        _currentStage.OnStageEnded += EndStage;
+        _dropBallStage.StartStage(_dropCount);
+    }
 
-        public readonly void EndStage()
+    private void EndStage()
+    {
+        if (_currentStage == null)
         {
-            Stage.EndStage();
+            throw new InvalidOperationException("Current stage is not set.");
         }
+
+        _currentStage.OnStageEnded -= EndStage;
+        _boardStage.StartStage();
+    }
+
+    private void HandleStartRound()
+    {
+        _currentStage.OnStageEnded -= HandleStartRound;
+        _boardStage.StartNewRound();
+    }
+
+    private void HandleEndRound()
+    {
+        _currentStage.OnStageEnded -= HandleEndRound;
+        _boardStage.EndRound();
+        StartNewRound();
     }
 }

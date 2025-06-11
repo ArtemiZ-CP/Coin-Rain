@@ -7,7 +7,6 @@ public class SelectableItem : MonoBehaviour
     [SerializeField] private Button _selectButton;
     [SerializeField] private TMP_Text _priceText;
     [SerializeField] private Image _itemImage;
-    [SerializeField] private Image _sideImage;
     [SerializeField] private Color _ableToBuyColor = Color.white;
     [SerializeField] private Color _notAbleToBuyColor = Color.red;
 
@@ -33,8 +32,6 @@ public class SelectableItem : MonoBehaviour
         _item = item;
         _haveToBuy = haveToBuy;
         _itemImage.sprite = _item.ItemSprite;
-        _sideImage.sprite = _item.SideSprite;
-        _sideImage.gameObject.SetActive(_item.SideSprite != null);
 
         UpdatePriceText();
     }

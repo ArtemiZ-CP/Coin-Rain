@@ -5,7 +5,6 @@ public static class PlayerData
         PlayerCoinsData.Reset();
         PlayerFinishData.Reset();
         PlayerMapData.Reset();
-        PlayerShopData.Reset();
         PlayerRentData.Reset();
         Pin.ResetAll();
         BallsController.Instance.Reset();

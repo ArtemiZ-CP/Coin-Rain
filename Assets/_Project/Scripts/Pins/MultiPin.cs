@@ -1,12 +1,15 @@
 public class MultiPin : Pin
 {
     public const int DefaultReward = 0;
+    public const int DefaultMultiplyingBallsCount = 1;
 
-    private static int _multiplyingBallsCount = 1;
+    private int _multiplyingBallsCount;
 
     public override void Reset()
     {
+        base.Reset();
         coinsReward = DefaultReward;
+        _multiplyingBallsCount = DefaultMultiplyingBallsCount;
     }
 
     public override float Touch(PinObject pin, PlayerBall playerBall)

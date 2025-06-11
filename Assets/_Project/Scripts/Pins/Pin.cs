@@ -3,17 +3,22 @@ using System.Collections.Generic;
 
 public abstract class Pin
 {
-    private static Dictionary<Type, Pin> _pinInstances = null;
+    private const int InitialCount = 0;
+    private const int InitialDurability = 0;
+
+    private static Dictionary<Type, Pin> _pinInstances;
 
     protected float coinsReward;
-    protected int count = 0;
-    protected int durability = 1;
+    protected int count;
+    protected int durability;
 
     public float CoinsReward => coinsReward;
     public int Count => count;
     public int Durability => durability;
 
     public static event Action OnPinsUpdate;
+
+    public event Action OnPinRewardUpdate;
 
     public static Type[] GetAllTypes()
     {
@@ -22,7 +27,7 @@ public abstract class Pin
 
     public static void ResetAll()
     {
-        foreach (Pin pin in _pinInstances.Values)
+        foreach (Pin pin in GetPinDictionary().Values)
         {
             pin.Reset();
         }
@@ -32,15 +37,7 @@ public abstract class Pin
 
     public static Pin Get(Type type)
     {
-        _pinInstances ??= new Dictionary<Type, Pin>()
-        {
-            { Type.Base, new BasePin() },
-            { Type.Gold, new GoldPin() },
-            { Type.Multiplying, new MultiPin() },
-            { Type.Bomb, new BombPin() }
-        };
-
-        if (_pinInstances.TryGetValue(type, out Pin pin))
+        if (GetPinDictionary().TryGetValue(type, out Pin pin))
         {
             return pin;
         }
@@ -52,7 +49,7 @@ public abstract class Pin
     {
         List<Type> receivedPins = new();
         Type[] allTypes = GetAllTypes();
-        
+
         for (int i = 0; i < allTypes.Length; i++)
         {
             Type type = allTypes[i];
@@ -70,6 +67,7 @@ public abstract class Pin
     public void IncreaseReward(float value = 1)
     {
         coinsReward += value;
+        OnPinRewardUpdate?.Invoke();
     }
 
     public void IncreaseCount(int value = 1)
@@ -101,9 +99,32 @@ public abstract class Pin
         return count;
     }
 
-    public abstract void Reset();
+    public virtual void Reset()
+    {
+        count = InitialCount;
+        durability = InitialDurability;
+    }
+
     public abstract float Touch(PinObject pin, PlayerBall playerBall);
     public abstract void Upgrade();
+
+    private static Dictionary<Type, Pin> GetPinDictionary()
+    {
+        if (_pinInstances == null)
+        {
+            BasePin basePin = new();
+
+            _pinInstances = new Dictionary<Type, Pin>
+            {
+                { Type.Base, basePin },
+                { Type.Gold, new GoldPin(basePin) },
+                { Type.Multiplying, new MultiPin() },
+                { Type.Bomb, new BombPin() }
+            };
+        }
+
+        return _pinInstances;
+    }
 
     public enum Type
     {

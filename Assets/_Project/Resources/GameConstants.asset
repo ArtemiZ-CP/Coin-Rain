@@ -19,3 +19,8 @@ MonoBehaviour:
     WinAreaPrefab: {fileID: 5264582952020958834, guid: 4c82d77054658487297550331ca1be5a, type: 3}
     OffsetBetweenPinsInLine: 2
     MultiplyingBallImpulse: 5
+    StartBallImpulse: 3
+  _blessingItems: {fileID: 11400000, guid: d880dec7db7114a959d738603f9cf69d, type: 2}
+  _constructionItems: {fileID: 11400000, guid: a7d1fdd73458949e0b47cf87aeac47f5, type: 2}
+  _pinItems: {fileID: 11400000, guid: 2df7fdb3103f445d5942147fca338951, type: 2}
+  _coinsItems: {fileID: 11400000, guid: 3cac6856891f34e6ba350655d1898349, type: 2}

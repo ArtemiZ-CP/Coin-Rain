@@ -1,10 +1,23 @@
 public class GoldPin : Pin
 {
-    public const int DefaultReward = 2;
+    public const int DefaultRewardMultiplier = 2;
+
+    private float _rewardMultiplier = DefaultRewardMultiplier;
+
+    public GoldPin(BasePin basePin)
+    {
+        basePin.OnPinRewardUpdate += UpdateCoinsReward;
+    }
+
+    ~GoldPin()
+    {
+        Get(Type.Base).OnPinRewardUpdate -= UpdateCoinsReward;
+    }
 
     public override void Reset()
     {
-        coinsReward = DefaultReward;
+        base.Reset();
+        UpdateCoinsReward();
     }
 
     public override float Touch(PinObject pin, PlayerBall playerBall)
@@ -14,6 +27,13 @@ public class GoldPin : Pin
 
     public override void Upgrade()
     {
-        IncreaseReward(2);
+        _rewardMultiplier++;
+        UpdateCoinsReward();
+    }
+
+    private void UpdateCoinsReward()
+    {
+        float baseReward = Get(Type.Base).CoinsReward;
+        coinsReward = _rewardMultiplier * baseReward;
     }
 }

@@ -8,11 +8,11 @@ public static class PlayerFinishData
 
     public const int DefaultJackpotFinishCount = 1;
     public const int DefaultJackpotFinishMultiplier = 2;
-    public const float DefaultJackpotFinishWidth = 0.75f;
+    public const float DefaultJackpotFinishWidth = 0.5f;
 
     public const int DefaultEmptyFinishCount = 1;
     public const int DefaultEmptyFinishMultiplier = 0;
-    public const float DefaultEmptyFinishWidth = 0.75f;
+    public const float DefaultEmptyFinishWidth = 0.5f;
 
     private static readonly List<FinishData> _finishData = new();
 

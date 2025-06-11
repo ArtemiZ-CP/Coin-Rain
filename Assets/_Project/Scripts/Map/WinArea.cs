@@ -9,6 +9,7 @@ public class WinArea : MonoBehaviour
     [SerializeField] private SpriteRenderer _background;
     [SerializeField] private GameObject _leftBorder;
     [SerializeField] private GameObject _rightBorder;
+    [SerializeField] private BoxCollider2D _collider;
     [SerializeField] private List<FinishData> _backgroundColor;
 
     private int _multiplier;
@@ -25,6 +26,7 @@ public class WinArea : MonoBehaviour
         _multiplier = multiplier;
         _text.text = $"x{_multiplier}";
         _background.transform.localScale = new Vector3(width, 1, 1);
+        _collider.size = new Vector2(width, _collider.size.y);
         float xPosition = (width + _leftBorder.transform.localScale.x) / 2;
         _leftBorder.transform.localPosition = new Vector3(-xPosition, 0, 0);
         _rightBorder.transform.localPosition = new Vector3(xPosition, 0, 0);

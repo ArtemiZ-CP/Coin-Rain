@@ -81,13 +81,14 @@ public class PinsMap : MonoBehaviour
     public float Blast(PinObject blastPin, PlayerBall playerBall, int range, float coins)
     {
         float blastRange = _pinConstants.OffsetBetweenPinsInLine * range + 0.1f;
+        Vector3 blastCenter = blastPin.transform.position;
 
         foreach (PinsLine pinsLine in _pinLines)
         {
             foreach (PinObject pin in pinsLine.Pins)
             {
                 if (pin == blastPin ||
-                    blastPin.transform.position.IsEnoughClose(pin.transform.position, blastRange) == false)
+                    blastCenter.IsEnoughClose(pin.transform.position, blastRange) == false)
                 {
                     continue;
                 }

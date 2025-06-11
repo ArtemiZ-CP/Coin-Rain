@@ -23,7 +23,7 @@ public class ItemSelectWindow : MonoBehaviour
         _closeButton.onClick.RemoveListener(CloseWindow);
     }
 
-    public void Initialize(List<Item> items, string title, bool haveToBuy, bool showCloseButton)
+    public void Show(List<Item> items, string title, bool haveToBuy, bool showCloseButton)
     {
         Show();
         ClearContent();

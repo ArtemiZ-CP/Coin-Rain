@@ -1,13 +1,19 @@
+using System;
 using UnityEngine;
 
-[System.Serializable]
+[Serializable]
 public abstract class GameStage : MonoBehaviour
 {
     private bool _isActive;
 
     public bool IsActive => _isActive;
 
-    public event System.Action OnStageEnded;
+    public event Action OnStageEnded;
+
+    protected virtual void Awake()
+    {
+        EndStage();
+    }
 
     public virtual void StartStage()
     {

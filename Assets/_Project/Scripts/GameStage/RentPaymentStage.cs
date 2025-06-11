@@ -7,7 +7,7 @@ public class RentPaymentStage : GameStage
     public override void StartStage()
     {
         base.StartStage();
-        _rentPaymentWindow.Initialize(PlayerRentData.RentCost);
+        _rentPaymentWindow.Show(PlayerRentData.RentCost);
         _rentPaymentWindow.OnPaid += EndStage;
     }
 
