@@ -17,5 +17,6 @@ public class BasePin : Pin
     public override void Upgrade()
     {
         IncreaseReward(1);
+        base.Upgrade();
     }
 }

@@ -23,5 +23,6 @@ public class BombPin : Pin
     public override void Upgrade()
     {
         _blastRange++;
+        base.Upgrade();
     }
 }

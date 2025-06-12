@@ -11,10 +11,12 @@ public abstract class Pin
     protected float coinsReward;
     protected int count;
     protected int durability;
+    protected int level = 0;
 
     public float CoinsReward => coinsReward;
     public int Count => count;
     public int Durability => durability;
+    public int Level => level;
 
     public static event Action OnPinsUpdate;
 
@@ -45,7 +47,7 @@ public abstract class Pin
         return null;
     }
 
-    public static List<Type> GetRecievedTypes()
+    public static List<Type> GetRecievedTypes(int minLevel = 0)
     {
         List<Type> receivedPins = new();
         Type[] allTypes = GetAllTypes();
@@ -55,7 +57,7 @@ public abstract class Pin
             Type type = allTypes[i];
             Pin pin = Get(type);
 
-            if (pin != null && pin.Count > 0)
+            if (pin != null && pin.Count > 0 && pin.level >= minLevel)
             {
                 receivedPins.Add(type);
             }
@@ -70,13 +72,13 @@ public abstract class Pin
         OnPinRewardUpdate?.Invoke();
     }
 
-    public void IncreaseCount(int value = 1)
+    public void Add(int value = 1)
     {
         count += value;
         OnPinsUpdate?.Invoke();
     }
 
-    public void DecreaseCount(int value = 1)
+    public void Remove(int value = 1)
     {
         count -= value;
 
@@ -105,8 +107,12 @@ public abstract class Pin
         durability = InitialDurability;
     }
 
+    public virtual void Upgrade()
+    {
+        level++;
+    }
+
     public abstract float Touch(PinObject pin, PlayerBall playerBall);
-    public abstract void Upgrade();
 
     private static Dictionary<Type, Pin> GetPinDictionary()
     {

@@ -20,18 +20,14 @@ public class GameConstants : ScriptableObject
 
     [SerializeField] private PinConstants _pinConstants;
     [SerializeField] private BlessingItemsScriptableObject _blessingItems;
-    [SerializeField] private BlessingItemsScriptableObject _upgradeBlessingItems;
     [SerializeField] private MapItemsScriptableObject _mapItems;
     [SerializeField] private PinItemsScriptableObject _pinItems;
-    [SerializeField] private PinItemsScriptableObject _upgradePinItems;
     [SerializeField] private CoinsItemScriptableObject _coinsItems;
 
     public PinConstants PinConstants => _pinConstants;
     public BlessingItemsScriptableObject BlessingItemsSO => _blessingItems;
-    public BlessingItemsScriptableObject UpgradeBlessingItemsSO => _upgradeBlessingItems;
     public MapItemsScriptableObject MapItemsSO => _mapItems;
     public PinItemsScriptableObject PinItemsSO => _pinItems;
-    public PinItemsScriptableObject UpgradePinItemsSO => _upgradePinItems;
     public CoinsItemScriptableObject CoinsItemsSO => _coinsItems;
 }
 

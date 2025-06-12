@@ -7,13 +7,16 @@ public class BlessingItemsScriptableObject : ScriptableObject
 {
     [SerializeField] private List<BlessingItem> _blessingItems = default;
 
-    public IReadOnlyList<BlessingItem> BlessingItems => _blessingItems;
+    public List<BlessingItem> GetAllItems()
+    {
+        return new(_blessingItems);
+    }
 
-    public List<BlessingItem> GetReceivedItems()
+    public List<BlessingItem> GetReceivedItems(int minLevel = 0)
     {
         List<BlessingItem> blessingItems = new();
 
-        foreach (Blessing.Type type in Blessing.GetRecievedTypes())
+        foreach (Blessing.Type type in Blessing.GetRecievedTypes(minLevel))
         {
             BlessingItem item = _blessingItems.FirstOrDefault(blessingItem => blessingItem.Type == type);
 

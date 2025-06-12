@@ -70,12 +70,10 @@ public class PinsMap : MonoBehaviour
             pins.AddRange(pinsLine.Pins);
         }
 
-        foreach (PinItem pinItem in _pinItemsScriptableObject.PinItems)
+        foreach (PinItem pinItem in _pinItemsScriptableObject.GetAllItems(includeBasePin: true))
         {
             SetPins(pinItem, pins);
         }
-
-        SetPins(_pinItemsScriptableObject.BasePinItem, pins);
     }
 
     public float Blast(PinObject blastPin, PlayerBall playerBall, int range, float coins)

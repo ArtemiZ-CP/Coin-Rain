@@ -7,4 +7,9 @@ public class MapItemsScriptableObject : ScriptableObject
     [SerializeField] private List<MapItem> _mapItems;
 
     public IReadOnlyList<MapItem> MapItems => _mapItems;
+
+    public List<MapItem> GetAllItems()
+    {
+        return new List<MapItem>(_mapItems);
+    }
 }

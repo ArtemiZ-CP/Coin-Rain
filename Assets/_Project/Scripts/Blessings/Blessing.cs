@@ -27,7 +27,7 @@ public abstract class Blessing
         return null;
     }
 
-    public static List<Type> GetRecievedTypes()
+    public static List<Type> GetRecievedTypes(int minLevel = 0)
     {
         List<Type> receivedPins = new();
         Type[] allTypes = GetAllTypes();
@@ -37,7 +37,7 @@ public abstract class Blessing
             Type type = allTypes[i];
             Blessing blessing = Get(type);
 
-            if (blessing != null && blessing.Level > 0)
+            if (blessing != null && blessing.Level >= minLevel)
             {
                 receivedPins.Add(type);
             }
@@ -49,6 +49,14 @@ public abstract class Blessing
     public virtual void Upgrade()
     {
         level++;
+    }
+
+    public virtual void RemoveUpgrade()
+    {
+        if (level > 0)
+        {
+            level--;
+        }
     }
 
     public abstract void Get();

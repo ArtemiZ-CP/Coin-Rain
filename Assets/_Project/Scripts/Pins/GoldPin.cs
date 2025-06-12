@@ -29,6 +29,7 @@ public class GoldPin : Pin
     {
         _rewardMultiplier++;
         UpdateCoinsReward();
+        base.Upgrade();
     }
 
     private void UpdateCoinsReward()

@@ -26,5 +26,6 @@ public class MultiPin : Pin
     public override void Upgrade()
     {
         _multiplyingBallsCount += 1;
+        base.Upgrade();
     }
 }

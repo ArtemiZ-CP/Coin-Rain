@@ -37,4 +37,16 @@ public static class PlayerCoinsData
         _coins += amount;
         OnCurrencyChanged?.Invoke();
     }
+
+    public static void RemoveCoins(float amount)
+    {
+        _coins -= amount;
+
+        if (_coins < 0)
+        {
+            _coins = 0;
+        }
+
+        OnCurrencyChanged?.Invoke();
+    }
 }

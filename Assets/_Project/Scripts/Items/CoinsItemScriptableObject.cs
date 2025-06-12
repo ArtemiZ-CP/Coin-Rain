@@ -6,5 +6,8 @@ public class CoinsItemScriptableObject : ScriptableObject
 {
     [SerializeField] private List<CoinsItem> _coinsItems = default;
 
-    public IReadOnlyList<CoinsItem> CoinsItems => _coinsItems;
+    public List<Item> GetAllItems()
+    {
+        return new(_coinsItems);
+    }
 }

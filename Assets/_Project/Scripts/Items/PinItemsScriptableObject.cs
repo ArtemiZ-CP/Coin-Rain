@@ -8,10 +8,19 @@ public class PinItemsScriptableObject : ScriptableObject
     [SerializeField] private PinItem _basePinItem = default;
     [SerializeField] private List<PinItem> _pinItems = default;
 
-    public PinItem BasePinItem => _basePinItem;
-    public IReadOnlyList<PinItem> PinItems => _pinItems;
+    public List<PinItem> GetAllItems(bool includeBasePin = false)
+    {
+        List<PinItem> pinItems = new(_pinItems);
 
-    public List<PinItem> GetReceivedItems(bool includeBasePin = false)
+        if (includeBasePin)
+        {
+            pinItems.Add(_basePinItem);
+        }
+
+        return pinItems;
+    }
+
+    public List<PinItem> GetReceivedItems(bool includeBasePin = false, int minLevel = 0)
     {
         List<PinItem> pinItems = new();
 
@@ -20,7 +29,7 @@ public class PinItemsScriptableObject : ScriptableObject
             pinItems.Add(_basePinItem);
         }
 
-        foreach (Pin.Type type in Pin.GetRecievedTypes())
+        foreach (Pin.Type type in Pin.GetRecievedTypes(minLevel))
         {
             PinItem item = _pinItems.FirstOrDefault(pinItem => pinItem.Type == type);
 
