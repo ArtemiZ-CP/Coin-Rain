@@ -2,17 +2,17 @@ using System.Collections.Generic;
 
 public static class PlayerFinishData
 {
-    public const int DefaultBaseFinishCount = 4;
+    public const int DefaultBaseFinishCount = 8;
     public const int DefaultBaseFinishMultiplier = 1;
     public const float DefaultBaseFinishWidth = 1;
 
     public const int DefaultJackpotFinishCount = 1;
     public const int DefaultJackpotFinishMultiplier = 2;
-    public const float DefaultJackpotFinishWidth = 0.5f;
+    public const float DefaultJackpotFinishWidth = 1;
 
     public const int DefaultEmptyFinishCount = 1;
     public const int DefaultEmptyFinishMultiplier = 0;
-    public const float DefaultEmptyFinishWidth = 0.5f;
+    public const float DefaultEmptyFinishWidth = 1;
 
     private static readonly List<FinishData> _finishData = new();
 

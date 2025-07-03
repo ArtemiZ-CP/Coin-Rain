@@ -4,20 +4,8 @@ public class DropBallStage : GameStage
 {
     [SerializeField] private BallsController _ballsController;
 
-    private int _dropCount;
+    private int _dropCount = 1;
     private int _currentDropCount;
-
-    public void StartStage(int dropCount)
-    {
-        if (dropCount <= 0)
-        {
-            EndStage();
-            return;
-        }
-
-        _dropCount = dropCount;
-        StartStage();
-    }
 
     public override void StartStage()
     {
@@ -37,8 +25,8 @@ public class DropBallStage : GameStage
             return;
         }
 
-        base.EndStage();
         BallsController.OnReset -= EndStage;
         _ballsController.SetControllable(false);
+        base.EndStage();
     }
 }

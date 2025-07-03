@@ -15,15 +15,16 @@ public static class CardRewardGenerator
     {
         List<CardReward> cardRewards = new();
 
-        foreach (KeyValuePair<RewardType, CardReward> kvp in _rewards)
+        foreach ((RewardType rewardType, CardReward cardReward) in _rewards)
         {
-            if (kvp.Value.CardType == cardType && kvp.Value.IsRewardAvailable(cardType))
+            if (cardReward.IsRewardAvailable(cardType))
             {
-                cardRewards.Add(kvp.Value);
+                cardRewards.Add(cardReward);
             }
         }
 
-        CardReward clonedReward = (CardReward)System.Activator.CreateInstance(cardRewards[Random.Range(0, cardRewards.Count)].GetType());
+        int randomCardIndex = Random.Range(0, cardRewards.Count);
+        CardReward clonedReward = (CardReward)System.Activator.CreateInstance(cardRewards[randomCardIndex].GetType());
         clonedReward.SetCardType(cardType);
         return clonedReward;
     }

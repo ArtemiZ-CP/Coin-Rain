@@ -62,19 +62,44 @@ public class WinAreas : MonoBehaviour
             (finishData[swapIndex], finishData[i]) = (finishData[i], finishData[swapIndex]);
         }
 
+        List<(float combinedWidth, PlayerFinishData.FinishData finishData)> combinedFinishData = new();
+        
+        if (finishData.Count > 0)
+        {
+            float currentWidth = finishData[0].finishWidth;
+            PlayerFinishData.FinishData currentFinish = finishData[0].finishData;
+            
+            for (int i = 1; i < finishData.Count; i++)
+            {
+                if (finishData[i].finishData.Type == currentFinish.Type && 
+                    finishData[i].finishData.Multiplier == currentFinish.Multiplier)
+                {
+                    currentWidth += finishData[i].finishWidth;
+                }
+                else
+                {
+                    combinedFinishData.Add((currentWidth, currentFinish));
+                    currentWidth = finishData[i].finishWidth;
+                    currentFinish = finishData[i].finishData;
+                }
+            }
+            
+            combinedFinishData.Add((currentWidth, currentFinish));
+        }
+
         float widthMultiplier = mapWidth / widthSum;
-        float finishPosition = -mapWidth / 2 + finishData[0].finishWidth * widthMultiplier / 2;
+        float finishPosition = -mapWidth / 2 + (combinedFinishData.Count > 0 ? combinedFinishData[0].combinedWidth * widthMultiplier / 2 : 0);
         PinConstants pinConstants = GameConstants.Instance.PinConstants;
 
-        for (int j = 0; j < finishData.Count; j++)
+        for (int j = 0; j < combinedFinishData.Count; j++)
         {
-            (float finishWidth, PlayerFinishData.FinishData finish) = finishData[j];
-            SpawnFinish(pinConstants, finish, finishWidth * widthMultiplier, finishPosition);
+            (float combinedWidth, PlayerFinishData.FinishData finish) = combinedFinishData[j];
+            SpawnFinish(pinConstants, finish, combinedWidth * widthMultiplier, finishPosition);
 
-            if (j < finishData.Count - 1)
+            if (j < combinedFinishData.Count - 1)
             {
-                finishPosition += finishWidth * widthMultiplier / 2;
-                finishPosition += finishData[j + 1].finishWidth * widthMultiplier / 2;
+                finishPosition += combinedWidth * widthMultiplier / 2;
+                finishPosition += combinedFinishData[j + 1].combinedWidth * widthMultiplier / 2;
             }
         }
 

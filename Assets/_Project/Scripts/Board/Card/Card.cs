@@ -13,12 +13,10 @@ public class Card : MonoBehaviour
     [SerializeField] private Button _cardButton;
 
     private bool _isActive;
-    private int _turnsCount;
     private Type _cardType;
     private CardReward _cardReward;
 
     public bool IsActive => _isActive;
-    public int TurnsCount => _turnsCount;
     public Type CardType => _cardType;
     public CardReward CardReward => _cardReward;
 
@@ -34,12 +32,10 @@ public class Card : MonoBehaviour
         _cardButton.onClick.RemoveListener(HandleCardClick);
     }
 
-    public void Initialize(int turnsCount, Type type)
+    public void Initialize(Type type)
     {
         _isActive = true;
-        _turnsCount = turnsCount;
         _cardType = type;
-        _turnsText.text = turnsCount.ToString();
         _cardBlowImage.color = _cardDatas.FirstOrDefault(data => data.Type == type).Color;
         _cardReward = CardRewardGenerator.GenerateReward(type);
         _usedCardImage.gameObject.SetActive(false);
