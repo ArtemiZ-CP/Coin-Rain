@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SelectItem : GameStage
@@ -29,10 +28,10 @@ public class SelectItem : GameStage
     public override void StartStage()
     {
         base.StartStage();
-        _cardReward.GetRewardData(out List<Item> items, out string stageName, out int maxSelectCount, out bool haveToBuy, out bool showCloseButton);
-        _itemSelectWindow.Show(items, stageName, haveToBuy, showCloseButton);
-        _selectedCount = 0;
-        _maxSelectCount = Mathf.Min(maxSelectCount, items.Count);
+        _cardReward.GetRewardData();
+        // _itemSelectWindow.Show(items, stageName, haveToBuy, showCloseButton);
+        // _selectedCount = 0;
+        // _maxSelectCount = Mathf.Min(maxSelectCount, items.Count);
     }
 
     public override void EndStage()
@@ -41,14 +40,14 @@ public class SelectItem : GameStage
         _itemSelectWindow.Hide();
     }
 
-    private void HandleItemSelected(Item item)
+    private void HandleItemSelected()
     {
         if (IsActive == false)
         {
             return;
         }
 
-        _cardReward.HandleItemSelected(item);
+        _cardReward.HandleItemSelected();
         _selectedCount++;
 
         if (_selectedCount >= _maxSelectCount)

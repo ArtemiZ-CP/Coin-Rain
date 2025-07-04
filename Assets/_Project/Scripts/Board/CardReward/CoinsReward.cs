@@ -1,49 +1,29 @@
-using System.Collections.Generic;
-
 public class CoinsReward : CardReward
 {
-    private readonly CoinsItemScriptableObject _coinsItemsSO;
+    private readonly CoinsItems _coinsItemsSO;
 
     public CoinsReward()
     {
-        _coinsItemsSO = GameConstants.Instance.CoinsItemsSO;
+        _coinsItemsSO = GameConstants.Instance.CoinsItems;
     }
 
-    public override bool IsRewardAvailable(Card.Type cardType)
+    protected override void ConfigureHandlers()
     {
-        return cardType switch
-        {
-            Card.Type.Base => true,
-            Card.Type.Blessed => false,
-            Card.Type.Cursed => true,
-            _ => false
-        };
+        RegisterHandlers(Card.Type.Base, GetBaseRewardData(), HandleBaseItemSelected);
+        RegisterHandlers(Card.Type.Cursed, GetCursedRewardData(), HandleCursedItemSelected);
     }
 
-    protected override void GetBaseRewardData(out List<Item> items, out string stageName, out int maxSelectCount, out bool haveToBuy, out bool showCloseButton)
+    private Item GetBaseRewardData()
     {
-        items = Item.GetRandomItems(_coinsItemsSO.GetAllItems(), 1);
-        stageName = "Gold Reward";
-        maxSelectCount = 1;
-        haveToBuy = false;
-        showCloseButton = false;
+        return Item.GetRandomItems(_coinsItemsSO.Base.GetAllItems());
     }
-
-    protected override void GetBlessedRewardData(out List<Item> items, out string stageName, out int maxSelectCount, out bool haveToBuy, out bool showCloseButton)
+        
+    private Item GetCursedRewardData()
     {
-        throw new System.NotImplementedException();
+        return Item.GetRandomItems(_coinsItemsSO.Cursed.GetAllItems());
     }
 
-    protected override void GetCursedRewardData(out List<Item> items, out string stageName, out int maxSelectCount, out bool haveToBuy, out bool showCloseButton)
-    {
-        items = Item.GetRandomItems(_coinsItemsSO.GetAllItems(), 1);
-        stageName = "Remove Gold";
-        maxSelectCount = 1;
-        haveToBuy = false;
-        showCloseButton = false;
-    }
-
-    protected override void HandleBaseItemSelected(Item item)
+    private void HandleBaseItemSelected(Item item)
     {
         if (item is CoinsItem coinsItem)
         {
@@ -51,12 +31,7 @@ public class CoinsReward : CardReward
         }
     }
 
-    protected override void HandleBlessedItemSelected(Item item)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    protected override void HandleCursedItemSelected(Item item)
+    private void HandleCursedItemSelected(Item item)
     {
         if (item is CoinsItem coinsItem)
         {

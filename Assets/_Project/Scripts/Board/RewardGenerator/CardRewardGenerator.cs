@@ -3,19 +3,20 @@ using UnityEngine;
 
 public static class CardRewardGenerator
 {
-    private static readonly Dictionary<RewardType, CardReward> _rewards = new()
+    private static readonly List<CardReward> _rewards = new()
     {
-        { RewardType.Blessing, new BlessingReward() },
-        { RewardType.Pin, new PinReward() },
-        { RewardType.MapUpgrade, new MapUpgradeReward() },
-        { RewardType.Coins, new CoinsReward() },
+        new BlessingReward(),
+        new PinReward(),
+        new MapUpgradeReward(),
+        new CoinsReward(),
+        new ThrowReward(),
     };
 
     public static CardReward GenerateReward(Card.Type cardType)
     {
         List<CardReward> cardRewards = new();
 
-        foreach ((RewardType rewardType, CardReward cardReward) in _rewards)
+        foreach (CardReward cardReward in _rewards)
         {
             if (cardReward.IsRewardAvailable(cardType))
             {
@@ -29,12 +30,13 @@ public static class CardRewardGenerator
         return clonedReward;
     }
 
-    public enum RewardType
+    public enum BlessedRewardType
     {
         Blessing,
         Pin,
         MapUpgrade,
         Coins,
+        Throw,
         // Cleansing,
         // BallUpgrade,
         // CardUpgrade,

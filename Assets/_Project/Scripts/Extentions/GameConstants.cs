@@ -19,16 +19,18 @@ public class GameConstants : ScriptableObject
     }
 
     [SerializeField] private PinConstants _pinConstants;
-    [SerializeField] private BlessingItemsScriptableObject _blessingItems;
-    [SerializeField] private MapItemsScriptableObject _mapItems;
-    [SerializeField] private PinItemsScriptableObject _pinItems;
-    [SerializeField] private CoinsItemScriptableObject _coinsItems;
+    [SerializeField] private BlessingItems _blessingItems;
+    [SerializeField] private CoinsItems _coinsItems;
+    [SerializeField] private MapItems _mapItems;
+    [SerializeField] private PinItems _pinItems;
+    [SerializeField] private ThrowItems _throwItems;
 
     public PinConstants PinConstants => _pinConstants;
-    public BlessingItemsScriptableObject BlessingItemsSO => _blessingItems;
-    public MapItemsScriptableObject MapItemsSO => _mapItems;
-    public PinItemsScriptableObject PinItemsSO => _pinItems;
-    public CoinsItemScriptableObject CoinsItemsSO => _coinsItems;
+    public BlessingItems BlessingItems => _blessingItems;
+    public CoinsItems CoinsItems => _coinsItems;
+    public MapItems MapItems => _mapItems;
+    public PinItems PinItems => _pinItems;
+    public ThrowItems ThrowItems => _throwItems;
 }
 
 [Serializable]
@@ -41,8 +43,52 @@ public struct PinConstants
     public float OffsetBetweenPinsInLine;
     public float MultiplyingBallImpulse;
     public float StartBallImpulse;
-    
+
     public readonly float OffsetBetweenLines => OffsetBetweenPinsInLine * Mathf.Sqrt(3) / 2;
+}
+
+[SerializeField]
+public struct BlessingItems
+{
+    [SerializeField] private BlessingItemsScriptableObject _blessed;
+
+    public readonly BlessingItemsScriptableObject Blessed => _blessed;
+}
+
+[Serializable]
+public struct CoinsItems
+{
+    [SerializeField] private CoinsItemScriptableObject _base;
+    [SerializeField] private CoinsItemScriptableObject _cursed;
+
+    public readonly CoinsItemScriptableObject Base => _base;
+    public readonly CoinsItemScriptableObject Cursed => _cursed;
+}
+
+[Serializable]
+public struct MapItems
+{
+    [SerializeField] private MapItemsScriptableObject _blessed;
+
+    public readonly MapItemsScriptableObject Blessed => _blessed;
+}
+
+[Serializable]
+public struct PinItems
+{
+    [SerializeField] private PinItemsScriptableObject _base;
+    [SerializeField] private PinItemsScriptableObject _blessed;
+
+    public readonly PinItemsScriptableObject Base => _base;
+    public readonly PinItemsScriptableObject Blessed => _blessed;
+}
+
+[Serializable]
+public struct ThrowItems
+{
+    [SerializeField] private ThrowItemsScriptableObject _throw;
+
+    public readonly ThrowItemsScriptableObject Throw => _throw;
 }
 
 #if UNITY_EDITOR

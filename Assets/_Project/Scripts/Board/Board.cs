@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,8 +13,10 @@ public class Board : MonoBehaviour
     [SerializeField] private RectTransform _cardsParent;
     [SerializeField] private Vector2 _cardSize;
     [SerializeField] private float _cardOffset;
+    [SerializeField] private float _clickCardDelay = 0.2f;
 
     private Vector2 _lastParentSize;
+    private float _lastClickTime;
 
     public event Action<Card> OnCardClick;
     public event Action OnEndStageButtonClick;
@@ -55,12 +58,13 @@ public class Board : MonoBehaviour
 
         var gridPositions = PlayerCardsData.CardsPositions;
         int positionsToUse = gridPositions.Count;
+        List<Card.Type> cardTypes = GetCardTypes(positionsToUse);
 
         for (int i = 0; i < positionsToUse; i++)
         {
             Card card = Instantiate(_cardPrefab, _cardsParent);
             _cards.Add(card);
-            InitializeCard(card);
+            card.Initialize(cardTypes[i], gridPositions[i]);
             card.OnCardClick += HandleCardClick;
             SetCardTransform(card, gridPositions[i]);
         }
@@ -97,15 +101,65 @@ public class Board : MonoBehaviour
         OnEndStageButtonClick?.Invoke();
     }
 
-    private void InitializeCard(Card card)
+    private List<Card.Type> GetCardTypes(int cardsCount)
     {
-        Card.Type type = (Card.Type)UnityEngine.Random.Range(0, Enum.GetValues(typeof(Card.Type)).Length);
-        card.Initialize(type);
+        List<Card.Type> cardTypes = new();
+
+        for (int i = 0; i < PlayerCardsData.BlessedCardsCount; i++)
+        {
+            cardTypes.Add(Card.Type.Blessed);
+        }
+
+        for (int i = 0; i < PlayerCardsData.CursedCardsCount; i++)
+        {
+            cardTypes.Add(Card.Type.Cursed);
+        }
+
+        int baseCardsCount = cardsCount - PlayerCardsData.BlessedCardsCount - PlayerCardsData.CursedCardsCount;
+
+        for (int i = 0; i < baseCardsCount; i++)
+        {
+            cardTypes.Add(Card.Type.Base);
+        }
+
+        for (int i = 0; i < cardTypes.Count; i++)
+        {
+            int randomIndex = UnityEngine.Random.Range(i, cardTypes.Count);
+            (cardTypes[randomIndex], cardTypes[i]) = (cardTypes[i], cardTypes[randomIndex]);
+        }
+
+        return cardTypes;
     }
 
-    private void HandleCardClick(Card card)
+    private void HandleCardClick(Card clickedCard)
     {
-        OnCardClick?.Invoke(card);
+        if (Time.time - _lastClickTime < _clickCardDelay)
+        {
+            return;
+        }
+
+        _lastClickTime = Time.time;
+        clickedCard.Turn();
+        StartCoroutine(CardClickWithDelay(clickedCard));
+    }
+
+    private IEnumerator CardClickWithDelay(Card clickedCard)
+    {
+        yield return new WaitForSeconds(_clickCardDelay);
+        
+        OnCardClick?.Invoke(clickedCard);
+        Vector2Int gridPosition = clickedCard.GridPosition;
+
+        if (clickedCard.CardType == Card.Type.Cursed)
+        {
+            foreach (Card card in _cards)
+            {
+                if (card.GridPosition.x == gridPosition.x || card.GridPosition.y == gridPosition.y)
+                {
+                    card.Curse();
+                }
+            }
+        }
     }
 
     private void SetCardTransform(Card card, Vector2Int gridPosition)
@@ -191,7 +245,7 @@ public class Board : MonoBehaviour
         {
             return;
         }
-        
+
         Vector2 currentParentSize = _cardsParent.rect.size;
 
         if (currentParentSize.SqrDistance(_lastParentSize) > 0.01f)

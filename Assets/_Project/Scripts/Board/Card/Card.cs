@@ -1,22 +1,26 @@
 using System;
 using System.Linq;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Card : MonoBehaviour
 {
-    [SerializeField] private Image _usedCardImage;
+    private readonly int TurnAnimationHash = Animator.StringToHash("Turn");
+
     [SerializeField] private Image _cardBlowImage;
-    [SerializeField] private TMP_Text _turnsText;
-    [SerializeField] private CardData[] _cardDatas;
+    [SerializeField] private Image _cursedImage;
+    [SerializeField] private Image _rewardImage;
     [SerializeField] private Button _cardButton;
+    [SerializeField] private Animator _cardAnimator;
+    [SerializeField] private CardData[] _cardDatas;
 
     private bool _isActive;
+    private Vector2Int _gridPosition;
     private Type _cardType;
     private CardReward _cardReward;
 
     public bool IsActive => _isActive;
+    public Vector2Int GridPosition => _gridPosition;
     public Type CardType => _cardType;
     public CardReward CardReward => _cardReward;
 
@@ -32,19 +36,33 @@ public class Card : MonoBehaviour
         _cardButton.onClick.RemoveListener(HandleCardClick);
     }
 
-    public void Initialize(Type type)
+    public void Initialize(Type type, Vector2Int gridPosition)
     {
         _isActive = true;
         _cardType = type;
+        _cursedImage.gameObject.SetActive(false);
+        _gridPosition = gridPosition;
         _cardBlowImage.color = _cardDatas.FirstOrDefault(data => data.Type == type).Color;
         _cardReward = CardRewardGenerator.GenerateReward(type);
-        _usedCardImage.gameObject.SetActive(false);
+        int turnsCount = PlayerCardsData.GetTurnsCount(type);
+        _rewardImage.sprite = _cardReward.GetRewardData().ItemSprite;
     }
 
     public void Disactive()
     {
         _isActive = false;
-        _usedCardImage.gameObject.SetActive(true);
+    }
+
+    public void Curse()
+    {
+        _isActive = false;
+        _cursedImage.gameObject.SetActive(true);
+    }
+
+    public void Turn()
+    {
+        _cardAnimator.SetTrigger(TurnAnimationHash);
+        PlayerCardsData.AddTurns(_cardType);
     }
 
     private void HandleCardClick()
@@ -62,6 +80,7 @@ public class Card : MonoBehaviour
         Blessed,
         Base,
         Cursed,
+        Throw
     }
 
     [Serializable]

@@ -3,6 +3,7 @@ using UnityEngine;
 public class CardsStage : GameStage
 {
     [SerializeField] private Board _board;
+    [SerializeField] private SelectItem _selectItemStage;
 
     private void OnEnable()
     {
@@ -36,5 +37,7 @@ public class CardsStage : GameStage
         }
 
         card.Disactive();
+        _selectItemStage.SetReward(card.CardReward);
+        _selectItemStage.StartStage();
     }
 }

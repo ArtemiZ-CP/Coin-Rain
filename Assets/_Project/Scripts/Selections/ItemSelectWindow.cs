@@ -10,7 +10,7 @@ public class ItemSelectWindow : MonoBehaviour
     [SerializeField] private TMP_Text _titleText;
     [SerializeField] private Button _closeButton;
 
-    public event System.Action<Item> OnItemSelected;
+    public event System.Action OnItemSelected;
     public event System.Action OnWindowClosed;
 
     private void OnEnable()
@@ -68,8 +68,8 @@ public class ItemSelectWindow : MonoBehaviour
         }
     }
 
-    private void SelectItem(Item item)
+    private void SelectItem()
     {
-        OnItemSelected?.Invoke(item);
+        OnItemSelected?.Invoke();
     }
 }

@@ -1,61 +1,18 @@
-using System.Collections.Generic;
-
 public class BlessingReward : CardReward
 {
-    private readonly BlessingItemsScriptableObject _blessingItemsSO;
+    private readonly BlessingItems _blessingItemsSO;
 
-    public BlessingReward()
+    public BlessingReward() : base()
     {
-        _blessingItemsSO = GameConstants.Instance.BlessingItemsSO;
+        _blessingItemsSO = GameConstants.Instance.BlessingItems;
     }
 
-    public override bool IsRewardAvailable(Card.Type cardType)
+    protected override void ConfigureHandlers()
     {
-        return cardType switch
-        {
-            Card.Type.Base => true,
-            Card.Type.Blessed => true,
-            Card.Type.Cursed => true,
-            _ => false
-        };
-    }
-    
-    protected override void GetBaseRewardData(out List<Item> items, out string stageName, out int maxSelectCount, out bool haveToBuy, out bool showCloseButton)
-    {
-        items = Item.GetRandomItems(_blessingItemsSO.GetReceivedItems(), 3);
-        stageName = "Upgrade Blessing";
-        maxSelectCount = 1;
-        haveToBuy = true;
-        showCloseButton = true;
+        RegisterHandlers(Card.Type.Blessed, GenerateBlessedReward(), HandleBlessedItemSelected);
     }
 
-    protected override void GetBlessedRewardData(out List<Item> items, out string stageName, out int maxSelectCount, out bool haveToBuy, out bool showCloseButton)
-    {
-        items = Item.GetRandomItems(_blessingItemsSO.GetAllItems(), 1);
-        stageName = "Get Blessing";
-        maxSelectCount = 1;
-        haveToBuy = false;
-        showCloseButton = false;
-    }
-
-    protected override void GetCursedRewardData(out List<Item> items, out string stageName, out int maxSelectCount, out bool haveToBuy, out bool showCloseButton)
-    {
-        items = Item.GetRandomItems(_blessingItemsSO.GetReceivedItems(minLevel: 1), 1);
-        stageName = "Remove Blessing Upgrade";
-        maxSelectCount = 1;
-        haveToBuy = false;
-        showCloseButton = false;
-    }
-
-    protected override void HandleBaseItemSelected(Item item)
-    {
-        if (item is BlessingItem blessing)
-        {
-            Blessing.Get(blessing.Type).Upgrade();
-        }
-    }
-
-    protected override void HandleBlessedItemSelected(Item item)
+    private void HandleBlessedItemSelected(Item item)
     {
         if (item is BlessingItem blessing)
         {
@@ -63,11 +20,8 @@ public class BlessingReward : CardReward
         }
     }
 
-    protected override void HandleCursedItemSelected(Item item)
+    private Item GenerateBlessedReward()
     {
-        if (item is BlessingItem blessing)
-        {
-            Blessing.Get(blessing.Type).RemoveUpgrade();
-        }
+        return Item.GetRandomItems(_blessingItemsSO.Blessed.GetAllItems());
     }
 }

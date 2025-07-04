@@ -2,57 +2,60 @@ using System.Collections.Generic;
 
 public abstract class CardReward
 {
+    protected delegate void HandleSelectDelegate(Item item);
+
+    private readonly Dictionary<Card.Type, RewardData> _rewards = new();
+
     private Card.Type _cardType;
 
     public Card.Type CardType => _cardType;
+
+    public CardReward()
+    {
+        ConfigureHandlers();
+    }
 
     public void SetCardType(Card.Type type)
     {
         _cardType = type;
     }
 
-    public void GetRewardData(out List<Item> items, out string stageName, out int maxSelectCount, out bool haveToBuy, out bool showCloseButton)
+    public Item GetRewardData()
     {
-        switch (_cardType)
+        if (_rewards.TryGetValue(_cardType, out var reward))
         {
-            case Card.Type.Base:
-                GetBaseRewardData(out items, out stageName, out maxSelectCount, out haveToBuy, out showCloseButton);
-                break;
-            case Card.Type.Blessed:
-                GetBlessedRewardData(out items, out stageName, out maxSelectCount, out haveToBuy, out showCloseButton);
-                break;
-            case Card.Type.Cursed:
-                GetCursedRewardData(out items, out stageName, out maxSelectCount, out haveToBuy, out showCloseButton);
-                break;
-            default:
-                throw new System.ArgumentOutOfRangeException(nameof(_cardType), _cardType, null);
+            return reward.Item;
         }
+
+        throw new System.NotImplementedException($"Reward data for card type {_cardType} is not implemented.");
     }
 
-    public void HandleItemSelected(Item item)
+    public void HandleItemSelected()
     {
-        switch (_cardType)
+        if (_rewards.TryGetValue(_cardType, out var reward))
         {
-            case Card.Type.Base:
-                HandleBaseItemSelected(item);
-                break;
-            case Card.Type.Blessed:
-                HandleBlessedItemSelected(item);
-                break;
-            case Card.Type.Cursed:
-                HandleCursedItemSelected(item);
-                break;
-            default:
-                throw new System.ArgumentOutOfRangeException(nameof(_cardType), _cardType, null);
+            reward.HandleSelect.Invoke(reward.Item);
+            return;
         }
+
+        throw new System.NotImplementedException($"Item selection for card type {_cardType} is not implemented.");
     }
 
-    public abstract bool IsRewardAvailable(Card.Type type);
+    public virtual bool IsRewardAvailable(Card.Type type)
+    {
+        return _rewards.ContainsKey(type);
+    }
 
-    protected abstract void GetBaseRewardData(out List<Item> items, out string stageName, out int maxSelectCount, out bool haveToBuy, out bool showCloseButton);
-    protected abstract void GetBlessedRewardData(out List<Item> items, out string stageName, out int maxSelectCount, out bool haveToBuy, out bool showCloseButton);
-    protected abstract void GetCursedRewardData(out List<Item> items, out string stageName, out int maxSelectCount, out bool haveToBuy, out bool showCloseButton);
-    protected abstract void HandleBaseItemSelected(Item item);
-    protected abstract void HandleBlessedItemSelected(Item item);
-    protected abstract void HandleCursedItemSelected(Item item);
+    protected void RegisterHandlers(Card.Type type, Item item, HandleSelectDelegate handler)
+    {
+        _rewards.Add(type, new RewardData { Item = item, HandleSelect = handler });
+    }
+
+    protected abstract void ConfigureHandlers();
+
+    private struct RewardData
+    {
+        public Item Item;
+        public HandleSelectDelegate HandleSelect;
+    }
 }

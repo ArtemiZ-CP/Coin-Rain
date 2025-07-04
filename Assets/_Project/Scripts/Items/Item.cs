@@ -5,11 +5,9 @@ public abstract class Item
 {
     [SerializeField] private Rare _rare;
     [SerializeField] private string _name;
-    [SerializeField] private float _price;
     [SerializeField] private Sprite _itemSprite;
 
     public string Name => _name;
-    public float Price => _price;
     public Rare ItemRare => _rare;
     public Sprite ItemSprite => _itemSprite;
 

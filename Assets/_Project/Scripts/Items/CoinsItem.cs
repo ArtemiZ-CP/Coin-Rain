@@ -4,7 +4,7 @@ using UnityEngine;
 [Serializable]
 public class CoinsItem : Item
 {
-    [SerializeField] private float _coins;
+    [SerializeField, Min(0)] private float _coins;
 
     public float Coins => _coins;
 }

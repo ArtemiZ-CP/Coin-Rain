@@ -1984,6 +1984,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _board: {fileID: 1628752187}
+  _selectItemStage: {fileID: 1047336218}
 --- !u!1 &860801070
 GameObject:
   m_ObjectHideFlags: 0
@@ -2385,7 +2386,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1203124917
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2732,6 +2733,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _gameStages:
   - {fileID: 843633074}
+  - {fileID: 30230793}
 --- !u!1 &1628752185
 GameObject:
   m_ObjectHideFlags: 0
@@ -2787,6 +2789,7 @@ MonoBehaviour:
   _cardsParent: {fileID: 220741063}
   _cardSize: {x: 100, y: 150}
   _cardOffset: 10
+  _clickCardDelay: 0.5
 --- !u!1 &1658090607
 GameObject:
   m_ObjectHideFlags: 0
@@ -3662,7 +3665,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2144145693617673281, guid: 3c51b8f546c6e422a864f000df44bc6d, type: 3}
       propertyPath: m_SizeDelta.y
-      value: -600
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2144145693617673281, guid: 3c51b8f546c6e422a864f000df44bc6d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3730,7 +3733,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4589084058266134246, guid: 3c51b8f546c6e422a864f000df44bc6d, type: 3}
       propertyPath: m_SizeDelta.x
-      value: -919.70654
+      value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: 6062686999234295376, guid: 3c51b8f546c6e422a864f000df44bc6d, type: 3}
       propertyPath: m_Name
