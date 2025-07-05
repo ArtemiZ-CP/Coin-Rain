@@ -15,6 +15,5 @@ MonoBehaviour:
   _blessingItems:
   - _rare: 0
     _name: Golden Touch
-    _price: 10
-    _itemSprite: {fileID: 21300000, guid: 36a000541291b4510ad30c4d74be59c9, type: 3}
+    _itemSprite: {fileID: 21300000, guid: 245aee839789b4dff930918c35fb5163, type: 3}
     _blessingType: 0

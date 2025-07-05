@@ -1,18 +1,28 @@
+using System.Collections.Generic;
+using UnityEngine;
+
 public class BlessingReward : CardReward
 {
-    private readonly BlessingItems _blessingItemsSO;
-
-    public BlessingReward() : base()
+    private BlessingItems _blessingItemsSO;
+    
+    private BlessingItems BlessingItemsSO
     {
-        _blessingItemsSO = GameConstants.Instance.BlessingItems;
+        get
+        {
+            if (_blessingItemsSO.Blessed == null)
+            {
+                _blessingItemsSO = GameConstants.Instance.BlessingItems;
+            }
+            return _blessingItemsSO;
+        }
     }
 
     protected override void ConfigureHandlers()
     {
-        RegisterHandlers(Card.Type.Blessed, GenerateBlessedReward(), HandleBlessedItemSelected);
+        RegisterHandlers(Card.Type.Blessed, GenerateBlessedReward(), ApplyBlessedItemReward);
     }
 
-    private void HandleBlessedItemSelected(Item item)
+    private void ApplyBlessedItemReward(Item item)
     {
         if (item is BlessingItem blessing)
         {
@@ -22,6 +32,7 @@ public class BlessingReward : CardReward
 
     private Item GenerateBlessedReward()
     {
-        return Item.GetRandomItems(_blessingItemsSO.Blessed.GetAllItems());
+        List<BlessingItem> items = BlessingItemsSO.Blessed.GetAllItems();
+        return Item.GetRandomItems(items);
     }
 }

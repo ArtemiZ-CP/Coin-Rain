@@ -13,8 +13,7 @@ MonoBehaviour:
   m_Name: BaseCoinsItem
   m_EditorClassIdentifier: 
   _coinsItems:
-  - _name: Get 50 Coins
-    _price: 0
-    _itemSprite: {fileID: 21300000, guid: 36a000541291b4510ad30c4d74be59c9, type: 3}
-    _rare: 0
+  - _rare: 0
+    _name: Get 50 Coins
+    _itemSprite: {fileID: 21300000, guid: 4c0400b282ffa4dde8653a1e70863cba, type: 3}
     _coins: 50

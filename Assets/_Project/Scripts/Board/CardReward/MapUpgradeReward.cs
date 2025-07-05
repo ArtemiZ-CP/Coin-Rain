@@ -1,25 +1,32 @@
 public class MapUpgradeReward : CardReward
 {
-    private readonly MapItems _mapItemsSO;
+    private MapItems _mapItemsSO;
 
-    public MapUpgradeReward()
+    public MapItems MapItemsSO
     {
-        _mapItemsSO = GameConstants.Instance.MapItems;
+        get
+        {
+            if (_mapItemsSO.Blessed == null)
+            {
+                _mapItemsSO = GameConstants.Instance.MapItems;
+            }
+            return _mapItemsSO;
+        }
     }
 
     protected override void ConfigureHandlers()
     {
-        RegisterHandlers(Card.Type.Blessed, GenerateBlessedReward(), HandleBlessedItemSelected);
+        RegisterHandlers(Card.Type.Blessed, GenerateBlessedReward(), ApplyBlessedItemReward);
     }
 
-    private void HandleBlessedItemSelected(Item item)
+    private void ApplyBlessedItemReward(Item item)
     {
         ApplyMapUpgrade(item);
     }
 
     private Item GenerateBlessedReward()
     {
-        return Item.GetRandomItems(_mapItemsSO.Blessed.GetAllItems());
+        return Item.GetRandomItems(MapItemsSO.Blessed.GetAllItems());
     }
     
     private void ApplyMapUpgrade(Item item)

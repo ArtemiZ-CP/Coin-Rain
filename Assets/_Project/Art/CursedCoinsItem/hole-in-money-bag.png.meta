@@ -1,13 +1,19 @@
 fileFormatVersion: 2
-guid: 36a000541291b4510ad30c4d74be59c9
+guid: 70653f084295a4094a8a6dda00db1071
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5859568124994483783
-    second: coin-2_0
+      213: -1419751085136592602
+    second: hole-in-money-bag_0
   - first:
-      213: 24243473302352098
-    second: coin-2_1
+      213: -831493708265106592
+    second: hole-in-money-bag_1
+  - first:
+      213: -1513535507137186825
+    second: hole-in-money-bag_2
+  - first:
+      213: 4469849644705896
+    second: hole-in-money-bag_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -103,13 +109,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: coin-2_0
+      name: hole-in-money-bag_0
       rect:
         serializedVersion: 2
-        x: 23
-        y: 41
-        width: 466
-        height: 330
+        x: 95
+        y: 155
+        width: 322
+        height: 357
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -117,20 +123,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7467f731a2e515150800000000000000
-      internalID: 5859568124994483783
+      spriteID: 62145f409e70c4ce0800000000000000
+      internalID: -1419751085136592602
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: coin-2_1
+      name: hole-in-money-bag_1
       rect:
         serializedVersion: 2
-        x: 76
-        y: 318
-        width: 268
-        height: 153
+        x: 99
+        y: 0
+        width: 83
+        height: 81
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -138,8 +144,50 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2e0fe4e7f41265000800000000000000
-      internalID: 24243473302352098
+      spriteID: 063d2e5b0e0f574f0800000000000000
+      internalID: -831493708265106592
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hole-in-money-bag_2
+      rect:
+        serializedVersion: 2
+        x: 151
+        y: 79
+        width: 75
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7f3b52ea977defae0800000000000000
+      internalID: -1513535507137186825
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hole-in-money-bag_3
+      rect:
+        serializedVersion: 2
+        x: 231
+        y: 43
+        width: 67
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 868a548fd41ef0000800000000000000
+      internalID: 4469849644705896
       vertices: []
       indices: 
       edges: []
@@ -155,8 +203,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      coin-2_0: 5859568124994483783
-      coin-2_1: 24243473302352098
+      hole-in-money-bag_0: -1419751085136592602
+      hole-in-money-bag_1: -831493708265106592
+      hole-in-money-bag_2: -1513535507137186825
+      hole-in-money-bag_3: 4469849644705896
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -8,9 +8,9 @@ public class PinItemsScriptableObject : ScriptableObject
     [SerializeField] private PinItem _basePinItem = default;
     [SerializeField] private List<PinItem> _pinItems = default;
 
-    public List<PinItem> GetAllItems(bool includeBasePin = false)
+    public List<PinItem> GetAllItems(bool includeBasePin, Item.Rare minRare = Item.Rare.Common, Item.Rare maxRare = Item.Rare.Legendary)
     {
-        List<PinItem> pinItems = new(_pinItems);
+        List<PinItem> pinItems = _pinItems.Where(pinItem => pinItem.ItemRare >= minRare && pinItem.ItemRare <= maxRare).ToList();
 
         if (includeBasePin)
         {
@@ -20,7 +20,7 @@ public class PinItemsScriptableObject : ScriptableObject
         return pinItems;
     }
 
-    public List<PinItem> GetReceivedItems(bool includeBasePin = false, int minLevel = 0)
+    public List<PinItem> GetReceivedItems(bool includeBasePin, int minLevel = 0)
     {
         List<PinItem> pinItems = new();
 

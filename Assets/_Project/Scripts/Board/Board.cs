@@ -115,7 +115,12 @@ public class Board : MonoBehaviour
             cardTypes.Add(Card.Type.Cursed);
         }
 
-        int baseCardsCount = cardsCount - PlayerCardsData.BlessedCardsCount - PlayerCardsData.CursedCardsCount;
+        for (int i = 0; i < PlayerCardsData.ThrowCardsCount; i++)
+        {
+            cardTypes.Add(Card.Type.Throw);
+        }
+
+        int baseCardsCount = cardsCount - cardTypes.Count;
 
         for (int i = 0; i < baseCardsCount; i++)
         {
@@ -146,7 +151,7 @@ public class Board : MonoBehaviour
     private IEnumerator CardClickWithDelay(Card clickedCard)
     {
         yield return new WaitForSeconds(_clickCardDelay);
-        
+
         OnCardClick?.Invoke(clickedCard);
         Vector2Int gridPosition = clickedCard.GridPosition;
 
@@ -160,6 +165,8 @@ public class Board : MonoBehaviour
                 }
             }
         }
+        
+        clickedCard.CardReward.ApplyReward();
     }
 
     private void SetCardTransform(Card card, Vector2Int gridPosition)

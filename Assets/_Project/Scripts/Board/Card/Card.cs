@@ -44,7 +44,6 @@ public class Card : MonoBehaviour
         _gridPosition = gridPosition;
         _cardBlowImage.color = _cardDatas.FirstOrDefault(data => data.Type == type).Color;
         _cardReward = CardRewardGenerator.GenerateReward(type);
-        int turnsCount = PlayerCardsData.GetTurnsCount(type);
         _rewardImage.sprite = _cardReward.GetRewardData().ItemSprite;
     }
 
@@ -62,7 +61,6 @@ public class Card : MonoBehaviour
     public void Turn()
     {
         _cardAnimator.SetTrigger(TurnAnimationHash);
-        PlayerCardsData.AddTurns(_cardType);
     }
 
     private void HandleCardClick()

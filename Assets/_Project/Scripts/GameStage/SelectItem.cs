@@ -47,7 +47,7 @@ public class SelectItem : GameStage
             return;
         }
 
-        _cardReward.HandleItemSelected();
+        _cardReward.ApplyReward();
         _selectedCount++;
 
         if (_selectedCount >= _maxSelectCount)

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 public abstract class CardReward
 {
-    protected delegate void HandleSelectDelegate(Item item);
+    protected delegate void ApplyRewardDelegate(Item item);
 
     private readonly Dictionary<Card.Type, RewardData> _rewards = new();
 
@@ -30,7 +30,7 @@ public abstract class CardReward
         throw new System.NotImplementedException($"Reward data for card type {_cardType} is not implemented.");
     }
 
-    public void HandleItemSelected()
+    public void ApplyReward()
     {
         if (_rewards.TryGetValue(_cardType, out var reward))
         {
@@ -46,7 +46,7 @@ public abstract class CardReward
         return _rewards.ContainsKey(type);
     }
 
-    protected void RegisterHandlers(Card.Type type, Item item, HandleSelectDelegate handler)
+    protected void RegisterHandlers(Card.Type type, Item item, ApplyRewardDelegate handler)
     {
         _rewards.Add(type, new RewardData { Item = item, HandleSelect = handler });
     }
@@ -56,6 +56,6 @@ public abstract class CardReward
     private struct RewardData
     {
         public Item Item;
-        public HandleSelectDelegate HandleSelect;
+        public ApplyRewardDelegate HandleSelect;
     }
 }

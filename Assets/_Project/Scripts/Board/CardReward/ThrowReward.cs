@@ -1,27 +1,34 @@
 public class ThrowReward : CardReward
 {
-    private readonly ThrowItems _throwItemsSO;
-
-    public ThrowReward()
+    private ThrowItems _throwItemsSO;
+    
+    private ThrowItems ThrowItemsSO
     {
-        _throwItemsSO = GameConstants.Instance.ThrowItems;
+        get
+        {
+            if (_throwItemsSO.Throw == null)
+            {
+                _throwItemsSO = GameConstants.Instance.ThrowItems;
+            }
+            return _throwItemsSO;
+        }
     }
 
     protected override void ConfigureHandlers()
     {
-        RegisterHandlers(Card.Type.Throw, GetBaseRewardData(), HandleBaseItemSelected);
+        RegisterHandlers(Card.Type.Throw, GetBaseRewardData(), ApplyBaseItemReward);
     }
 
     private Item GetBaseRewardData()
     {
-        return Item.GetRandomItems(_throwItemsSO.Throw.GetAllItems());
+        return Item.GetRandomItems(ThrowItemsSO.Throw.GetAllItems());
     }
 
-    private void HandleBaseItemSelected(Item item)
+    private void ApplyBaseItemReward(Item item)
     {
-        if (item is PinItem pin)
+        if (item is ThrowItem throwItem)
         {
-            Pin.Get(pin.Type).Add();
+            PlayerCardsData.AddThrow(throwItem.Count);
         }
     }
 }

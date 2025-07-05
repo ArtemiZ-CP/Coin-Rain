@@ -1,19 +1,25 @@
 fileFormatVersion: 2
-guid: cf6c693a9462f4b2998202b39c7c68e2
+guid: 245aee839789b4dff930918c35fb5163
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -3563085532065423289
-    second: choice_0
+      213: -8124141602062767653
+    second: savings_0
   - first:
-      213: -2357390177233292278
-    second: choice_1
+      213: 3618615206564411142
+    second: savings_1
   - first:
-      213: -3705097378085930045
-    second: choice_2
+      213: -2494232197676531931
+    second: savings_2
   - first:
-      213: -9132649622885317711
-    second: choice_3
+      213: -7026659812983897558
+    second: savings_3
+  - first:
+      213: -1982754910290860651
+    second: savings_4
+  - first:
+      213: 295128657843095816
+    second: savings_5
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -109,13 +115,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: choice_0
+      name: savings_0
       rect:
         serializedVersion: 2
-        x: 21
-        y: 366
-        width: 147
-        height: 146
+        x: 187
+        y: 457
+        width: 33
+        height: 44
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -123,20 +129,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 74028ec26906d8ec0800000000000000
-      internalID: -3563085532065423289
+      spriteID: bd96318a140414f80800000000000000
+      internalID: -8124141602062767653
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: choice_1
+      name: savings_1
       rect:
         serializedVersion: 2
-        x: 182
-        y: 366
-        width: 148
-        height: 146
+        x: 246
+        y: 464
+        width: 20
+        height: 48
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -144,20 +150,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a04b301bf1ed84fd0800000000000000
-      internalID: -2357390177233292278
+      spriteID: 607391eab57e73230800000000000000
+      internalID: 3618615206564411142
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: choice_2
+      name: savings_2
       rect:
         serializedVersion: 2
-        x: 344
-        y: 366
-        width: 147
-        height: 146
+        x: 292
+        y: 457
+        width: 33
+        height: 44
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -165,20 +171,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3cbf4f8a099d49cc0800000000000000
-      internalID: -3705097378085930045
+      spriteID: 52ff52ef705b26dd0800000000000000
+      internalID: -2494232197676531931
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: choice_3
+      name: savings_3
       rect:
         serializedVersion: 2
-        x: 146
+        x: 10
         y: 0
-        width: 220
-        height: 352
+        width: 227
+        height: 405
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -186,8 +192,50 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1b3c0d90e8f424180800000000000000
-      internalID: -9132649622885317711
+      spriteID: a220591012a4c7e90800000000000000
+      internalID: -7026659812983897558
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: savings_4
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 295
+        width: 242
+        height: 142
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 595a3770ae6db74e0800000000000000
+      internalID: -1982754910290860651
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: savings_5
+      rect:
+        serializedVersion: 2
+        x: 275
+        y: 0
+        width: 227
+        height: 405
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 80986cd53f1881400800000000000000
+      internalID: 295128657843095816
       vertices: []
       indices: 
       edges: []
@@ -203,10 +251,12 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      choice_0: -3563085532065423289
-      choice_1: -2357390177233292278
-      choice_2: -3705097378085930045
-      choice_3: -9132649622885317711
+      savings_0: -8124141602062767653
+      savings_1: 3618615206564411142
+      savings_2: -2494232197676531931
+      savings_3: -7026659812983897558
+      savings_4: -1982754910290860651
+      savings_5: 295128657843095816
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

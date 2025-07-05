@@ -11,7 +11,7 @@ public class DropBallStage : GameStage
     {
         base.StartStage();
         _currentDropCount = 0;
-        _dropCount = PlayerCardsData.TurnsCount;
+        _dropCount = PlayerCardsData.ThrowCount;
         PlayerCardsData.ResetTurns();
         _ballsController.SetControllable(true);
         BallsController.OnReset += EndStage;

@@ -9,14 +9,16 @@ public static class PlayerCardsData
     public const int DefaultThrowCardsCount = 3;
 
     private static List<Vector2Int> _cardsPositions = new();
-    private static int _blessedCardsCount;
-    private static int _cursedCardsCount;
-    private static int _turnsCount;
+    private static int _blessedCardsCount = DefaultBlessedCardsCount;
+    private static int _cursedCardsCount = DefaultCursedCardsCount;
+    private static int _throwCardsCount = DefaultThrowCardsCount;
+    private static int _throwCount;
 
     public static IReadOnlyList<Vector2Int> CardsPositions => _cardsPositions;
     public static int BlessedCardsCount => _blessedCardsCount;
     public static int CursedCardsCount => _cursedCardsCount;
-    public static int TurnsCount => _turnsCount;
+    public static int ThrowCardsCount => _throwCardsCount;
+    public static int ThrowCount => _throwCount;
 
     static PlayerCardsData()
     {
@@ -27,29 +29,15 @@ public static class PlayerCardsData
                 _cardsPositions.Add(new Vector2Int(i, j));
             }
         }
-
-        _blessedCardsCount = DefaultBlessedCardsCount;
-        _cursedCardsCount = DefaultCursedCardsCount;
     }
 
-    public static int GetTurnsCount(Card.Type type)
+    public static void AddThrow(int count)
     {
-        return type switch
-        {
-            Card.Type.Blessed => 2,
-            Card.Type.Base => 1,
-            Card.Type.Cursed => 0,
-            _ => throw new System.ArgumentOutOfRangeException(nameof(type), type, null)
-        };
-    }
-
-    public static void AddTurns(Card.Type type)
-    {
-        _turnsCount += GetTurnsCount(type);
+        _throwCount += count;
     }
 
     public static void ResetTurns()
     {
-        _turnsCount = 0;
+        _throwCount = 0;
     }
 }

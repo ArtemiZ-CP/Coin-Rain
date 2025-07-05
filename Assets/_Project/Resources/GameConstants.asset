@@ -20,13 +20,14 @@ MonoBehaviour:
     OffsetBetweenPinsInLine: 2
     MultiplyingBallImpulse: 5
     StartBallImpulse: 3
+  _blessingItems:
+    _blessed: {fileID: 11400000, guid: ad0f4c9ac52ef447091bb231c862c7c6, type: 2}
   _coinsItems:
     _base: {fileID: 11400000, guid: 3cac6856891f34e6ba350655d1898349, type: 2}
     _cursed: {fileID: 11400000, guid: 58393ff0ec178436e98f8de112bf523c, type: 2}
   _mapItems:
-    _blessed: {fileID: 0}
+    _blessed: {fileID: 11400000, guid: a7d1fdd73458949e0b47cf87aeac47f5, type: 2}
   _pinItems:
-    _base: {fileID: 0}
-    _blessed: {fileID: 0}
+    _base: {fileID: 11400000, guid: 2df7fdb3103f445d5942147fca338951, type: 2}
   _throwItems:
-    _throw: {fileID: 0}
+    _throw: {fileID: 11400000, guid: d4544bd066bf04ed6bff1bad970aa327, type: 2}

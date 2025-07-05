@@ -47,7 +47,7 @@ public struct PinConstants
     public readonly float OffsetBetweenLines => OffsetBetweenPinsInLine * Mathf.Sqrt(3) / 2;
 }
 
-[SerializeField]
+[Serializable]
 public struct BlessingItems
 {
     [SerializeField] private BlessingItemsScriptableObject _blessed;
@@ -77,10 +77,8 @@ public struct MapItems
 public struct PinItems
 {
     [SerializeField] private PinItemsScriptableObject _base;
-    [SerializeField] private PinItemsScriptableObject _blessed;
 
     public readonly PinItemsScriptableObject Base => _base;
-    public readonly PinItemsScriptableObject Blessed => _blessed;
 }
 
 [Serializable]

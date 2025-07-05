@@ -1,29 +1,36 @@
 public class CoinsReward : CardReward
 {
-    private readonly CoinsItems _coinsItemsSO;
-
-    public CoinsReward()
+    private CoinsItems _coinsItemsSO;
+    
+    private CoinsItems CoinsItemsSO
     {
-        _coinsItemsSO = GameConstants.Instance.CoinsItems;
+        get
+        {
+            if (_coinsItemsSO.Base == null)
+            {
+                _coinsItemsSO = GameConstants.Instance.CoinsItems;
+            }
+            return _coinsItemsSO;
+        }
     }
 
     protected override void ConfigureHandlers()
     {
-        RegisterHandlers(Card.Type.Base, GetBaseRewardData(), HandleBaseItemSelected);
-        RegisterHandlers(Card.Type.Cursed, GetCursedRewardData(), HandleCursedItemSelected);
+        RegisterHandlers(Card.Type.Base, GetBaseRewardData(), ApplyBaseItemReward);
+        RegisterHandlers(Card.Type.Cursed, GetCursedRewardData(), ApplyCursedItemReward);
     }
 
     private Item GetBaseRewardData()
     {
-        return Item.GetRandomItems(_coinsItemsSO.Base.GetAllItems());
+        return Item.GetRandomItems(CoinsItemsSO.Base.GetAllItems());
     }
         
     private Item GetCursedRewardData()
     {
-        return Item.GetRandomItems(_coinsItemsSO.Cursed.GetAllItems());
+        return Item.GetRandomItems(CoinsItemsSO.Cursed.GetAllItems());
     }
 
-    private void HandleBaseItemSelected(Item item)
+    private void ApplyBaseItemReward(Item item)
     {
         if (item is CoinsItem coinsItem)
         {
@@ -31,7 +38,7 @@ public class CoinsReward : CardReward
         }
     }
 
-    private void HandleCursedItemSelected(Item item)
+    private void ApplyCursedItemReward(Item item)
     {
         if (item is CoinsItem coinsItem)
         {

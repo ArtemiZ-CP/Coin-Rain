@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 236d7680ca0eb4407befa1ced3bb602c, type: 3}
-  m_Name: PinItems
+  m_Name: BasePinItems
   m_EditorClassIdentifier: 
   _basePinItem:
     _rare: 0
