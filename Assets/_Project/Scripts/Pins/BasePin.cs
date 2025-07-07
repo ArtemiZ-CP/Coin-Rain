@@ -19,4 +19,12 @@ public class BasePin : Pin
         IncreaseReward(1);
         base.Upgrade();
     }
+
+    public override void Add(int value = 1)
+    {
+    }
+
+    public override void Remove(int value = 1)
+    {
+    }
 }

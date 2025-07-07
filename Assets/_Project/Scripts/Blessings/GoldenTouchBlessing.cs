@@ -1,6 +1,6 @@
 public class GoldenTouchBlessing : Blessing
 {
-    public override void Get()
+    public override void Add()
     {
         IncreasePinsReward();
     }
@@ -13,9 +13,6 @@ public class GoldenTouchBlessing : Blessing
 
     private void IncreasePinsReward(float value = 1)
     {
-        foreach (Pin.Type type in Pin.GetAllTypes())
-        {
-            Pin.Get(type)?.IncreaseReward(value);
-        }
+        Pin.Get(Pin.Type.Base)?.IncreaseReward(value);
     }
 }

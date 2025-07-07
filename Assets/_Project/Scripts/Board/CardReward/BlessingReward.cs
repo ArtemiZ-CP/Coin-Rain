@@ -26,7 +26,7 @@ public class BlessingReward : CardReward
     {
         if (item is BlessingItem blessing)
         {
-            Blessing.Get(blessing.Type).Get();
+            Blessing.Get(blessing.Type).Add();
         }
     }
 

@@ -9,6 +9,7 @@ public class Board : MonoBehaviour
     private readonly List<Card> _cards = new();
 
     [SerializeField] private Card _cardPrefab;
+    [SerializeField] private CardsHint _cardsHint;
     [SerializeField] private Button _endStageButton;
     [SerializeField] private RectTransform _cardsParent;
     [SerializeField] private Vector2 _cardSize;
@@ -20,6 +21,11 @@ public class Board : MonoBehaviour
 
     public event Action<Card> OnCardClick;
     public event Action OnEndStageButtonClick;
+
+    private void Awake()
+    {
+        _cardsHint.Initialize();
+    }
 
     private void OnEnable()
     {
@@ -42,7 +48,7 @@ public class Board : MonoBehaviour
 
         foreach (Card card in _cards)
         {
-            if (card.IsActive)
+            if (card.Clickable)
             {
                 count++;
             }
@@ -73,6 +79,8 @@ public class Board : MonoBehaviour
         {
             _lastParentSize = _cardsParent.rect.size;
         }
+        
+        SetCardsHint();
     }
 
     public void ClearCards()
@@ -166,7 +174,44 @@ public class Board : MonoBehaviour
             }
         }
         
+        SetCardsHint();
         clickedCard.CardReward.ApplyReward();
+    }
+
+    private void SetCardsHint()
+    {
+        if (_cardsHint == null)
+        {
+            Debug.LogWarning("CardsHint is not assigned in the inspector");
+            return;
+        }
+
+        List<(Card.Type type, int count)> cardTypes = new()
+        {
+            (Card.Type.Blessed, 0),
+            (Card.Type.Cursed, 0),
+            (Card.Type.Throw, 0),
+            (Card.Type.Base, 0)
+        };
+
+        foreach (Card card in _cards)
+        {
+            if (card.Turned)
+            {
+                continue;
+            }
+
+            int idx = cardTypes.FindIndex(type => type.type == card.CardType);
+
+            if (idx != -1)
+            {
+                var tuple = cardTypes[idx];
+                tuple.count++;
+                cardTypes[idx] = tuple;
+            }
+        }
+
+        _cardsHint.SetCardsHint(cardTypes);
     }
 
     private void SetCardTransform(Card card, Vector2Int gridPosition)

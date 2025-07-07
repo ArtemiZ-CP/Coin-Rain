@@ -72,13 +72,13 @@ public abstract class Pin
         OnPinRewardUpdate?.Invoke();
     }
 
-    public void Add(int value = 1)
+    public virtual void Add(int value = 1)
     {
         count += value;
         OnPinsUpdate?.Invoke();
     }
 
-    public void Remove(int value = 1)
+    public virtual void Remove(int value = 1)
     {
         count -= value;
 

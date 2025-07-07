@@ -38,15 +38,15 @@ public class SelectableItem : MonoBehaviour
         // UpdatePriceText();
     }
 
-    // private void OnSelectButtonClicked()
-    // {
-    //     if (_haveToBuy && PlayerCoinsData.TryToBuy(_item.Price) == false)
-    //     {
-    //         return;
-    //     }
+    private void OnSelectButtonClicked()
+    {
+        // if (_haveToBuy && PlayerCoinsData.TryToBuy(_item.Price) == false)
+        // {
+        //     return;
+        // }
 
-    //     OnItemSelected?.Invoke(_item);
-    // }
+        OnItemSelected?.Invoke();
+    }
 
     // private void UpdatePriceText()
     // {

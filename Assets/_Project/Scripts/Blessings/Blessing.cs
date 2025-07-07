@@ -59,7 +59,7 @@ public abstract class Blessing
         }
     }
 
-    public abstract void Get();
+    public abstract void Add();
 
     public enum Type
     {

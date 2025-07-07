@@ -36,7 +36,6 @@ public class CardsStage : GameStage
             return;
         }
 
-        card.Disactive();
         _selectItemStage.SetReward(card.CardReward);
         _selectItemStage.StartStage();
     }

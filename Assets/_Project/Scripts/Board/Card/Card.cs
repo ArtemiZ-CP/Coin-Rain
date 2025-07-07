@@ -14,12 +14,14 @@ public class Card : MonoBehaviour
     [SerializeField] private Animator _cardAnimator;
     [SerializeField] private CardData[] _cardDatas;
 
-    private bool _isActive;
+    private bool _clickable;
+    private bool _turned;
     private Vector2Int _gridPosition;
     private Type _cardType;
     private CardReward _cardReward;
 
-    public bool IsActive => _isActive;
+    public bool Clickable => _clickable;
+    public bool Turned => _turned;
     public Vector2Int GridPosition => _gridPosition;
     public Type CardType => _cardType;
     public CardReward CardReward => _cardReward;
@@ -38,34 +40,37 @@ public class Card : MonoBehaviour
 
     public void Initialize(Type type, Vector2Int gridPosition)
     {
-        _isActive = true;
-        _cardType = type;
+        _clickable = true;
+        _turned = false;
         _cursedImage.gameObject.SetActive(false);
         _gridPosition = gridPosition;
-        _cardBlowImage.color = _cardDatas.FirstOrDefault(data => data.Type == type).Color;
         _cardReward = CardRewardGenerator.GenerateReward(type);
         _rewardImage.sprite = _cardReward.GetRewardData().ItemSprite;
-    }
-
-    public void Disactive()
-    {
-        _isActive = false;
+        SetType(type);
     }
 
     public void Curse()
     {
-        _isActive = false;
+        _clickable = false;
         _cursedImage.gameObject.SetActive(true);
     }
 
     public void Turn()
     {
+        _clickable = false;
+        _turned = true;
         _cardAnimator.SetTrigger(TurnAnimationHash);
+    }
+
+    public void SetType(Type type)
+    {
+        _cardType = type;
+        _cardBlowImage.color = _cardDatas.FirstOrDefault(data => data.Type == type).Color;
     }
 
     private void HandleCardClick()
     {
-        if (_isActive == false)
+        if (_clickable == false)
         {
             return;
         }
